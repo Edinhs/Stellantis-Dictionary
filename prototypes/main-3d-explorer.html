@@ -12,10 +12,10 @@
 
   Assets locais (funciona offline):
     ./lib/three.min.js, OrbitControls.js, GLTFLoader.js, RoomEnvironment.js
-    ./assets/sedanSports.glb — carro do "Car Kit" do Kenney (kenney.nl),
-    licença CC0 1.0 (domínio público). É um modelo genérico PLACEHOLDER até
-    termos um modelo oficial do veículo; qualquer .glb pode substituí-lo
-    (o enquadramento da câmera e a escala se ajustam automaticamente).
+    ./assets/jeep.glb — modelo 3D de um Jeep (marca da Stellantis), usado como
+    PLACEHOLDER de veículo real. É um asset de terceiros cuja LICENÇA deve ser
+    verificada/confirmada antes de qualquer distribuição. Qualquer .glb pode
+    substituí-lo (a câmera e a escala se ajustam automaticamente).
 
   Como abrir: sirva a pasta por HTTP (ex.: `python3 -m http.server` dentro de
   /prototypes) — o carregamento do .glb via file:// é bloqueado pelo navegador.
@@ -274,7 +274,7 @@
   </section>
 
   <footer class="footer">
-    Protótipo T04b · Stellantis Dictionary · carro 3D placeholder (modelo CC0 — Kenney) · dados fictícios.
+    Protótipo T04b · Stellantis Dictionary · Jeep 3D (placeholder, licença a confirmar) · dados fictícios.
   </footer>
 </div>
 
@@ -302,14 +302,14 @@
 
   // ---- Hotspots (definidos como fração do bounding box do carro; ajustados após o render) ----
   // nx,ny,nz em [-0.5..0.5] relativo ao tamanho do carro centrado na origem.
-  // Frente do carro = -Z, traseira = +Z, laterais = ±X, topo = +Y.
+  // Jeep — frente = +Z, traseira = -Z, laterais = ±X, topo = +Y.
   // nx,nz em [-0.5..0.5] (0 = centro); ny=0 = meia-altura, +0.5 = topo, -0.5 = base.
   var HOTSPOTS = [
-    { slug: "para-brisa", label: "Para-brisa / HUD", def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.20, nz: -0.10 },
-    { slug: "farois",     label: "Faróis",           def: "Conjunto óptico dianteiro: iluminação e assinatura de luz do veículo.", nx: 0.20, ny: -0.16, nz: -0.46 },
-    { slug: "rodas",      label: "Rodas & Pneus",    def: "Conjunto roda/pneu: dimensões, calibragem e tipos conforme o modelo.", nx: -0.50, ny: -0.24, nz: -0.26 },
-    { slug: "carroceria", label: "Carroceria",       def: "Estrutura externa, portas e pintura do veículo.", nx: 0.50, ny: 0.02, nz: 0.06 },
-    { slug: "traseira",   label: "Traseira",         def: "Lanternas, para-choque traseiro e porta-malas.", nx: 0.06, ny: 0.06, nz: 0.48 }
+    { slug: "para-brisa",   label: "Para-brisa / HUD",     def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.24, nz: 0.12 },
+    { slug: "grade-farois", label: "Grade & Faróis",       def: "Grade frontal e conjunto óptico: iluminação e assinatura de luz do veículo.", nx: 0.16, ny: -0.10, nz: 0.47 },
+    { slug: "rodas",        label: "Rodas & Pneus",        def: "Conjunto roda/pneu off-road: dimensões, calibragem e tipos conforme o modelo.", nx: 0.50, ny: -0.26, nz: 0.26 },
+    { slug: "estepe",       label: "Estepe (traseira)",    def: "Pneu sobressalente montado na traseira, característico do Jeep.", nx: 0.02, ny: 0.06, nz: -0.50 },
+    { slug: "carroceria",   label: "Carroceria / Capota",  def: "Estrutura externa, portas e capota do veículo.", nx: 0.50, ny: 0.12, nz: -0.06 }
   ];
 
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
@@ -322,7 +322,7 @@
 
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(42, 1, 0.01, 100);
-  camera.position.set(3.0, 1.5, -3.4); // vista 3/4 dianteira (frente = -Z)
+  camera.position.set(3.4, 1.8, 4.2); // vista 3/4 dianteira do Jeep (frente = +Z)
 
   // Ambiente (reflexos na pintura)
   try {
@@ -371,7 +371,7 @@
   scene.add(ground);
 
   var gltfLoader = new THREE.GLTFLoader();
-  gltfLoader.load("./assets/sedanSports.glb", function (gltf) {
+  gltfLoader.load("./assets/jeep.glb", function (gltf) {
     var car = gltf.scene;
     var box = new THREE.Box3().setFromObject(car);
     var size = box.getSize(new THREE.Vector3());
@@ -387,19 +387,8 @@
     box2.getSize(carSize);
     // apoia o carro no chão (y=0)
     car.position.y -= box2.min.y;
-    car.traverse(function (o) {
-      if (!o.isMesh) return;
-      o.castShadow = true; o.receiveShadow = true;
-      var mats = Array.isArray(o.material) ? o.material : [o.material];
-      mats.forEach(function (m) {
-        if (m && m.name === "paintRed") {   // lataria → azul Stellantis (mantém vidros/faróis/pneus)
-          m.color.set(0x2E44B5);
-          if ("metalness" in m) m.metalness = 0.6;
-          if ("roughness" in m) m.roughness = 0.35;
-          m.needsUpdate = true;
-        }
-      });
-    });
+    // Mantém as cores originais do Jeep (modelo realista).
+    car.traverse(function (o) { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     scene.add(car);
 
     controls.target.set(0, carSize.y * 0.45, 0);
