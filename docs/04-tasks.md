@@ -10,6 +10,9 @@ Marque `[x]` conforme formos concluindo.
 - [ ] T02 — Protótipo HTML: tela do dicionário (lista, busca, cadastro de termo)
 - [ ] T03 — Protótipo HTML: tela de chat (RAG) com exibição de fontes citadas
 - [ ] T04 — Protótipo HTML: painel admin (gestão de usuários e termos)
+- [ ] T04b — Protótipo HTML: página principal com Explorador 3D do cockpit
+  (modelo placeholder, girar com o mouse, hotspots com nome+prévia, clique →
+  vai para o verbete no dicionário). Referência visual: "Cockpit Introduction".
 - [ ] T05 — Revisão do protótipo com você (aprovação antes do código real)
 
 ## Fase 1a — Fundação do backend
@@ -21,8 +24,15 @@ Marque `[x]` conforme formos concluindo.
 - [ ] T09 — Autorização: middleware de RBAC (papéis admin/user)
 
 ## Fase 1b — Dicionário
-- [ ] T10 — API CRUD de termos (criar, listar, editar, remover)
+- [ ] T10 — API CRUD de termos (criar, listar, editar, remover) + campo `slug`
 - [ ] T11 — Geração de embeddings para os termos cadastrados (pgvector)
+
+## Fase 1b2 — Explorador 3D (código real)
+> Depende de: T04b aprovado (protótipo) e T10 (termos com `slug`).
+- [ ] T11a — Escolher/definir tecnologia 3D (three.js vs. model-viewer) e obter modelo placeholder (.glb, licença livre, comprimido com Draco)
+- [ ] T11b — Modelo de dados/seed de hotspots (`cockpit_hotspots`) ligando pontos do modelo a `term_slug`
+- [ ] T11c — Componente 3D no frontend: girar com mouse, hotspots com tooltip (nome + prévia), clique → navega para `/dicionario/{slug}`
+- [ ] T11d — Fallback sem WebGL (imagem clicável / image-map apontando aos mesmos termos)
 
 ## Fase 1c — Chat RAG
 - [ ] T12 — Adapter de LLM (`LlmProvider`) com implementação inicial (Claude ou OpenAI)

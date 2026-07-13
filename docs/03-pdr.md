@@ -9,6 +9,9 @@
 | D4 | Stack: Node.js/TS + Postgres/pgvector + adapter de LLM | Recomendado — aguardando confirmação final |
 | D5 | Provedor de LLM (Claude vs. OpenAI) | Em aberto — abstraído via adapter para não bloquear o desenvolvimento |
 | D6 | Estratégia de hospedagem (on-prem vs. cloud privada vs. local via Docker) | Em aberto — impacta diretamente a arquitetura de segurança |
+| D7 | Explorador 3D do cockpit na página principal, com hotspots ligados ao dicionário | Confirmado — MVP simplificado (modelo placeholder + poucos hotspots) |
+| D8 | Tecnologia 3D: `three.js` vs. `<model-viewer>` | Em aberto — decidir no protótipo (model-viewer para MVP rápido; three.js se precisar de mais controle) |
+| D9 | Origem do modelo 3D (placeholder livre no MVP; modelo oficial depois) | Confirmado — placeholder no MVP, sem depender de asset oficial |
 
 ## 2. Riscos e mitigação
 | Risco | Impacto | Mitigação |
@@ -17,11 +20,14 @@
 | Alucinação do chatbot (resposta incorreta sobre sigla/processo) | Médio | RAG restrito ao contexto recuperado + citar fontes; admin revisa termos |
 | Dependência de um único provedor de LLM | Médio | Camada de adapter (`LlmProvider`) desacoplada |
 | Escopo crescer demais para "uso pessoal" | Médio | Fases bem definidas (MVP primeiro, ingestão de documentos depois) |
+| Explorador 3D pesar/atrasar o MVP ou não rodar em máquinas fracas | Médio | MVP com modelo leve/placeholder, compressão Draco, fallback em imagem clicável (image-map) sem WebGL |
+| Uso de asset 3D/imagem sem licença adequada | Médio | Usar modelo genérico de licença livre; imagem oficial só como referência interna, não redistribuída |
 
 ## 3. Roadmap por fases
 - **Fase 0 — Documentação (atual)**: Briefing, SPEC, PDR, definição de agentes/skills.
 - **Fase 1 — MVP**: auth multiusuário, CRUD de termos, chatbot RAG básico sobre
-  termos cadastrados manualmente, interface web mínima.
+  termos cadastrados manualmente, interface web mínima, **e Explorador 3D
+  simplificado** (modelo placeholder com poucos hotspots ligados ao dicionário).
 - **Fase 2 — Ingestão de documentos**: upload, chunking, embeddings automáticos.
 - **Fase 3 — Qualidade de vida**: histórico de conversas, busca melhorada, painel
   admin mais completo, métricas de uso.
@@ -43,14 +49,23 @@ Hierarquia proposta para quando formos implementar (nada será criado ainda):
       │  Backend    │   │   Frontend/  │   │   RAG/IA     │  │  Segurança   │
       │  Agent      │   │   Design     │   │   Agent      │  │  Agent       │
       │             │   │   Agent      │   │              │  │ (revisão)    │
-      └────────────┘   └──────────────┘   └──────────────┘  └──────────────┘
+      └────────────┘   └───────┬──────┘   └──────────────┘  └──────────────┘
+                               │ (sub-frente)
+                               ▼
+                        ┌──────────────┐
+                        │  3D/WebGL     │
+                        │  Agent        │
+                        └──────────────┘
 ```
 
 ### Papéis e responsabilidades
 - **Backend Agent**: API, autenticação/autorização, modelo de dados, CRUD do
-  dicionário, integração com Postgres/pgvector.
+  dicionário, integração com Postgres/pgvector, endpoint de hotspots do 3D.
 - **Frontend/Design Agent**: página HTML/SPA, UI de login/cadastro, tela de chat,
   painel admin, responsividade e acessibilidade.
+- **3D/WebGL Agent** (sub-frente do Frontend): Explorador 3D do cockpit —
+  renderização do modelo, orbit controls, hotspots, tooltips e a ligação
+  hotspot → verbete do dicionário; fallback sem WebGL.
 - **RAG/IA Agent**: pipeline de embeddings, chunking, orquestração do prompt para
   o LLM, adapter multi-provedor (Claude/OpenAI), qualidade das respostas.
 - **Segurança Agent**: revisão de cada entrega das demais frentes (checklist
@@ -75,6 +90,9 @@ Hierarquia proposta para quando formos implementar (nada será criado ainda):
   página HTML — usada pelo Frontend/Design Agent.
 - `rag-pipeline`: padrões de chunking, geração de embeddings, prompt template com
   citação de fontes — usada pelo RAG/IA Agent.
+- `3d-cockpit`: padrões de renderização 3D (three.js/model-viewer), definição e
+  posicionamento de hotspots, ligação hotspot → termo (`slug`), fallback sem
+  WebGL — usada pelo 3D/WebGL Agent.
 - `security-checklist`: checklist OWASP/ASVS aplicado a cada PR/entrega — usada
   pelo Segurança Agent.
 

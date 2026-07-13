@@ -20,6 +20,13 @@ a entender:
   de conversas e (futuramente) permissões diferenciadas.
 - **Chatbot com RAG**: em vez de um FAQ estático, o usuário conversa em linguagem
   natural e recebe respostas fundamentadas no dicionário/base de conhecimento.
+- **Explorador 3D do Cockpit (porta de entrada visual)**: na página principal, um
+  veículo/cockpit 3D da Stellantis que o usuário gira com o mouse. Ao passar/clicar
+  sobre partes do carro (HUD, cluster digital, central display, comandos do volante,
+  alto-falantes/microfones, etc.), aparece o nome e uma prévia do que é; clicando no
+  termo, o usuário é levado direto ao verbete correspondente no dicionário. Transforma
+  o glossário abstrato em uma experiência visual e navegável — aprender "apontando"
+  para o objeto real.
 - **Dicionário vivo**: começa com cadastro manual de termos e evolui para ingestão
   de documentos reais do setor (PDFs, planilhas, manuais internos).
 - **Segurança em primeiro lugar**: por lidar com informação potencialmente
@@ -38,7 +45,17 @@ a entender:
 - Chatbot com RAG consultando o dicionário cadastrado manualmente.
 - Interface web simples e responsiva.
 
+> Nota sobre o Explorador 3D: no MVP entra como uma **versão simplificada** —
+> um modelo 3D único do cockpit com um conjunto pequeno de "hotspots" (pontos
+> clicáveis) já ligados a termos do dicionário. A imagem "Cockpit Introduction"
+> da Stellantis serve de referência para quais partes destacar (HUD, cluster
+> digital, central display, comandos do volante, alto-falantes/amplificador/
+> microfones, espelhamento de telefone, nuvem, etc.). O modelo 3D de alta
+> fidelidade e a cobertura completa de peças ficam para fases seguintes.
+
 **Visão futura (fases seguintes):**
+- Modelo 3D de alta fidelidade e cobertura ampla de peças no Explorador 3D, com
+  camadas (cockpit digital vs. físico) e possibilidade de "explodir" o veículo.
 - Ingestão de documentos (PDF/DOCX/planilhas) para alimentar o RAG automaticamente.
 - Base de conhecimento de fluxos de trabalho (não só termos, mas processos passo a
   passo).
