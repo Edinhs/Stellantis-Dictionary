@@ -1,0 +1,949 @@
+<!--
+  ============================================================================
+  Stellantis Dictionary — Protótipo da Página Principal (Tarefa T04b)
+  ----------------------------------------------------------------------------
+  Protótipo de alta fidelidade da PÁGINA PRINCIPAL do projeto Stellantis
+  Dictionary. A LINGUAGEM VISUAL / LAYOUT é inspirada no site de referência
+  LumiKids (https://lumikids.base44.app/), porém com NOSSO conteúdo, nossas
+  funções e a PALETA DE CORES DA STELLANTIS (azul corporativo, não rosa).
+
+  Observações:
+  - Arquivo ÚNICO e 100% autocontido: CSS em <style>, JS em <script>, SVGs
+    inline. NENHUM recurso externo (sem CDN, sem Google Fonts, sem imagens
+    remotas).
+  - Marca: NÃO reproduz o logotipo oficial da Stellantis (marca registrada).
+    Usa um WORDMARK tipográfico próprio + ícone geométrico + descritor.
+  - Dados de dicionário são FICTÍCIOS, apenas para fins de protótipo.
+  - Tema escuro fixo. Explorador 3D é um MOCK (parallax/rotação leve via CSS/JS,
+    sem WebGL real).
+  ============================================================================
+-->
+<title>Stellantis Dictionary — Protótipo (T04b)</title>
+<style>
+  :root {
+    /* Fundo */
+    --bg-0: #070B1A;
+    --bg-1: #101A38;
+    --glow: #1E2E7A;
+    /* Azuis */
+    --blue-deep: #1B2A6B;
+    --blue: #26389F;
+    --blue-grad-a: #2B3FA6;
+    --blue-grad-b: #4C74FF;
+    --blue-vivid-a: #3E63FF;
+    --blue-vivid-b: #5B8CFF;
+    --cyan: #6FA8FF;
+    --cyan-light: #8FD0FF;
+    /* Card */
+    --card-bg: #FFFFFF;
+    --ink: #111827;
+    --muted: #6B7280;
+    --hairline: #E5E7EB;
+    /* Texto sobre escuro */
+    --on-dark: #F3F6FF;
+    --on-dark-soft: #AEB9D9;
+    /* Diversos */
+    --radius-lg: 26px;
+    --radius-md: 16px;
+    --radius-pill: 999px;
+    --shadow-card: 0 30px 70px -20px rgba(3, 8, 26, 0.75), 0 8px 24px -12px rgba(3, 8, 26, 0.6);
+    --ff-serif: Georgia, "Times New Roman", "Times", serif;
+    --ff-sans: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--ff-sans);
+    color: var(--on-dark);
+    background:
+      radial-gradient(1100px 620px at 78% -8%, rgba(76, 116, 255, 0.20), transparent 60%),
+      radial-gradient(900px 640px at 8% 6%, rgba(30, 46, 122, 0.55), transparent 62%),
+      radial-gradient(1400px 900px at 50% 120%, rgba(43, 63, 166, 0.22), transparent 70%),
+      linear-gradient(160deg, var(--bg-0) 0%, var(--bg-1) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    position: relative;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Partículas / pontos de luz sutis via camadas de radial-gradient */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image:
+      radial-gradient(1.5px 1.5px at 14% 22%, rgba(143, 208, 255, 0.55), transparent 60%),
+      radial-gradient(1.5px 1.5px at 32% 68%, rgba(111, 168, 255, 0.45), transparent 60%),
+      radial-gradient(2px 2px at 62% 30%, rgba(143, 208, 255, 0.40), transparent 60%),
+      radial-gradient(1.5px 1.5px at 80% 60%, rgba(111, 168, 255, 0.50), transparent 60%),
+      radial-gradient(1.5px 1.5px at 46% 12%, rgba(143, 208, 255, 0.35), transparent 60%),
+      radial-gradient(1.5px 1.5px at 90% 20%, rgba(143, 208, 255, 0.30), transparent 60%),
+      radial-gradient(1.5px 1.5px at 24% 88%, rgba(111, 168, 255, 0.30), transparent 60%),
+      radial-gradient(2px 2px at 70% 82%, rgba(143, 208, 255, 0.30), transparent 60%);
+    opacity: 0.9;
+    animation: drift 22s ease-in-out infinite alternate;
+  }
+  /* Vinheta suave nas bordas */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(3, 6, 18, 0.55) 100%);
+  }
+  @keyframes drift {
+    from { transform: translateY(0); }
+    to { transform: translateY(-14px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    body::before { animation: none; }
+    .hotspot .dot { animation: none; }
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 clamp(18px, 4vw, 40px);
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* ===================== NAVBAR ===================== */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 0 10px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+  .brand__mark {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    filter: drop-shadow(0 4px 12px rgba(76, 116, 255, 0.45));
+  }
+  .brand__text { display: flex; flex-direction: column; line-height: 1; }
+  .brand__name {
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    font-size: 15px;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, #FFFFFF, var(--cyan-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .brand__desc {
+    font-size: 10.5px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--on-dark-soft);
+    margin-top: 5px;
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 auto;
+    padding: 6px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(143, 208, 255, 0.10);
+    backdrop-filter: blur(6px);
+  }
+  .nav__links a {
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 14px;
+    color: var(--on-dark-soft);
+    transition: color .18s ease, background .18s ease;
+  }
+  .nav__links a:hover,
+  .nav__links a[aria-current="page"] {
+    color: #fff;
+    background: rgba(76, 116, 255, 0.18);
+  }
+
+  .btn {
+    font-family: inherit;
+    cursor: pointer;
+    border: 0;
+    font-weight: 700;
+    border-radius: var(--radius-pill);
+    transition: transform .15s ease, box-shadow .2s ease, background .2s ease, filter .2s ease;
+  }
+  .btn:focus-visible {
+    outline: 3px solid var(--cyan-light);
+    outline-offset: 3px;
+  }
+  .btn--pill-light {
+    background: #fff;
+    color: var(--blue-deep);
+    padding: 11px 22px;
+    font-size: 14px;
+    flex-shrink: 0;
+    box-shadow: 0 8px 22px -10px rgba(143, 208, 255, 0.7);
+  }
+  .btn--pill-light:hover { transform: translateY(-1px); filter: brightness(1.02); }
+
+  .nav__burger {
+    display: none;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(143,208,255,0.16);
+    color: #fff;
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    display: grid;
+    grid-template-columns: 0.92fr 1.08fr;
+    grid-template-areas:
+      "copy explorer"
+      "card explorer";
+    gap: clamp(22px, 3vw, 40px) clamp(24px, 4vw, 56px);
+    align-items: start;
+    padding: clamp(28px, 6vh, 70px) 0 60px;
+    position: relative;
+  }
+  .hero__copy { grid-area: copy; }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 15px 8px 12px;
+    border-radius: var(--radius-pill);
+    background: rgba(76, 116, 255, 0.12);
+    border: 1px solid rgba(143, 208, 255, 0.28);
+    color: var(--cyan-light);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(4px);
+  }
+  .badge .spark {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--cyan-light);
+    box-shadow: 0 0 10px 2px rgba(143, 208, 255, 0.9);
+  }
+
+  .headline {
+    font-family: var(--ff-serif);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(38px, 5.4vw, 68px);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    margin: 22px 0 20px;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .headline .accent {
+    background: linear-gradient(100deg, var(--cyan-light) 0%, var(--blue-vivid-b) 55%, var(--blue-grad-b) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle {
+    font-size: clamp(15px, 1.5vw, 18px);
+    color: var(--on-dark-soft);
+    max-width: 46ch;
+    margin: 0 0 30px;
+  }
+
+  .btn--cta {
+    background: linear-gradient(100deg, var(--blue-grad-a), var(--blue-grad-b));
+    color: #fff;
+    padding: 16px 28px;
+    font-size: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 18px 40px -14px rgba(76, 116, 255, 0.75), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .btn--cta:hover { transform: translateY(-2px); box-shadow: 0 24px 50px -14px rgba(76, 116, 255, 0.9), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .btn--cta svg { transition: transform .2s ease; }
+  .btn--cta:hover svg { transform: translateX(3px); }
+
+  .hero__meta {
+    display: flex;
+    gap: 26px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  .hero__meta .stat b {
+    display: block;
+    font-size: 22px;
+    color: #fff;
+    font-weight: 800;
+  }
+  .hero__meta .stat span {
+    font-size: 12px;
+    color: var(--on-dark-soft);
+    letter-spacing: 0.04em;
+  }
+
+  /* ===== Explorador 3D (mock decorativo central) ===== */
+  .explorer {
+    grid-area: explorer;
+    position: relative;
+    align-self: stretch;
+    min-height: 360px;
+    display: grid;
+    place-items: center;
+  }
+  .explorer__stage {
+    position: relative;
+    width: 100%;
+    max-width: 520px;
+    aspect-ratio: 5 / 4;
+    perspective: 1200px;
+  }
+  .explorer__scene {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform .25s ease-out;
+    will-change: transform;
+  }
+  .explorer__glow {
+    position: absolute;
+    inset: 4% 8%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(76,116,255,0.35), transparent 70%);
+    filter: blur(6px);
+    z-index: 0;
+  }
+  .explorer svg.cockpit {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 1;
+    filter: drop-shadow(0 24px 40px rgba(3, 8, 26, 0.6));
+  }
+  .explorer__ring {
+    position: absolute;
+    left: 50%; top: 58%;
+    width: 118%; height: 60%;
+    transform: translate(-50%, -50%) rotateX(74deg);
+    border: 1px solid rgba(143, 208, 255, 0.22);
+    border-radius: 50%;
+    box-shadow: 0 0 40px rgba(76,116,255,0.25) inset;
+    z-index: 0;
+  }
+
+  /* Hotspots */
+  .hotspot {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    cursor: pointer;
+    border: 0;
+    background: transparent;
+    padding: 0;
+  }
+  .hotspot .dot {
+    display: block;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff, var(--cyan) 60%, var(--blue-vivid-a));
+    box-shadow: 0 0 0 6px rgba(111, 168, 255, 0.18), 0 0 18px 4px rgba(143, 208, 255, 0.7);
+    position: relative;
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+  .hotspot:nth-child(2) .dot { animation-delay: .4s; }
+  .hotspot:nth-child(3) .dot { animation-delay: .8s; }
+  .hotspot:nth-child(4) .dot { animation-delay: 1.2s; }
+  .hotspot:nth-child(5) .dot { animation-delay: 1.6s; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 5px rgba(111, 168, 255, 0.18), 0 0 14px 3px rgba(143, 208, 255, 0.6); }
+    50% { box-shadow: 0 0 0 11px rgba(111, 168, 255, 0.05), 0 0 24px 7px rgba(143, 208, 255, 0.9); }
+  }
+  .hotspot:hover .dot,
+  .hotspot.is-active .dot {
+    background: radial-gradient(circle at 35% 35%, #fff, var(--cyan-light) 55%, var(--blue-vivid-b));
+    transform: scale(1.15);
+  }
+  .hotspot:focus-visible { outline: 3px solid var(--cyan-light); outline-offset: 4px; border-radius: 50%; }
+
+  .hotspot__tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 12px);
+    transform: translateX(-50%) translateY(6px);
+    background: rgba(9, 14, 34, 0.96);
+    border: 1px solid rgba(143, 208, 255, 0.3);
+    color: #fff;
+    padding: 9px 12px;
+    border-radius: 12px;
+    width: max-content;
+    max-width: 200px;
+    font-size: 12.5px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .18s ease, transform .18s ease;
+    box-shadow: 0 14px 30px -12px rgba(0,0,0,0.7);
+    pointer-events: none;
+    z-index: 5;
+  }
+  .hotspot__tip b { display: block; font-size: 13px; margin-bottom: 2px; }
+  .hotspot__tip a {
+    color: var(--cyan-light);
+    font-weight: 600;
+    pointer-events: auto;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .hotspot:hover .hotspot__tip,
+  .hotspot:focus-within .hotspot__tip,
+  .hotspot.is-active .hotspot__tip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ===================== CARD ===================== */
+  .card {
+    background: var(--card-bg);
+    color: var(--ink);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 26px 24px 24px;
+    width: 100%;
+    max-width: 430px;
+    grid-area: card;
+    justify-self: start;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.6);
+  }
+  .card__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .card__icon {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--blue-grad-a), var(--blue-grad-b));
+    box-shadow: 0 10px 22px -10px rgba(76,116,255,0.8);
+    flex-shrink: 0;
+  }
+  .card__title { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; }
+  .card__subtitle { font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+
+  .field { margin-top: 18px; }
+  .field__label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 9px;
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--hairline);
+    background: rgba(43, 63, 166, 0.06);
+    color: #334155;
+    padding: 8px 13px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all .16s ease;
+  }
+  .chip:hover { border-color: var(--blue-grad-b); color: var(--blue); }
+  .chip[aria-pressed="true"] {
+    background: linear-gradient(100deg, var(--blue-grad-a), var(--blue-grad-b));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 8px 18px -8px rgba(76,116,255,0.7);
+  }
+  .chip:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill-btn {
+    font-family: inherit;
+    cursor: pointer;
+    border: 1px solid var(--hairline);
+    background: #fff;
+    color: #334155;
+    padding: 9px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 600;
+    transition: all .16s ease;
+  }
+  .pill-btn:hover { border-color: var(--blue-grad-b); }
+  .pill-btn[aria-pressed="true"] {
+    background: linear-gradient(100deg, var(--blue-grad-a), var(--blue-grad-b));
+    border-color: transparent;
+    color: #fff;
+  }
+  .pill-btn:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+
+  .select-wrap { position: relative; }
+  .select-wrap svg {
+    position: absolute; right: 14px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; color: var(--muted);
+  }
+  select.action {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--ink);
+    padding: 12px 40px 12px 14px;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    background: #F8FAFF;
+    appearance: none;
+    cursor: pointer;
+  }
+  select.action:focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; border-color: var(--blue-grad-b); }
+
+  /* Prévia */
+  .preview {
+    margin-top: 16px;
+    border: 1px dashed rgba(43,63,166,0.35);
+    background: linear-gradient(180deg, rgba(76,116,255,0.06), rgba(76,116,255,0.02));
+    border-radius: 14px;
+    padding: 13px 14px;
+  }
+  .preview__tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+  .preview__name { font-size: 16px; font-weight: 800; margin: 3px 0 4px; color: var(--ink); }
+  .preview__def { font-size: 13px; color: #475569; line-height: 1.45; }
+
+  .btn--card {
+    margin-top: 18px;
+    width: 100%;
+    background: linear-gradient(100deg, var(--blue-vivid-a), var(--blue-vivid-b));
+    color: #fff;
+    padding: 15px;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 16px 32px -14px rgba(62,99,255,0.85), inset 0 1px 0 rgba(255,255,255,0.3);
+  }
+  .btn--card:hover { transform: translateY(-2px); }
+
+  .footer {
+    text-align: center;
+    color: var(--on-dark-soft);
+    font-size: 12.5px;
+    padding: 30px 0 40px;
+    border-top: 1px solid rgba(143,208,255,0.08);
+    margin-top: 20px;
+  }
+
+  /* ===================== RESPONSIVO ===================== */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; grid-template-areas: none; }
+    .explorer { order: -1; min-height: 320px; }
+    .card { justify-self: stretch; max-width: 560px; margin: 0 auto; }
+    .nav__links {
+      position: static;
+      order: 3;
+      width: 100%;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 0;
+      display: none;
+    }
+    .nav__links.is-open { display: flex; }
+    .nav { flex-wrap: wrap; }
+    .nav__burger { display: grid; place-items: center; margin-left: auto; }
+    .btn--pill-light { order: 2; }
+  }
+  @media (max-width: 520px) {
+    .hero__meta { gap: 18px; }
+    .badge { font-size: 11.5px; }
+    .card { padding: 20px 16px; }
+  }
+</style>
+
+<div class="page">
+  <!-- ===================== NAVBAR ===================== -->
+  <nav class="nav" aria-label="Navegação principal">
+    <a class="brand" href="#/" aria-label="Stellantis Dictionary — início">
+      <span class="brand__mark" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+          <defs>
+            <linearGradient id="markGrad" x1="0" y1="0" x2="34" y2="34">
+              <stop offset="0" stop-color="#8FD0FF"/>
+              <stop offset="0.55" stop-color="#4C74FF"/>
+              <stop offset="1" stop-color="#2B3FA6"/>
+            </linearGradient>
+          </defs>
+          <path d="M17 2 L30 17 L17 32 L4 17 Z" stroke="url(#markGrad)" stroke-width="2.4" fill="rgba(76,116,255,0.10)" stroke-linejoin="round"/>
+          <path d="M17 9 L24 17 L17 25 L10 17 Z" fill="url(#markGrad)"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__name">Stellantis</span>
+        <span class="brand__desc">Dictionary</span>
+      </span>
+    </a>
+
+    <div class="nav__links" id="navLinks">
+      <a href="#/" aria-current="page">Início</a>
+      <a href="#/dicionario">Dicionário</a>
+      <a href="#/explorador-3d">Explorador 3D</a>
+      <a href="#/chat-ia">Chat IA</a>
+      <a href="#/sobre">Sobre</a>
+    </div>
+
+    <button class="btn btn--pill-light" type="button">Entrar</button>
+    <button class="nav__burger" id="burger" type="button" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="navLinks">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M3 6h14M3 10h14M3 14h14"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <!-- Coluna esquerda -->
+    <div class="hero__copy">
+      <span class="badge"><span class="spark" aria-hidden="true"></span>Dicionário Interativo do Setor</span>
+
+      <h1 class="headline">O Cockpit da Stellantis, <span class="accent">explicado peça por peça</span></h1>
+
+      <p class="subtitle">
+        Uma forma visual e interativa de aprender siglas, termos e fluxos do setor —
+        girando o cockpit em 3D e clicando em cada componente para entender o que é.
+      </p>
+
+      <button class="btn btn--cta" type="button">
+        Explorar o Cockpit 3D
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 9h11M10 4l5 5-5 5"/>
+        </svg>
+      </button>
+
+      <div class="hero__meta">
+        <div class="stat"><b>120+</b><span>TERMOS &amp; SIGLAS</span></div>
+        <div class="stat"><b>6</b><span>MÓDULOS DO COCKPIT</span></div>
+        <div class="stat"><b>3D</b><span>EXPLORAÇÃO INTERATIVA</span></div>
+      </div>
+    </div>
+
+    <!-- Coluna direita: card -->
+    <div class="card" aria-labelledby="cardTitle">
+      <div class="card__head">
+        <span class="card__icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2l2.2 5.6L20 9.2l-4.4 3.7L17 19l-5-3.3L7 19l1.4-6.1L4 9.2l5.8-1.6z" fill="#fff" opacity="0.95"/>
+          </svg>
+        </span>
+        <div>
+          <div class="card__title" id="cardTitle">Explorador do Cockpit</div>
+          <div class="card__subtitle">Selecione uma peça e veja a definição</div>
+        </div>
+      </div>
+
+      <!-- PEÇA -->
+      <div class="field">
+        <span class="field__label">Peça</span>
+        <div class="chips" id="chips" role="group" aria-label="Selecionar peça do cockpit">
+          <button class="chip" type="button" data-part="hud" aria-pressed="true">HUD</button>
+          <button class="chip" type="button" data-part="cluster" aria-pressed="false">Cluster Digital</button>
+          <button class="chip" type="button" data-part="central" aria-pressed="false">Central Display</button>
+          <button class="chip" type="button" data-part="volante" aria-pressed="false">Comandos do Volante</button>
+          <button class="chip" type="button" data-part="audio" aria-pressed="false">Áudio</button>
+          <button class="chip" type="button" data-part="cloud" aria-pressed="false">Cloud</button>
+        </div>
+      </div>
+
+      <!-- CATEGORIA -->
+      <div class="field">
+        <span class="field__label">Categoria</span>
+        <div class="pills" id="pills" role="group" aria-label="Selecionar categoria">
+          <button class="pill-btn" type="button" data-cat="digital" aria-pressed="true">Digital</button>
+          <button class="pill-btn" type="button" data-cat="fisico" aria-pressed="false">Físico</button>
+          <button class="pill-btn" type="button" data-cat="conectividade" aria-pressed="false">Conectividade</button>
+        </div>
+      </div>
+
+      <!-- AÇÃO -->
+      <div class="field">
+        <span class="field__label">Ação</span>
+        <div class="select-wrap">
+          <select class="action" id="action" aria-label="Escolher ação">
+            <option value="def">Ver definição rápida</option>
+            <option value="dic">Abrir no dicionário</option>
+            <option value="chat">Perguntar ao Chat IA</option>
+          </select>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 6l4 4 4-4"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- PRÉVIA -->
+      <div class="preview" aria-live="polite">
+        <div class="preview__tag" id="previewTag">Prévia · Digital</div>
+        <div class="preview__name" id="previewName">HUD</div>
+        <div class="preview__def" id="previewDef">Head-Up Display: projeta informações essenciais no para-brisa, no campo de visão do motorista.</div>
+      </div>
+
+      <button class="btn btn--card" type="button" id="cardCta">
+        Abrir no Dicionário
+        <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 9h11M10 4l5 5-5 5"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- ===== Explorador 3D (mock decorativo, sobreposto entre colunas em telas largas) ===== -->
+    <div class="explorer" id="explorer" aria-label="Explorador 3D do cockpit (protótipo)">
+      <div class="explorer__stage">
+        <div class="explorer__glow" aria-hidden="true"></div>
+        <div class="explorer__ring" aria-hidden="true"></div>
+        <div class="explorer__scene" id="scene">
+          <svg class="cockpit" viewBox="0 0 400 320" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="dash" x1="0" y1="0" x2="0" y2="320">
+                <stop offset="0" stop-color="#1B2A6B"/>
+                <stop offset="1" stop-color="#0B1330"/>
+              </linearGradient>
+              <linearGradient id="screenG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#4C74FF"/>
+                <stop offset="1" stop-color="#2B3FA6"/>
+              </linearGradient>
+              <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="rgba(143,208,255,0.28)"/>
+                <stop offset="1" stop-color="rgba(143,208,255,0.02)"/>
+              </linearGradient>
+            </defs>
+
+            <!-- para-brisa / glass -->
+            <path d="M40 40 Q200 8 360 40 L338 150 Q200 128 62 150 Z" fill="url(#glass)" stroke="rgba(143,208,255,0.35)" stroke-width="1.5"/>
+            <!-- painel -->
+            <path d="M30 150 Q200 122 370 150 L390 300 Q200 330 10 300 Z" fill="url(#dash)" stroke="rgba(111,168,255,0.35)" stroke-width="1.5"/>
+            <!-- cluster digital atrás do volante -->
+            <rect x="96" y="176" width="86" height="46" rx="8" fill="url(#screenG)" opacity="0.92"/>
+            <rect x="104" y="184" width="30" height="6" rx="3" fill="rgba(255,255,255,0.7)"/>
+            <rect x="104" y="196" width="52" height="4" rx="2" fill="rgba(255,255,255,0.4)"/>
+            <rect x="104" y="205" width="40" height="4" rx="2" fill="rgba(255,255,255,0.3)"/>
+            <!-- central display -->
+            <rect x="210" y="172" width="78" height="58" rx="9" fill="url(#screenG)"/>
+            <rect x="220" y="182" width="58" height="8" rx="4" fill="rgba(255,255,255,0.65)"/>
+            <rect x="220" y="196" width="40" height="6" rx="3" fill="rgba(255,255,255,0.4)"/>
+            <circle cx="232" cy="216" r="7" fill="rgba(255,255,255,0.55)"/>
+            <circle cx="252" cy="216" r="7" fill="rgba(255,255,255,0.35)"/>
+            <circle cx="272" cy="216" r="7" fill="rgba(255,255,255,0.35)"/>
+            <!-- volante -->
+            <g transform="translate(139,262)">
+              <circle r="34" fill="none" stroke="rgba(143,208,255,0.55)" stroke-width="6"/>
+              <circle r="10" fill="rgba(76,116,255,0.55)"/>
+              <path d="M0 0 L0 -34 M0 0 L-30 16 M0 0 L30 16" stroke="rgba(143,208,255,0.5)" stroke-width="5" stroke-linecap="round"/>
+            </g>
+            <!-- HUD projetado no vidro -->
+            <g opacity="0.9">
+              <rect x="150" y="70" width="100" height="34" rx="8" fill="none" stroke="rgba(143,208,255,0.6)" stroke-dasharray="4 4"/>
+              <text x="200" y="92" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="16" fill="#8FD0FF" font-weight="700">120</text>
+            </g>
+            <!-- áudio (grelha lateral) -->
+            <g transform="translate(324,224)">
+              <circle r="16" fill="none" stroke="rgba(111,168,255,0.5)" stroke-width="2"/>
+              <circle r="9" fill="none" stroke="rgba(111,168,255,0.4)" stroke-width="2"/>
+              <circle r="3" fill="rgba(143,208,255,0.7)"/>
+            </g>
+            <!-- cloud (antena/sinal) -->
+            <g transform="translate(320,54)">
+              <path d="M-10 6 a10 10 0 0 1 20 0 a7 7 0 0 1 -3 13 h-16 a8 8 0 0 1 -1 -13" fill="rgba(76,116,255,0.35)" stroke="rgba(143,208,255,0.55)" stroke-width="1.5"/>
+            </g>
+          </svg>
+
+          <!-- HOTSPOTS (posições em %, sincronizam com os chips) -->
+          <button class="hotspot" style="left:50%; top:27%;" data-part="hud" aria-label="Peça: HUD">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="hotspot__tip"><b>HUD</b><a href="#/dicionario/hud">Abrir no dicionário →</a></span>
+          </button>
+          <button class="hotspot" style="left:34.5%; top:62%;" data-part="cluster" aria-label="Peça: Cluster Digital">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="hotspot__tip"><b>Cluster Digital</b><a href="#/dicionario/cluster">Abrir no dicionário →</a></span>
+          </button>
+          <button class="hotspot" style="left:62%; top:63%;" data-part="central" aria-label="Peça: Central Display">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="hotspot__tip"><b>Central Display</b><a href="#/dicionario/central">Abrir no dicionário →</a></span>
+          </button>
+          <button class="hotspot" style="left:35%; top:82%;" data-part="volante" aria-label="Peça: Comandos do Volante">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="hotspot__tip"><b>Comandos do Volante</b><a href="#/dicionario/volante">Abrir no dicionário →</a></span>
+          </button>
+          <button class="hotspot" style="left:81%; top:70%;" data-part="audio" aria-label="Peça: Áudio">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="hotspot__tip"><b>Áudio</b><a href="#/dicionario/audio">Abrir no dicionário →</a></span>
+          </button>
+          <button class="hotspot" style="left:80%; top:18%;" data-part="cloud" aria-label="Peça: Cloud">
+            <span class="dot" aria-hidden="true"></span>
+            <span class="hotspot__tip"><b>Cloud</b><a href="#/dicionario/cloud">Abrir no dicionário →</a></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    Protótipo T04b · Stellantis Dictionary · dados fictícios · layout inspirado no LumiKids, adaptado com a identidade Stellantis.
+  </footer>
+</div>
+
+<script>
+  (function () {
+    "use strict";
+
+    // Base de dados FICTÍCIA das peças do cockpit.
+    var PARTS = {
+      hud:     { name: "HUD", cat: "digital",
+                 def: "Head-Up Display: projeta informações essenciais no para-brisa, no campo de visão do motorista." },
+      cluster: { name: "Cluster Digital", cat: "digital",
+                 def: "Painel de instrumentos totalmente digital: velocidade, autonomia e alertas em tela de alta resolução." },
+      central: { name: "Central Display", cat: "digital",
+                 def: "Tela central multimídia: navegação, mídia, clima e integração com o smartphone do usuário." },
+      volante: { name: "Comandos do Volante", cat: "fisico",
+                 def: "Controles físicos no volante: áudio, telefone e assistentes acessíveis sem tirar as mãos da direção." },
+      audio:   { name: "Áudio", cat: "fisico",
+                 def: "Sistema de som premium: alto-falantes, DSP e processamento espacial para experiência imersiva." },
+      cloud:   { name: "Cloud", cat: "conectividade",
+                 def: "Conectividade em nuvem: atualizações OTA, serviços conectados e telemetria do veículo em tempo real." }
+    };
+
+    var CAT_LABEL = { digital: "Digital", fisico: "Físico", conectividade: "Conectividade" };
+
+    var chips = Array.prototype.slice.call(document.querySelectorAll("#chips .chip"));
+    var pills = Array.prototype.slice.call(document.querySelectorAll("#pills .pill-btn"));
+    var hotspots = Array.prototype.slice.call(document.querySelectorAll(".hotspot"));
+    var previewTag = document.getElementById("previewTag");
+    var previewName = document.getElementById("previewName");
+    var previewDef = document.getElementById("previewDef");
+    var cardCta = document.getElementById("cardCta");
+
+    var current = "hud";
+
+    function selectPart(part) {
+      if (!PARTS[part]) { return; }
+      current = part;
+      var data = PARTS[part];
+
+      // chips
+      chips.forEach(function (c) {
+        c.setAttribute("aria-pressed", c.dataset.part === part ? "true" : "false");
+      });
+      // hotspots
+      hotspots.forEach(function (h) {
+        h.classList.toggle("is-active", h.dataset.part === part);
+      });
+      // categoria sincroniza com a peça
+      pills.forEach(function (p) {
+        p.setAttribute("aria-pressed", p.dataset.cat === data.cat ? "true" : "false");
+      });
+      // prévia
+      previewTag.textContent = "Prévia · " + CAT_LABEL[data.cat];
+      previewName.textContent = data.name;
+      previewDef.textContent = data.def;
+      // CTA aponta para o slug (mock)
+      cardCta.setAttribute("data-href", "#/dicionario/" + part);
+    }
+
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () { selectPart(c.dataset.part); });
+    });
+
+    hotspots.forEach(function (h) {
+      h.addEventListener("click", function (e) {
+        // não sequestra o clique no link "Abrir no dicionário"
+        if (e.target.closest("a")) { return; }
+        selectPart(h.dataset.part);
+      });
+    });
+
+    // Pílulas de categoria: seleciona a primeira peça daquela categoria.
+    pills.forEach(function (p) {
+      p.addEventListener("click", function () {
+        var cat = p.dataset.cat;
+        var firstOfCat = Object.keys(PARTS).filter(function (k) { return PARTS[k].cat === cat; })[0];
+        if (firstOfCat) { selectPart(firstOfCat); }
+      });
+    });
+
+    cardCta.addEventListener("click", function () {
+      var href = cardCta.getAttribute("data-href") || ("#/dicionario/" + current);
+      window.location.hash = href.replace(/^#/, "");
+    });
+
+    // ===== Parallax / rotação MOCK do explorador 3D =====
+    var explorer = document.getElementById("explorer");
+    var scene = document.getElementById("scene");
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (explorer && scene && !reduce) {
+      explorer.addEventListener("mousemove", function (e) {
+        var r = explorer.getBoundingClientRect();
+        var px = (e.clientX - r.left) / r.width - 0.5;
+        var py = (e.clientY - r.top) / r.height - 0.5;
+        scene.style.transform =
+          "rotateY(" + (px * 14).toFixed(2) + "deg) rotateX(" + (-py * 10).toFixed(2) + "deg)";
+      });
+      explorer.addEventListener("mouseleave", function () {
+        scene.style.transform = "rotateY(0deg) rotateX(0deg)";
+      });
+    }
+
+    // ===== Menu compacto (mobile) =====
+    var burger = document.getElementById("burger");
+    var navLinks = document.getElementById("navLinks");
+    if (burger && navLinks) {
+      burger.addEventListener("click", function () {
+        var open = navLinks.classList.toggle("is-open");
+        burger.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    }
+
+    // estado inicial
+    selectPart("hud");
+  })();
+</script>
