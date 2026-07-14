@@ -16,6 +16,10 @@
     pertencente à Stellantis. A LICENÇA/origem do modelo é de responsabilidade
     de quem o forneceu e deve ser confirmada antes de distribuição. Qualquer
     .glb pode substituí-lo (a câmera e a escala se ajustam automaticamente).
+    ./assets/cockpit-interior.draco.glb — vista INTERIOR: "Car Concept" (Eric
+    Chadwick / Darmstadt Graphics Group GmbH), licença CC-BY-4.0, via Khronos glTF
+    Sample Assets (derivado de um concept car CC0). Placeholder temporário de licença
+    livre — NÃO é asset oficial da Stellantis. Atribuição/URL em ./ASSETS.md.
 
   Como abrir: sirva a pasta por HTTP (ex.: `python3 -m http.server` dentro de
   /prototypes) — o carregamento do .glb via file:// é bloqueado pelo navegador.
@@ -454,24 +458,32 @@
   // verdade: `def` é apenas prévia PROVISÓRIA (no sistema real vem da API pelo slug).
   // Sobrescrevível via window.STELLANTIS_HOTSPOTS_INTERIOR. Semente versionada em
   // assets/cockpit_hotspots.json (seção "interior").
+  // Ancoragem no modelo REAL: cada hotspot referencia uma ou mais PEÇAS do .glb pelo
+  // nome de mesh (`mesh`); o centro dessas peças (no espaço do modelo já escalado)
+  // define a âncora. `ox/oy/oz` = pequeno ajuste fino. `px/py/pz` seguem como fallback
+  // (usados se o modelo real falhar → placeholder procedural, ou se a peça não existir).
   var INT_HOTSPOTS = window.STELLANTIS_HOTSPOTS_INTERIOR || [
-    { slug: "hud",              label: "Head-Up Display (HUD)", def: "Projeção de informações no para-brisa, no campo de visão do motorista (Digital Cockpit).", px: -0.55, py: 1.22, pz: 0.52, w: 96, h: 46 },
-    { slug: "cluster-digital",  label: "Cluster / Painel Digital", def: "Painel de instrumentos digital do motorista: velocidade, alertas e navegação.", px: -0.55, py: 1.04, pz: 0.44, w: 100, h: 58 },
-    { slug: "central-display",  label: "Central Multimídia",    def: "Tela central de informação e entretenimento (infotainment).", px: 0.02, py: 1.04, pz: 0.47, w: 92, h: 66 },
-    { slug: "comandos-volante", label: "Comandos do Volante",   def: "Botões físicos no volante para áudio, telefone e assistentes (Physical Cockpit).", px: -0.55, py: 0.88, pz: 0.34, w: 82, h: 82 },
-    { slug: "audio-sistema",    label: "Sistema de Áudio",      def: "Alto-falantes, amplificador e microfones: som e captação de voz.", px: -1.00, py: 0.87, pz: 0.12, w: 74, h: 74 },
-    { slug: "phone-mirroring",  label: "Espelhamento de Telefone", def: "Android Auto / Apple CarPlay: espelha o smartphone na central multimídia.", px: 0.05, py: 0.92, pz: 0.28, w: 74, h: 60 },
-    { slug: "cloud",            label: "Nuvem (Cloud)",         def: "Conectividade e serviços online do veículo.", px: 0.00, py: 1.50, pz: 0.50, w: 72, h: 72 },
-    { slug: "cockpit",          label: "Cockpit (visão geral)", def: "Área de comando do motorista: telas, controles e conectividade.", px: 0.00, py: 0.76, pz: 0.10, w: 120, h: 82 }
+    { slug: "hud",              label: "Head-Up Display (HUD)", def: "Projeção de informações no para-brisa, no campo de visão do motorista (Digital Cockpit).", mesh: ["InteriorSteeringDashColumn"], oy: 0.16, oz: 0.10, px: -0.55, py: 1.22, pz: 0.52, w: 96, h: 46 },
+    { slug: "cluster-digital",  label: "Cluster / Painel Digital", def: "Painel de instrumentos digital do motorista: velocidade, alertas e navegação.", mesh: ["InteriorSteeringDash"], px: -0.55, py: 1.04, pz: 0.44, w: 100, h: 58 },
+    { slug: "central-display",  label: "Central Multimídia",    def: "Tela central de informação e entretenimento (infotainment).", mesh: ["InteriorDashMid"], oy: 0.03, px: 0.02, py: 1.04, pz: 0.47, w: 92, h: 66 },
+    { slug: "comandos-volante", label: "Comandos do Volante",   def: "Botões físicos no volante para áudio, telefone e assistentes (Physical Cockpit).", mesh: ["InteriorSteeringWheel", "InteriorSteeringHandle"], px: -0.55, py: 0.88, pz: 0.34, w: 82, h: 82 },
+    { slug: "audio-sistema",    label: "Sistema de Áudio",      def: "Alto-falantes, amplificador e microfones: som e captação de voz.", mesh: ["InteriorDoorL"], px: -1.00, py: 0.87, pz: 0.12, w: 74, h: 74 },
+    { slug: "phone-mirroring",  label: "Espelhamento de Telefone", def: "Android Auto / Apple CarPlay: espelha o smartphone na central multimídia.", mesh: ["InteriorDashMid"], oy: -0.07, px: 0.05, py: 0.92, pz: 0.28, w: 74, h: 60 },
+    { slug: "cloud",            label: "Nuvem (Cloud)",         def: "Conectividade e serviços online do veículo.", mesh: ["BodyRoofPanel"], oy: -0.04, px: 0.00, py: 1.50, pz: 0.50, w: 72, h: 72 },
+    { slug: "cockpit",          label: "Cockpit (visão geral)", def: "Área de comando do motorista: telas, controles e conectividade.", mesh: ["InteriorFloor"], oy: 0.18, px: 0.00, py: 0.76, pz: 0.10, w: 120, h: 82 }
   ];
 
   // Estado da vista (exterior = cena atual; interior = cena nova).
   var currentView = "exterior";
   var carRoot = null;            // grupo do carro (exterior), setado no load
-  var interiorGroup = null;      // grupo do cockpit (interior), placeholder procedural
+  var interiorGroup = null;      // grupo do cockpit (interior): modelo real ou placeholder
+  var interiorIsModel = false;   // true = .glb real carregado; false = placeholder procedural
+  var interiorTarget = null;     // ponto focal do cockpit (alvo de órbita) — modelo real
+  var interiorDir = null;        // direção câmera→alvo do cockpit — modelo real
+  var interiorRadius = 1;        // raio da região do cockpit (para enquadrar/zoom)
   var extHotspots = [], intHotspots = [], activeHotspots = [];
   var EXT_DIR = new THREE.Vector3(3.4, 1.8, 4.2);   // direção câmera→enquadramento (exterior)
-  var INT_DIR = new THREE.Vector3(0.28, 0.34, -1);  // olha para o painel a partir de trás/cima
+  var INT_DIR = new THREE.Vector3(0.28, 0.34, -1);  // olha para o painel a partir de trás/cima (placeholder)
 
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -571,6 +583,11 @@
   // cai para o .glb original — sem quebrar o que já funcionava.
   var MODEL_MAIN = "./assets/jeep.draco.glb";
   var MODEL_FALLBACK = "./assets/jeep.glb";
+  // Modelo REAL de interior/cockpit (licença livre CC-BY-4.0 — "Car Concept",
+  // Eric Chadwick / Darmstadt Graphics Group GmbH, via Khronos glTF Sample Assets;
+  // derivado de um concept car CC0 de "Unity Fan"). Draco+WebP (~1.3MB). Se falhar,
+  // cai no placeholder procedural own-work. Ver prototypes/ASSETS.md e docs/06.
+  var MODEL_INTERIOR = "./assets/cockpit-interior.draco.glb";
   gltfLoader.load(MODEL_MAIN, onModelLoaded, onModelProgress, function (err) {
     // tentativa de recuperação: modelo original não comprimido
     var g2 = new THREE.GLTFLoader();
@@ -620,9 +637,9 @@
     camera.position.copy(fitCenter).add(dir0);
     controls.update();
 
-    buildInterior();
     extHotspots = buildHotspots(HOTSPOTS, "exterior");
     intHotspots = buildHotspots(INT_HOTSPOTS, "interior");
+    loadInterior(); // modelo real (async); anexa hotspots às peças quando pronto
     activeHotspots = extHotspots; // começa na vista exterior (cena atual, intocada)
     buildZoomSlider();
     setupViewToggle();
@@ -676,14 +693,125 @@
     return arr;
   }
 
-  // ---- Cena de INTERIOR (rodada 3) --------------------------------------------
-  // PLACEHOLDER de licença livre: geometria simples (own work, sem asset externo)
-  // representando painel, cluster, HUD, volante, central multimídia, console,
-  // alto-falante e bancos. Serve para demonstrar a cena e o posicionamento dos
-  // hotspots do doc 05. >>> PONTO DE TROCA FÁCIL <<<: para usar um .glb real de
-  // cockpit (licença livre), carregue-o com gltfLoader e substitua interiorGroup
-  // por gltf.scene (a câmera/enquadramento se auto-ajusta via frameObject()).
-  function buildInterior() {
+  // ---- Cena de INTERIOR (rodada 4): MODELO REAL de cockpit (licença livre) ------
+  // Carrega o .glb REAL de interior (CC-BY-4.0 "Car Concept"). Centraliza/escala e
+  // apoia no chão (mesma auto-escala do exterior), esconde o teto para revelar o
+  // cockpit, calcula o foco (dashboard/volante/bancos) e ancora os 8 hotspots nas
+  // PEÇAS reais do modelo (por nome de mesh). Se o carregamento falhar, cai no
+  // placeholder procedural own-work — sem quebrar a vista de interior.
+  function loadInterior() {
+    gltfLoader.load(MODEL_INTERIOR, function (gltf) {
+      try { setupInteriorModel(gltf.scene); }
+      catch (e) { if (DEBUG) console.warn("interior model setup falhou, usando placeholder:", e); buildInteriorPlaceholder(); }
+    }, undefined, function () {
+      // .glb real indisponível → placeholder procedural (licença livre por construção)
+      buildInteriorPlaceholder();
+    });
+  }
+
+  // Caixa envolvente do(s) mesh(es) cujo nome casa com `re`, no espaço-mundo.
+  function meshBounds(re) {
+    var b = new THREE.Box3(), t = new THREE.Box3(), any = false;
+    interiorGroup.traverse(function (o) {
+      if (o.isMesh && re.test(o.name)) {
+        t.setFromObject(o);
+        if (t.isEmpty()) return;
+        if (!any) { b.copy(t); any = true; } else b.union(t);
+      }
+    });
+    return any ? b : null;
+  }
+  function meshCenter(re) { var b = meshBounds(re); return b ? b.getCenter(new THREE.Vector3()) : null; }
+
+  function setupInteriorModel(root) {
+    interiorGroup = new THREE.Group();
+    interiorGroup.name = "cockpit-interior-model";
+    // centraliza na origem e escala para tamanho comparável ao placeholder
+    var box = new THREE.Box3().setFromObject(root);
+    var center = box.getCenter(new THREE.Vector3());
+    var size = box.getSize(new THREE.Vector3());
+    var maxDim = Math.max(size.x, size.y, size.z) || 1;
+    root.position.sub(center);
+    interiorGroup.add(root);
+    interiorGroup.scale.setScalar(3.0 / maxDim);
+    interiorGroup.updateMatrixWorld(true);
+    // apoia no chão (y=0), como o carro exterior
+    var b2 = new THREE.Box3().setFromObject(interiorGroup);
+    interiorGroup.position.y -= b2.min.y;
+    interiorGroup.updateMatrixWorld(true);
+    // sombras + esconde o TETO para revelar o cockpit por cima/atrás
+    interiorGroup.traverse(function (o) {
+      if (o.isMesh) {
+        o.castShadow = true; o.receiveShadow = true;
+        if (/Roof/i.test(o.name)) o.visible = false;
+      }
+    });
+    interiorGroup.visible = (currentView === "interior");
+    scene.add(interiorGroup);
+    interiorIsModel = true;
+    computeInteriorFocus();
+    anchorInteriorHotspots();
+    if (currentView === "interior") frameInterior();
+  }
+
+  // Foco do cockpit: centro das peças de interior + direção "sobre o ombro" do
+  // motorista olhando o painel (frente = dos bancos para o dashboard).
+  function computeInteriorFocus() {
+    // Enquadra a CABINE (dashboard + volante + bancos) numa vista "revelação" 3/4
+    // frontal-elevada: com o teto removido, a câmera olha de cima/frente PARA DENTRO
+    // do cockpit — mostra painel, volante, cluster, central e bancos.
+    var b = meshBounds(/Interior/i) || new THREE.Box3().setFromObject(interiorGroup);
+    var c = b.getCenter(new THREE.Vector3());
+    var s = b.getSize(new THREE.Vector3());
+    interiorRadius = 0.5 * Math.max(s.x, s.z, s.y);
+    var seatC = meshCenter(/InteriorSeats/i) || c.clone();
+    var dashC = meshCenter(/InteriorDashMid|InteriorSteeringDash/i) || c.clone();
+    var front = dashC.clone().sub(seatC); front.y = 0;
+    if (front.lengthSq() < 1e-6) front.set(0, 0, 1);
+    front.normalize();
+    var side = new THREE.Vector3(0, 1, 0).cross(front).normalize();
+    // câmera à FRENTE e ACIMA do cockpit, olhando para dentro/para trás (teto aberto)
+    interiorDir = front.clone().multiplyScalar(0.72)
+      .add(side.multiplyScalar(0.30))
+      .add(new THREE.Vector3(0, 0.74, 0));
+    interiorDir.normalize();
+    // alvo entre painel e bancos, na altura do cockpit
+    interiorTarget = dashC.clone().lerp(seatC, 0.45); interiorTarget.y += 0.02;
+  }
+
+  // Ancora cada hotspot de interior às PEÇAS reais do modelo (por nome de mesh).
+  function anchorInteriorHotspots() {
+    intHotspots.forEach(function (h) {
+      if (!h.mesh || !h.mesh.length) return;
+      var c = meshCenter(new RegExp(h.mesh.join("|"), "i"));
+      if (!c) return;
+      if (h.ox) c.x += h.ox; if (h.oy) c.y += h.oy; if (h.oz) c.z += h.oz;
+      h.pos.copy(c);
+    });
+    if (DEBUG) {
+      var dump = intHotspots.map(function (h) { return { slug: h.slug, px: +h.pos.x.toFixed(3), py: +h.pos.y.toFixed(3), pz: +h.pos.z.toFixed(3) }; });
+      console.log("INTERIOR_ANCHORS " + JSON.stringify(dump));
+    }
+  }
+
+  // Enquadra a região do cockpit (alvo/direção/raio calculados do modelo real).
+  function frameInterior() {
+    if (!interiorTarget) { frameObject(interiorGroup, INT_DIR); return; }
+    fitCenter.copy(interiorTarget);
+    fitDim = Math.max(interiorRadius * 1.55, 0.5);
+    controls.target.copy(interiorTarget);
+    applyZoomLimits();
+    var d = interiorDir.clone(); if (d.lengthSq() < 1e-6) d.set(0.28, 0.34, -1);
+    d.setLength(controls.minDistance);
+    camera.position.copy(interiorTarget).add(d);
+    controls.update();
+  }
+
+  // ---- Cena de INTERIOR — PLACEHOLDER procedural (fallback de licença livre) -----
+  // Geometria simples own-work (sem asset externo): painel, cluster, HUD, volante,
+  // central multimídia, console, alto-falante e bancos. Usado só se o .glb real
+  // falhar ao carregar. Mantém os hotspots nas coordenadas px/py/pz do JSON.
+  function buildInteriorPlaceholder() {
     interiorGroup = new THREE.Group();
     interiorGroup.name = "cockpit-interior-placeholder";
     var matPlastic = new THREE.MeshStandardMaterial({ color: 0x141a30, roughness: 0.9, metalness: 0.05 });
@@ -756,7 +884,7 @@
     if (viewIntBtn) viewIntBtn.addEventListener("click", function () { switchView("interior"); });
   }
   function switchView(view) {
-    if (view === currentView || !carReady && !interiorGroup) return;
+    if (view === currentView || !carReady) return;
     currentView = view;
     var toInterior = view === "interior";
     if (carRoot) carRoot.visible = !toInterior;
@@ -767,8 +895,13 @@
     extHotspots.forEach(function (h) { h.el.classList.toggle("hs-hidden", toInterior); h.el.classList.add("occluded"); });
     intHotspots.forEach(function (h) { h.el.classList.toggle("hs-hidden", !toInterior); h.el.classList.add("occluded"); });
     activeHotspots = toInterior ? intHotspots : extHotspots;
-    // reenquadra a cena ativa (nunca corta; reaproveita zoom/limites)
-    frameObject(toInterior ? interiorGroup : carRoot, toInterior ? INT_DIR : EXT_DIR);
+    // reenquadra a cena ativa (nunca corta; reaproveita zoom/limites). No interior
+    // com modelo real, foca o cockpit; senão reaproveita frameObject (placeholder).
+    if (toInterior) {
+      if (interiorGroup) { interiorIsModel ? frameInterior() : frameObject(interiorGroup, INT_DIR); }
+    } else {
+      frameObject(carRoot, EXT_DIR);
+    }
     // estado dos botões (a11y)
     if (viewExtBtn) viewExtBtn.setAttribute("aria-pressed", (!toInterior).toString());
     if (viewIntBtn) viewIntBtn.setAttribute("aria-pressed", toInterior.toString());

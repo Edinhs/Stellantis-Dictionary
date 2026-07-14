@@ -210,6 +210,90 @@ convexo) e mantém-se só o teste de "atrás da câmera".
    do exterior) ou câmera "de dentro" fixa olhando o painel.
 
 ---
+## Rodada 4 (14/07/2026) — MODELO REAL de interior (decisão do CEO)
+
+Decisão do CEO: substituir o **placeholder procedural** do interior por um **`.glb`
+REAL de cockpit/interior de licença livre** (entendido como temporário, a trocar
+depois pelo cockpit definitivo). Exterior **intocado**; câmera do interior **herda
+girar/parar** (não mudou). Implementado em `prototypes/main-3d-explorer.html`.
+Verificado em Chromium headless (Playwright, ANGLE/swiftshader) a 1440×900 e 390×844
+— **0 erros de console**, WebGL renderizou (sem fallback), 8 hotspots de interior.
+
+### (a) Modelo obtido — SIM, real e de licença livre verificável
+- **"Car Concept"** (concept car com interior completo: dashboard, cluster, volante,
+  central, pedais, bancos, portas, pilares). **Não é asset da Stellantis.**
+- Autor/owner: **Eric Chadwick / © 2024 Darmstadt Graphics Group GmbH**. Derivado de
+  um modelo **CC0** ("Free Concept Car 004" de "Unity Fan", Sketchfab).
+- Fonte/URL: **Khronos glTF Sample Assets** —
+  `https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/CarConcept`.
+- Licença: **CC BY 4.0** (verificável no `LICENSE.md`/`metadata.json`). Contém logos
+  da Khronos (marca, "non-copyrightable logo") — nenhum logo/marca da Stellantis.
+- **Atribuição registrada** em `prototypes/ASSETS.md` (string CC-BY exigida).
+- Só o **asset** (.glb) foi baixado — nenhum executável/código externo. Decoder Draco
+  segue **local** (`lib/draco/gltf/`).
+
+Fontes pesquisadas antes de escolher: Khronos glTF-Sample-Assets (acessível, CC0/CC-BY),
+Poly Haven (CC0, mas só props/mobília — sem cockpit), Sketchfab (rico em cockpits, mas
+download exige OAuth — inviável aqui), Poly Pizza (API exige chave — 401). O CarConcept
+da Khronos foi o único **realmente baixável + licença livre verificável + com interior
+modelado**.
+
+### (b) Tamanho antes/depois da compressão
+- `CarConcept.glb` **11.78 MB → `cockpit-interior.draco.glb` ~1.6 MB (~86% menor)**.
+- Comando: `@gltf-transform/cli optimize CarConcept.glb cockpit-interior.draco.glb
+  --compress draco --texture-compress webp --join false`.
+- **`--join false` é essencial**: a 1ª compressão (com `join` padrão) fundiu meshes
+  por material (viraram `Interior1`, `Dashboard`…), destruindo os nomes de peça; sem
+  `join` os nomes originais (`InteriorSteeringWheel0x`, `InteriorDashMid`…) sobrevivem
+  e permitem ancorar os hotspots nas peças reais. Custo: ~0.3 MB a mais (1.32→1.6 MB),
+  aceitável.
+
+### (c) Hotspots — ancorados nas PEÇAS reais do modelo
+- Os 8 hotspots do interior (`hud`, `cluster-digital`, `central-display`,
+  `comandos-volante`, `audio-sistema`, `phone-mirroring`, `cloud`, `cockpit`) agora
+  **ancoram por nome de mesh** do `.glb` (campo `mesh` em `cockpit_hotspots.json`):
+  o runtime calcula o centro da(s) peça(s) e aplica ajuste fino `ox/oy/oz`. Mapeamento:
+  hud→`InteriorSteeringDashColumn` (elevado p/ para-brisa), cluster→`InteriorSteeringDash`,
+  central→`InteriorDashMid`, comandos→`InteriorSteeringWheel/Handle`, áudio→`InteriorDoorL`,
+  phone-mirroring→`InteriorDashMid` (abaixo), cloud→`BodyRoofPanel`, cockpit→`InteriorFloor`.
+- `px/py/pz` viram **fallback/documentação** (valores já calculados do modelo real),
+  usados só se a peça não existir (ex.: placeholder). Fonte única da verdade preservada:
+  `def` é só prévia; no sistema real vem da API pelo `term_slug`.
+- Enquadramento do interior: com o teto (`Roof`) escondido, câmera numa vista 3/4
+  frontal-elevada olhando **para dentro** do cockpit (foco calculado do modelo:
+  dashboard↔bancos). Zoom/slider e girar/parar reaproveitados (sem código duplicado).
+
+### (d) Screenshots (Playwright, /opt/pw-browsers)
+- `prototypes/screenshots/t04d-exterior-desktop.png` (1440×900) — Jeep intacto
+- `prototypes/screenshots/t04d-interior-desktop.png` (1440×900) — cockpit real
+- `prototypes/screenshots/t04d-interior-mobile.png` (390×844)
+- `prototypes/screenshots/t04d-exterior-mobile.png` (390×844)
+
+### (e) Verificação / console
+- **0 erros** de console (desktop e mobile); WebGL OK (fallback não acionado); 8
+  hotspots de interior visíveis; exterior inalterado. Único aviso é a depreciação de
+  swiftshader do próprio headless (ambiente, não do código). O `.glb` usa extensões
+  KHR que o three r128 não conhece (variants/iridescence/emissive_strength) — geram no
+  máximo *warnings* silenciosos, sem erro nem quebra.
+- **Fallback resiliente**: se `cockpit-interior.draco.glb` falhar, cai no placeholder
+  procedural own-work (`buildInteriorPlaceholder()`), sem quebrar a vista de interior.
+
+### (f) Pendências para o CEO
+1. **Modelo é temporário/genérico** (concept car CC-BY, não o cockpit oficial da
+   Stellantis). Trocar pelo cockpit definitivo quando houver asset próprio/licenciado —
+   o ponto de troca (`loadInterior`/`MODEL_INTERIOR`) e a ancoragem por mesh já estão
+   prontos. Manter a atribuição CC-BY enquanto este modelo for usado.
+2. **Exterior (Jeep) x interior (Car Concept) são carros diferentes** — inconsistência
+   assumida no placeholder. Ideal futuro: um único veículo com exterior+interior.
+3. **Oclusão dos hotspots do interior** ainda é aproximada (só teste "atrás da câmera");
+   ao girar para trás, hotspots do painel podem "vazar" pela carroceria. Melhorar com
+   raycast/teste de profundidade numa fase posterior.
+4. **Fallback sem WebGL do interior** segue genérico (mensagem); falta o image-map
+   específico do cockpit (mesmos `term_slug`) — fase posterior.
+5. Confirmar se o interior deve manter o teto escondido (revelação 3/4) ou virar uma
+   vista "de dentro" (POV do motorista).
+
+---
 ### Prompt de retomada
 Quando o usuário disser **"continuar T04b"** (ou "continuar T04bo"), implementar
 os itens 1–5 acima em `prototypes/main-3d-explorer.html`, testar via headless
