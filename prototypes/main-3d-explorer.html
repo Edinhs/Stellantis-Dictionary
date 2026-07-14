@@ -39,6 +39,8 @@
     --cyan-light: #8FD0FF;
     --on-dark: #F3F6FF;
     --on-dark-soft: #AEB9D9;
+    --hot-red: #ff3b3b;
+    --hot-red-soft: #ff6a6a;
     --radius-pill: 999px;
     --ff-serif: Georgia, "Times New Roman", "Times", serif;
     --ff-sans: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
@@ -70,7 +72,7 @@
     animation: drift 22s ease-in-out infinite alternate;
   }
   @keyframes drift { from { transform: translateY(0); } to { transform: translateY(-14px); } }
-  @media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { body::before { animation: none; } .hotspot .mark { animation: none; } }
 
   .page { position: relative; z-index: 2; max-width: 1320px; margin: 0 auto; padding: 0 clamp(18px,4vw,44px); }
   a { color: inherit; text-decoration: none; }
@@ -163,34 +165,57 @@
   }
   .hint svg { color: var(--cyan-light); }
 
-  /* Hotspots */
+  /* ===== Hotspots — estilo de realce VERMELHO (referência Stellantis) ===== */
   .hotspot {
     position: absolute; z-index: 3; transform: translate(-50%,-50%);
     border: 0; background: transparent; padding: 0; cursor: pointer;
     transition: opacity .25s ease; will-change: left, top, opacity;
   }
   .hotspot.occluded { opacity: 0; pointer-events: none; }
-  .hotspot .dot {
-    display: block; width: 16px; height: 16px; border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #fff, var(--cyan) 60%, var(--blue-vivid-a));
-    box-shadow: 0 0 0 6px rgba(111,168,255,0.16), 0 0 16px 4px rgba(143,208,255,0.7);
-    animation: pulse 2.2s ease-in-out infinite;
+
+  /* marcador de repouso: pequeno alvo vermelho pulsante */
+  .hotspot .mark {
+    display: block; width: 13px; height: 13px; border-radius: 3px;
+    border: 2px solid var(--hot-red); background: rgba(255,60,60,0.18);
+    box-shadow: 0 0 10px 2px rgba(255,60,60,0.5);
+    transition: opacity .18s ease;
+    animation: hotpulse 2.2s ease-in-out infinite;
   }
-  @keyframes pulse {
-    0%,100% { box-shadow: 0 0 0 5px rgba(111,168,255,0.16), 0 0 12px 3px rgba(143,208,255,0.55); }
-    50% { box-shadow: 0 0 0 10px rgba(111,168,255,0.04), 0 0 22px 7px rgba(143,208,255,0.85); }
+  @keyframes hotpulse {
+    0%,100% { box-shadow: 0 0 8px 1px rgba(255,60,60,0.45); }
+    50% { box-shadow: 0 0 16px 4px rgba(255,60,60,0.8); }
   }
-  .hotspot:hover .dot, .hotspot.is-active .dot { transform: scale(1.18); background: radial-gradient(circle at 35% 35%, #fff, var(--cyan-light) 55%, var(--blue-vivid-b)); }
-  .hotspot:focus-visible { outline: 3px solid var(--cyan-light); outline-offset: 4px; border-radius: 50%; }
+  .hotspot:hover .mark, .hotspot.is-active .mark { opacity: 0; }
+
+  /* zona de realce: retângulo vermelho com brilho, como na imagem de referência */
+  .hotspot .zone {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%,-50%) scale(0.55);
+    border: 2px solid var(--hot-red); border-radius: 12px;
+    background: rgba(255,45,45,0.10);
+    box-shadow: 0 0 0 1px rgba(255,80,80,0.35), 0 0 22px 5px rgba(255,50,50,0.5),
+                inset 0 0 18px rgba(255,80,80,0.28);
+    opacity: 0; transition: opacity .18s ease, transform .2s ease; pointer-events: none;
+  }
+  /* cantos "de mira" nas extremidades da zona */
+  .hotspot .zone::before, .hotspot .zone::after {
+    content: ""; position: absolute; width: 11px; height: 11px; border: 2px solid var(--hot-red-soft);
+  }
+  .hotspot .zone::before { left: -3px; top: -3px; border-right: 0; border-bottom: 0; border-radius: 5px 0 0 0; }
+  .hotspot .zone::after { right: -3px; bottom: -3px; border-left: 0; border-top: 0; border-radius: 0 0 5px 0; }
+  .hotspot:hover .zone, .hotspot.is-active .zone { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  .hotspot:focus-visible { outline: 3px solid var(--hot-red-soft); outline-offset: 4px; border-radius: 6px; }
+
+  /* rótulo (tema vermelho; descrição em itálico serifado, como a legenda da referência) */
   .hotspot__tip {
-    position: absolute; left: 50%; bottom: calc(100% + 12px); transform: translateX(-50%) translateY(6px);
-    background: rgba(9,14,34,0.97); border: 1px solid rgba(143,208,255,0.3); color: #fff;
-    padding: 10px 13px; border-radius: 12px; width: max-content; max-width: 230px; font-size: 12.5px;
-    opacity: 0; visibility: hidden; transition: opacity .18s, transform .18s; box-shadow: 0 14px 30px -12px rgba(0,0,0,0.7); z-index: 6;
+    position: absolute; left: 50%; bottom: calc(100% + 14px); transform: translateX(-50%) translateY(6px);
+    background: rgba(22,9,11,0.96); border: 1px solid rgba(255,80,80,0.4); color: #fff;
+    padding: 10px 13px; border-radius: 12px; width: max-content; max-width: 240px; font-size: 12.5px;
+    opacity: 0; visibility: hidden; transition: opacity .18s, transform .18s; box-shadow: 0 14px 30px -12px rgba(0,0,0,0.75); z-index: 6;
   }
   .hotspot__tip b { display: block; font-size: 13.5px; margin-bottom: 3px; }
-  .hotspot__tip .d { color: var(--on-dark-soft); display: block; margin-bottom: 7px; line-height: 1.4; }
-  .hotspot__tip .go { color: var(--cyan-light); font-weight: 700; }
+  .hotspot__tip .d { color: #ecc9c9; display: block; margin-bottom: 7px; line-height: 1.42; font-style: italic; font-family: var(--ff-serif); }
+  .hotspot__tip .go { color: var(--hot-red-soft); font-weight: 700; }
   .hotspot:hover .hotspot__tip, .hotspot:focus-within .hotspot__tip, .hotspot.is-active .hotspot__tip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
 
   .fallback { position: absolute; inset: 0; z-index: 5; display: none; place-items: center; text-align: center; padding: 30px; color: var(--on-dark-soft); }
@@ -304,12 +329,13 @@
   // nx,ny,nz em [-0.5..0.5] relativo ao tamanho do carro centrado na origem.
   // Jeep — frente = +Z, traseira = -Z, laterais = ±X, topo = +Y.
   // nx,nz em [-0.5..0.5] (0 = centro); ny=0 = meia-altura, +0.5 = topo, -0.5 = base.
+  // w,h = tamanho (px) da zona de realce vermelha exibida no hover.
   var HOTSPOTS = [
-    { slug: "para-brisa",   label: "Para-brisa / HUD",     def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.24, nz: 0.12 },
-    { slug: "grade-farois", label: "Grade & Faróis",       def: "Grade frontal e conjunto óptico: iluminação e assinatura de luz do veículo.", nx: 0.16, ny: -0.10, nz: 0.47 },
-    { slug: "rodas",        label: "Rodas & Pneus",        def: "Conjunto roda/pneu off-road: dimensões, calibragem e tipos conforme o modelo.", nx: 0.50, ny: -0.26, nz: 0.26 },
-    { slug: "estepe",       label: "Estepe (traseira)",    def: "Pneu sobressalente montado na traseira, característico do Jeep.", nx: 0.02, ny: 0.06, nz: -0.50 },
-    { slug: "carroceria",   label: "Carroceria / Capota",  def: "Estrutura externa, portas e capota do veículo.", nx: 0.50, ny: 0.12, nz: -0.06 }
+    { slug: "para-brisa",   label: "Para-brisa / HUD",     def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.24, nz: 0.12, w: 150, h: 82 },
+    { slug: "grade-farois", label: "Grade & Faróis",       def: "Grade frontal e conjunto óptico: iluminação e assinatura de luz do veículo.", nx: 0.16, ny: -0.10, nz: 0.47, w: 118, h: 60 },
+    { slug: "rodas",        label: "Rodas & Pneus",        def: "Conjunto roda/pneu off-road: dimensões, calibragem e tipos conforme o modelo.", nx: 0.50, ny: -0.26, nz: 0.26, w: 84, h: 84 },
+    { slug: "estepe",       label: "Estepe (traseira)",    def: "Pneu sobressalente montado na traseira, característico do Jeep.", nx: 0.02, ny: 0.06, nz: -0.50, w: 78, h: 82 },
+    { slug: "carroceria",   label: "Carroceria / Capota",  def: "Estrutura externa, portas e capota do veículo.", nx: 0.50, ny: 0.12, nz: -0.06, w: 150, h: 92 }
   ];
 
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
@@ -414,7 +440,8 @@
       el.type = "button";
       el.setAttribute("aria-label", "Peça: " + h.label);
       el.innerHTML =
-        '<span class="dot" aria-hidden="true"></span>' +
+        '<span class="zone" aria-hidden="true" style="width:' + h.w + 'px;height:' + h.h + 'px;"></span>' +
+        '<span class="mark" aria-hidden="true"></span>' +
         '<span class="hotspot__tip"><b>' + h.label + '</b>' +
         '<span class="d">' + h.def + '</span>' +
         '<span class="go">Abrir no dicionário →</span></span>';
