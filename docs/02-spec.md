@@ -42,7 +42,10 @@ Status: **rascunho para validação** (nenhuma decisão aqui é final até aprov
 ### 3.1 Autenticação & Usuários
 - Cadastro (nome, e-mail corporativo, senha).
 - Login com JWT; refresh token em cookie `httpOnly`, `secure`, `sameSite=strict`.
-- Papéis: `admin` (gerencia dicionário e usuários) e `user` (consulta e usa o chat).
+- **Cargos (comunitário)**: `user` (Usuário comum — **default no cadastro**),
+  `coordinator` (Coordenador) e `admin` (Administrador). Só `coordinator`/`admin`
+  atribuem cargos a outros usuários. Autorização por **permissões nomeadas**
+  resolvidas por cargo — ver SPEC `09-plataforma-comunitaria-cargos-spec.md`.
 - Recuperação de senha (fase 2, requer serviço de e-mail).
 
 ### 3.2 Dicionário (CRUD)
@@ -104,6 +107,7 @@ conecta ao dicionário.
 ## 4. Modelo de dados (rascunho)
 
 - `users (id, name, email, password_hash, role, created_at)`
+  — `role` enum: `user` (default) | `coordinator` | `admin`.
 - `terms (id, term, definition, category, synonyms[], source_type, source_ref, created_by, updated_at)`
 - `documents (id, filename, uploaded_by, status, created_at)`
 - `document_chunks (id, document_id, content, embedding vector, created_at)`
@@ -113,6 +117,13 @@ conecta ao dicionário.
   — pontos clicáveis do modelo 3D; `term_slug` liga ao verbete em `terms`.
 - (Opcional) `terms.slug` — identificador amigável para URL do verbete, usado tanto
   pelo dicionário quanto pelos hotspots do Explorador 3D.
+
+### Extensões comunitárias (ver SPECs `08` e `09`)
+- **Diretório** (`08`): `sectors`, `people`, `sector_owners`, `component_specialists`.
+- **Cargos/permissões** (`09`): `role_permissions (role, permission)`.
+- **Fluxo de trabalho** (`09`): `workflows (id, slug, title, description, category, steps, related_terms[], status, created_by, metadata, ...)`.
+- **Contribuição/histórico** (`09`): `contributions`, `content_revisions` (rollback), `audit_log` (append-only).
+- Toda tabela nova inclui `metadata jsonb` + timestamps (regra de extensibilidade).
 
 ## 5. Requisitos não funcionais
 - **Segurança**: prioridade máxima (ambiente empresarial). Seguir OWASP ASVS

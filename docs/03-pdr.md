@@ -12,6 +12,14 @@
 | D7 | Explorador 3D do cockpit na página principal, com hotspots ligados ao dicionário | Confirmado — MVP simplificado (modelo placeholder + poucos hotspots) |
 | D8 | Tecnologia 3D: `three.js` vs. `<model-viewer>` | Em aberto — decidir no protótipo (model-viewer para MVP rápido; three.js se precisar de mais controle) |
 | D9 | Origem do modelo 3D (placeholder livre no MVP; modelo oficial depois) | Confirmado — placeholder no MVP, sem depender de asset oficial |
+| D10 | Módulo "Responsáveis e Especialistas" ("quem procurar"), ligado por `term_slug` | Confirmado — ver docs `07`/`08` |
+| D11 | **Plataforma comunitária**: usuários alimentam dicionário, fluxo de trabalho e especialistas | Confirmado — ver SPEC `09` |
+| D12 | **Cargos finais: `user` (comum, default no cadastro), `coordinator`, `admin`** | Confirmado — só `coordinator`/`admin` atribuem cargos |
+| D13 | Autorização por **permissões nomeadas** resolvidas por cargo (RBAC + capabilities), não `if role ==` | Recomendado — ver SPEC `09` §2.1 |
+| D14 | Contribuição **híbrida**: `user` propõe-e-aprova (moderado); `coordinator`/`admin` editam direto | Confirmado — ver SPEC `09` §4 |
+| D15 | Novo tipo de conteúdo **`workflows`** (fluxo de trabalho), espelhando `terms` | Confirmado — ver SPEC `09` §5 |
+| D16 | Histórico/auditoria: `contributions` + `content_revisions` (rollback) + `audit_log` (append-only) | Confirmado — ver SPEC `09` §6 |
+| D17 | **Aba "Comunidade" (Q&A)**: usuários fazem e respondem perguntas | Confirmado — PDR/SPEC dedicados (docs `10`/`11`, em elaboração) |
 
 ## 2. Riscos e mitigação
 | Risco | Impacto | Mitigação |
