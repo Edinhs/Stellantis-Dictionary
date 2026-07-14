@@ -33,5 +33,19 @@ Feedback do usuário (14/07/2026) — implementar na próxima sessão:
      fixar posições/labels definitivos agora. Ideal: permitir carregar as
      marcações de um JSON de sementes (`admin` edita depois — ver SPEC §3.5).
 
+5. **Clique no veículo alterna girar/parar (toggle).**
+   - Clicar 1x no carro → **para** a auto-rotação; clicar de novo → **volta a
+     girar**.
+   - Atenção para não conflitar com: (a) clique em hotspot (que navega ao
+     dicionário — não deve alternar a rotação); (b) o arrastar para girar
+     manualmente. Distinguir clique "limpo" de arrasto (ex.: só alternar se o
+     ponteiro quase não se moveu entre mousedown/mouseup e o alvo não é hotspot).
+
+---
+### Prompt de retomada
+Quando o usuário disser **"continuar T04b"** (ou "continuar T04bo"), implementar
+os itens 1–5 acima em `prototypes/main-3d-explorer.html`, testar via headless
+(file:// e responsivo), commitar e reenviar a versão tudo-em-um para teste.
+
 Observação: manter o modelo trocável (auto-escala/enquadramento já existe) e a
 licença do `.glb` sob responsabilidade de quem forneceu (ver `prototypes/ASSETS.md`).
