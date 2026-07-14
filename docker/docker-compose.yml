@@ -1,0 +1,69 @@
+# Stellantis-Dictionary — Compose de desenvolvimento LOCAL.
+# Sobe o stack completo (app + Postgres/pgvector) em qualquer máquina do setor
+# (SPEC 02 §5 — portabilidade). NÃO é configuração de produção.
+#
+# Regras (skill devops-baseline):
+#   - Segredos vêm SEMPRE de ../.env (env_file), nunca literais aqui.
+#   - Hospedagem (D6) é configurável por env/override; nada de on-prem/VPS/cloud
+#     presumido neste arquivo.
+#   - TLS/HTTPS é obrigatório em deploy real; em localhost usamos HTTP.
+#
+# Uso: a partir da pasta docker/  ->  docker compose up
+# (ver docker/README.md)
+
+services:
+  db:
+    image: pgvector/pgvector:pg16        # Postgres 16 com a extensão pgvector pronta
+    container_name: stellantis-db
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    # Publica a porta no host apenas em DEV, para inspeção com psql/clientes.
+    # Em qualquer alvo real (D6) esta porta NÃO deve ser exposta.
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data                       # persistência dos dados
+      - ./postgres:/docker-entrypoint-initdb.d:ro             # scripts de init (pgvector)
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - stellantis
+
+  app:
+    # Placeholder do backend Node/TS. O Dockerfile real (multi-stage, USER node)
+    # entra quando o bootstrap do backend for implementado (T07/T08).
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: stellantis-app
+    restart: unless-stopped
+    env_file:
+      - ../.env
+    depends_on:
+      db:
+        condition: service_healthy      # espera o banco ficar SAUDÁVEL, não só "no ar"
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    healthcheck:
+      # Bate no endpoint de readiness (convenção: GET /api/health — ver doc 13 §5).
+      # Usa o runtime node (sempre presente na imagem) para não depender de curl/wget.
+      test:
+        - "CMD-SHELL"
+        - "node -e \"require('http').get('http://localhost:3000/api/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))\""
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+    networks:
+      - stellantis
+
+volumes:
+  pgdata:                                # volume nomeado — sobrevive a recriação do container
+
+networks:
+  stellantis:
+    driver: bridge

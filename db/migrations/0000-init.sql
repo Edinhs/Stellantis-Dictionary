@@ -1,0 +1,4 @@
+-- placeholder — migração inicial (esqueleto, sem schema de produção nesta fase).
+-- A extensão pgvector é habilitada no init do Postgres (ver docker/postgres/).
+-- Convenção: arquivos NNNN-descricao.sql, sequenciais e imutáveis após aplicados.
+-- CREATE EXTENSION IF NOT EXISTS vector;  -- (referência; efetivado no init do container)

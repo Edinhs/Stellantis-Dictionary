@@ -1,0 +1,33 @@
+# =============================================================================
+# Stellantis-Dictionary — .gitignore
+# Segredos NUNCA entram no repo (devops-baseline / SPEC 02 §3.6).
+# =============================================================================
+
+# --- Segredos / ambiente ---------------------------------------------------
+# Bloqueia qualquer .env, mas mantém os exemplos versionados.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Dependências ----------------------------------------------------------
+node_modules/
+
+# --- Artefatos de build ----------------------------------------------------
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# --- Dados locais do banco (caso monte bind mount) -------------------------
+pgdata/
+
+# --- Logs ------------------------------------------------------------------
+*.log
+npm-debug.log*
+
+# --- Sistema / editor ------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/

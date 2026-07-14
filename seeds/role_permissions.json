@@ -1,0 +1,4 @@
+{
+  "_comment": "placeholder — matriz cargo→permissão (SPEC 09 §6.1 / SPEC 11 §2). Preencher na implementação de users/authz.",
+  "role_permissions": []
+}
