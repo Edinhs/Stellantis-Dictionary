@@ -165,6 +165,15 @@
   }
   .hint svg { color: var(--cyan-light); }
 
+  /* Barra de zoom curvada (arco) com alça deslizante */
+  .zoomctl { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); z-index: 3; touch-action: none; user-select: none; }
+  .zoomctl svg { overflow: visible; display: block; cursor: pointer; }
+  .zoomctl .zt { fill: none; stroke: rgba(143,208,255,0.32); stroke-width: 6; stroke-linecap: round; }
+  .zoomctl .zh { fill: #fff; stroke: var(--blue-vivid-b); stroke-width: 3; cursor: grab; }
+  .zoomctl .zh:active { cursor: grabbing; }
+  .zoomctl text { fill: var(--on-dark-soft); font-size: 20px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; font-family: var(--ff-sans); }
+  @media (max-width: 940px) { .zoomctl { right: 2px; transform: translateY(-50%) scale(0.82); } }
+
   /* ===== Hotspots — estilo de realce VERMELHO (referência Stellantis) ===== */
   .hotspot {
     position: absolute; z-index: 3; transform: translate(-50%,-50%);
@@ -330,7 +339,9 @@
   // Jeep Grand Commander — frente = +Z, traseira = -Z, laterais = ±X, topo = +Y.
   // nx,nz em [-0.5..0.5] (0 = centro); ny=0 = meia-altura, +0.5 = topo, -0.5 = base.
   // w,h = tamanho (px) da zona de realce vermelha exibida no hover.
-  var HOTSPOTS = [
+  // EM ABERTO / configurável: sobrescreva definindo window.STELLANTIS_HOTSPOTS
+  // antes deste <script> para trocar onde marcar e o que é cada peça.
+  var HOTSPOTS = window.STELLANTIS_HOTSPOTS || [
     { slug: "para-brisa",   label: "Para-brisa / HUD",     def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.30, nz: 0.22, w: 128, h: 66 },
     { slug: "grade-farois", label: "Grade & Faróis",       def: "Grade frontal de 7 fendas e conjunto óptico: iluminação e assinatura de luz do Jeep.", nx: 0.18, ny: -0.02, nz: 0.48, w: 120, h: 62 },
     { slug: "rodas",        label: "Rodas & Pneus",        def: "Conjunto roda/pneu: dimensões, calibragem e tipos conforme o modelo.", nx: 0.50, ny: -0.26, nz: 0.26, w: 88, h: 88 },
@@ -386,6 +397,10 @@
   var carSize = new THREE.Vector3();
   var carReady = false;
   var hotspotEls = [];
+  var spinning = true;                 // intenção de girar (toggle por clique no carro)
+  var fitCenter = new THREE.Vector3(); // centro para enquadrar/orbitar
+  var fitRadius = 1.5;                 // raio da esfera envolvente do carro
+  var FIT_MARGIN = 1.08;               // folga: o carro nunca encosta nas bordas
 
   // Chão com sombra de contato
   var ground = new THREE.Mesh(
@@ -417,10 +432,23 @@
     car.traverse(function (o) { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     scene.add(car);
 
-    controls.target.set(0, carSize.y * 0.45, 0);
+    // esfera envolvente → enquadramento que nunca corta o carro (em qualquer ângulo)
+    var fb = new THREE.Box3().setFromObject(car);
+    fb.getSize(carSize);
+    var sph = fb.getBoundingSphere(new THREE.Sphere());
+    fitCenter.copy(sph.center);
+    fitRadius = sph.radius;
+    controls.target.copy(fitCenter);
+    applyZoomLimits();
+    // começa totalmente enquadrado (carro inteiro visível)
+    var dir0 = camera.position.clone().sub(fitCenter);
+    if (dir0.lengthSq() < 1e-6) dir0.set(3.4, 1.8, 4.2);
+    dir0.setLength(controls.maxDistance);
+    camera.position.copy(fitCenter).add(dir0);
     controls.update();
 
     buildHotspots();
+    buildZoomSlider();
     carReady = true;
     loader.classList.add("hide");
   }, function (xhr) {
@@ -449,7 +477,7 @@
         location.hash = "#/dicionario/" + h.slug;
       });
       el.addEventListener("mouseenter", function () { controls.autoRotate = false; });
-      el.addEventListener("mouseleave", function () { controls.autoRotate = true; });
+      el.addEventListener("mouseleave", function () { controls.autoRotate = spinning; });
       // posição no espaço do carro (origem no centro; y a partir do chão)
       h.pos = new THREE.Vector3(h.nx * carSize.x, h.ny * carSize.y + carSize.y * 0.5, h.nz * carSize.z);
       h.el = el;
@@ -458,13 +486,109 @@
     });
   }
 
-  // pausa auto-rotação enquanto o usuário interage
+  // pausa a auto-rotação durante o arrasto; retoma se a "intenção de girar" estiver ativa
   controls.addEventListener("start", function () { controls.autoRotate = false; });
-  var resumeTimer = null;
-  controls.addEventListener("end", function () {
-    clearTimeout(resumeTimer);
-    resumeTimer = setTimeout(function () { controls.autoRotate = true; }, 2500);
+  controls.addEventListener("end", function () { controls.autoRotate = spinning; });
+
+  // Clique "limpo" no veículo alterna girar/parar. Só conta quando o alvo é o
+  // próprio canvas (não um hotspot nem a barra de zoom) e quase não houve arrasto.
+  var pdX = 0, pdY = 0, pdT = 0, pdMoved = false;
+  stage.addEventListener("pointerdown", function (e) {
+    if (e.target !== canvas) { pdT = 0; return; }
+    pdX = e.clientX; pdY = e.clientY; pdT = Date.now(); pdMoved = false;
   });
+  stage.addEventListener("pointermove", function (e) {
+    if (!pdT) return;
+    if (Math.abs(e.clientX - pdX) > 6 || Math.abs(e.clientY - pdY) > 6) pdMoved = true;
+  });
+  stage.addEventListener("pointerup", function (e) {
+    if (pdT && !pdMoved && e.target === canvas && (Date.now() - pdT) < 400) {
+      spinning = !spinning;
+      controls.autoRotate = spinning;
+      updateHintText();
+    }
+    pdT = 0;
+  });
+  function updateHintText() {
+    if (!hint) return;
+    hint.lastChild.textContent = spinning
+      ? " Arraste para girar • clique no carro pausa"
+      : " Parado • clique no carro para girar";
+  }
+
+  // ---- Enquadramento responsivo (o carro cabe sempre) + limites de zoom ----
+  function fitDistanceForAspect() {
+    var vFov = camera.fov * Math.PI / 180;
+    var hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
+    var fov = Math.min(vFov, hFov);
+    return (fitRadius / Math.sin(fov / 2)) * FIT_MARGIN;
+  }
+  function applyZoomLimits() {
+    var fit = fitDistanceForAspect();
+    controls.maxDistance = fit;         // zoom-out total = carro inteiro visível
+    controls.minDistance = fit * 0.62;  // zoom-in máximo (mantém o carro visível)
+  }
+  function clampDistance() {
+    var dir = camera.position.clone().sub(controls.target);
+    var d = dir.length();
+    var cd = Math.min(Math.max(d, controls.minDistance), controls.maxDistance);
+    if (cd !== d) { dir.setLength(cd); camera.position.copy(controls.target).add(dir); }
+  }
+
+  // ---- Barra de zoom CURVADA (arco) com alça deslizante ----
+  var ZC = { cx: 150, cy: 115, r: 120, a0: 118, a1: 242 }; // ângulos em graus (a0=baixo/−, a1=topo/+)
+  var zHandle = null, zSvg = null, zDragging = false;
+  function zPolar(deg) { var a = deg * Math.PI / 180; return { x: ZC.cx + ZC.r * Math.cos(a), y: ZC.cy + ZC.r * Math.sin(a) }; }
+  function buildZoomSlider() {
+    var NS = "http://www.w3.org/2000/svg";
+    var wrap = document.createElement("div");
+    wrap.className = "zoomctl";
+    zSvg = document.createElementNS(NS, "svg");
+    zSvg.setAttribute("viewBox", "20 -8 92 246");
+    zSvg.setAttribute("width", "84"); zSvg.setAttribute("height", "224");
+    zSvg.setAttribute("role", "slider"); zSvg.setAttribute("aria-label", "Zoom do veículo");
+    var top = zPolar(ZC.a1), bot = zPolar(ZC.a0);
+    var track = document.createElementNS(NS, "path");
+    track.setAttribute("class", "zt");
+    track.setAttribute("d", "M " + bot.x.toFixed(1) + " " + bot.y.toFixed(1) + " A " + ZC.r + " " + ZC.r + " 0 0 1 " + top.x.toFixed(1) + " " + top.y.toFixed(1));
+    zHandle = document.createElementNS(NS, "circle");
+    zHandle.setAttribute("class", "zh"); zHandle.setAttribute("r", "9");
+    var plus = document.createElementNS(NS, "text"); plus.setAttribute("x", (top.x + 9).toFixed(1)); plus.setAttribute("y", (top.y - 3).toFixed(1)); plus.textContent = "+";
+    var minus = document.createElementNS(NS, "text"); minus.setAttribute("x", (bot.x + 9).toFixed(1)); minus.setAttribute("y", (bot.y + 5).toFixed(1)); minus.textContent = "−";
+    zSvg.appendChild(track); zSvg.appendChild(plus); zSvg.appendChild(minus); zSvg.appendChild(zHandle);
+    wrap.appendChild(zSvg);
+    stage.appendChild(wrap);
+
+    function pointerToP(e) {
+      var r = zSvg.getBoundingClientRect();
+      var vx = 20 + (e.clientX - r.left) / r.width * 92;
+      var vy = -8 + (e.clientY - r.top) / r.height * 246;
+      var ang = Math.atan2(vy - ZC.cy, vx - ZC.cx) * 180 / Math.PI;
+      if (ang < 0) ang += 360;
+      ang = Math.min(Math.max(ang, ZC.a0), ZC.a1);
+      return (ang - ZC.a0) / (ZC.a1 - ZC.a0);
+    }
+    function applyP(p) {
+      var d = controls.maxDistance + p * (controls.minDistance - controls.maxDistance);
+      var dir = camera.position.clone().sub(controls.target); dir.setLength(d);
+      camera.position.copy(controls.target).add(dir); controls.update();
+    }
+    zSvg.addEventListener("pointerdown", function (e) { zDragging = true; try { zSvg.setPointerCapture(e.pointerId); } catch (x) {} applyP(pointerToP(e)); e.preventDefault(); });
+    zSvg.addEventListener("pointermove", function (e) { if (zDragging) applyP(pointerToP(e)); });
+    zSvg.addEventListener("pointerup", function (e) { zDragging = false; try { zSvg.releasePointerCapture(e.pointerId); } catch (x) {} });
+    zSvg.addEventListener("pointercancel", function () { zDragging = false; });
+    syncHandle();
+  }
+  function syncHandle() {
+    if (!zHandle) return;
+    var span = controls.maxDistance - controls.minDistance;
+    var d = camera.position.distanceTo(controls.target);
+    var p = span > 1e-6 ? (controls.maxDistance - d) / span : 0;
+    p = Math.min(Math.max(p, 0), 1);
+    var pt = zPolar(ZC.a0 + p * (ZC.a1 - ZC.a0));
+    zHandle.setAttribute("cx", pt.x.toFixed(1));
+    zHandle.setAttribute("cy", pt.y.toFixed(1));
+  }
 
   var _v = new THREE.Vector3();
   var _camDir = new THREE.Vector3();
@@ -505,6 +629,7 @@
     renderer.setSize(w, hh, false);
     camera.aspect = w / hh;
     camera.updateProjectionMatrix();
+    if (carReady) { applyZoomLimits(); clampDistance(); controls.update(); syncHandle(); }
   }
   window.addEventListener("resize", resize);
   resize();
@@ -512,10 +637,14 @@
   function tick() {
     controls.update();
     updateHotspots();
+    syncHandle();
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+
+  // hook de diagnóstico (apenas em ?debug)
+  if (DEBUG) window.__T04B = { get spinning() { return spinning; }, get autoRotate() { return controls.autoRotate; } };
 
   // menu mobile
   var burger = document.getElementById("burger");

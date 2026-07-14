@@ -1,5 +1,7 @@
 # T04b — Refinamentos pendentes (retomar daqui)
 
+> **Status (implementado nesta sessão):** itens 1–5 concluídos em `prototypes/main-3d-explorer.html` — enquadramento responsivo (esfera envolvente), limites de zoom, barra de zoom curvada com alça, hotspots configuráveis via `window.STELLANTIS_HOTSPOTS`, e clique no carro alternando girar/parar. Testado em headless (desktop e retrato).
+
 Estado atual: `prototypes/main-3d-explorer.html` com Jeep Grand Commander
 (`assets/jeep.glb`, fornecido pelo usuário), giro 360°, hotspots com realce
 vermelho no hover. Versão tudo-em-um (data-URI) foi enviada para teste.
