@@ -12,10 +12,10 @@
 
   Assets locais (funciona offline):
     ./lib/three.min.js, OrbitControls.js, GLTFLoader.js, RoomEnvironment.js
-    ./assets/jeep.glb — modelo 3D de um Jeep (marca da Stellantis), usado como
-    PLACEHOLDER de veículo real. É um asset de terceiros cuja LICENÇA deve ser
-    verificada/confirmada antes de qualquer distribuição. Qualquer .glb pode
-    substituí-lo (a câmera e a escala se ajustam automaticamente).
+    ./assets/jeep.glb — Jeep Grand Commander (fornecido pelo usuário). Marca
+    pertencente à Stellantis. A LICENÇA/origem do modelo é de responsabilidade
+    de quem o forneceu e deve ser confirmada antes de distribuição. Qualquer
+    .glb pode substituí-lo (a câmera e a escala se ajustam automaticamente).
 
   Como abrir: sirva a pasta por HTTP (ex.: `python3 -m http.server` dentro de
   /prototypes) — o carregamento do .glb via file:// é bloqueado pelo navegador.
@@ -299,7 +299,7 @@
   </section>
 
   <footer class="footer">
-    Protótipo T04b · Stellantis Dictionary · Jeep 3D (placeholder, licença a confirmar) · dados fictícios.
+    Protótipo T04b · Stellantis Dictionary · Jeep Grand Commander 3D · dados fictícios.
   </footer>
 </div>
 
@@ -327,15 +327,15 @@
 
   // ---- Hotspots (definidos como fração do bounding box do carro; ajustados após o render) ----
   // nx,ny,nz em [-0.5..0.5] relativo ao tamanho do carro centrado na origem.
-  // Jeep — frente = +Z, traseira = -Z, laterais = ±X, topo = +Y.
+  // Jeep Grand Commander — frente = +Z, traseira = -Z, laterais = ±X, topo = +Y.
   // nx,nz em [-0.5..0.5] (0 = centro); ny=0 = meia-altura, +0.5 = topo, -0.5 = base.
   // w,h = tamanho (px) da zona de realce vermelha exibida no hover.
   var HOTSPOTS = [
-    { slug: "para-brisa",   label: "Para-brisa / HUD",     def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.24, nz: 0.12, w: 150, h: 82 },
-    { slug: "grade-farois", label: "Grade & Faróis",       def: "Grade frontal e conjunto óptico: iluminação e assinatura de luz do veículo.", nx: 0.16, ny: -0.10, nz: 0.47, w: 118, h: 60 },
-    { slug: "rodas",        label: "Rodas & Pneus",        def: "Conjunto roda/pneu off-road: dimensões, calibragem e tipos conforme o modelo.", nx: 0.50, ny: -0.26, nz: 0.26, w: 84, h: 84 },
-    { slug: "estepe",       label: "Estepe (traseira)",    def: "Pneu sobressalente montado na traseira, característico do Jeep.", nx: 0.02, ny: 0.06, nz: -0.50, w: 78, h: 82 },
-    { slug: "carroceria",   label: "Carroceria / Capota",  def: "Estrutura externa, portas e capota do veículo.", nx: 0.50, ny: 0.12, nz: -0.06, w: 150, h: 92 }
+    { slug: "para-brisa",   label: "Para-brisa / HUD",     def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.22, nz: 0.14, w: 150, h: 78 },
+    { slug: "grade-farois", label: "Grade & Faróis",       def: "Grade frontal de 7 fendas e conjunto óptico: iluminação e assinatura de luz do Jeep.", nx: 0.18, ny: -0.02, nz: 0.48, w: 120, h: 62 },
+    { slug: "rodas",        label: "Rodas & Pneus",        def: "Conjunto roda/pneu: dimensões, calibragem e tipos conforme o modelo.", nx: 0.50, ny: -0.26, nz: 0.26, w: 88, h: 88 },
+    { slug: "lanternas",    label: "Lanternas / Traseira", def: "Lanternas traseiras, para-choque e porta-malas do veículo.", nx: 0.14, ny: 0.04, nz: -0.49, w: 110, h: 66 },
+    { slug: "carroceria",   label: "Carroceria",           def: "Estrutura externa, portas e pintura do veículo.", nx: 0.50, ny: 0.14, nz: -0.02, w: 150, h: 92 }
   ];
 
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
