@@ -144,6 +144,72 @@ Para **Segurança**: `jeep.draco.glb` é asset estático sem dado sensível; lib
 decoder Draco locais (sem CDN/código externo).
 
 ---
+## Rodada 3 (14/07/2026) — Cena separada de INTERIOR (decisão do CEO: opção 2)
+
+Decisão do CEO sobre a pendência da rodada 2: **criar uma cena separada de
+interior**, mantendo o exterior atual intocado. Implementado em
+`prototypes/main-3d-explorer.html` sem quebrar zoom, girar/pausar, slider ou
+hotspots existentes. Verificado em Chromium headless (Playwright, ANGLE/swiftshader)
+a 1440×900 e 390×844 — **0 erros de console, WebGL renderizou (sem fallback)**.
+
+### (a) Alternador Exterior ⇄ Interior
+- Segmentado de 2 botões (`#viewExterior` / `#viewInterior`) com ícones, posicionado
+  **acima da barra de zoom** (não colide com a dica no topo-esq. nem o botão
+  girar/pausar no topo-dir.; testado a 390px).
+- A11y: `role="group"` + `aria-label`; cada botão usa `aria-pressed` (true/false) que
+  alterna na troca; foco visível (`:focus-visible`). O `aria-label` do palco muda
+  entre "vista externa" e "vista interna".
+- Troca de vista = esconde carro+chão+sombra e mostra `interiorGroup` (e vice-versa),
+  troca o conjunto de hotspots e **reenquadra** a cena ativa via `frameObject()`
+  (reaproveita os limites de zoom e o slider — nada de código duplicado).
+- Exterior permanece **exatamente** como estava (mesma câmera/hotspots/comportamento).
+
+### (b) Origem do modelo de interior — PLACEHOLDER (licença livre, own-work)
+- **Não foi baixado modelo externo.** Dentro do timebox e do guardrail "só licença
+  livre / sem código externo", optou-se por um **placeholder procedural** construído
+  em three.js (`buildInterior()`): geometria simples (painel, borda, para-brisa,
+  cluster, HUD, central multimídia, console, volante+comandos, alto-falante, 2 bancos,
+  retrovisor). É **own-work → licença livre por construção**, offline, leve (sem asset
+  binário novo). Marcado no código como **PLACEHOLDER** com **PONTO DE TROCA FÁCIL**:
+  para um `.glb` real de cockpit CC0/CC-BY, basta carregá-lo com `gltfLoader` e
+  substituir `interiorGroup` por `gltf.scene` — a câmera/enquadramento se auto-ajusta.
+- Regra mantida: nada de asset oficial da Stellantis; qualquer modelo real futuro deve
+  ser de licença livre e registrado em `prototypes/ASSETS.md`.
+
+### (c) Hotspots de interior criados (8, doc 05, ligados por term_slug)
+`hud`, `cluster-digital`, `central-display`, `comandos-volante`, `audio-sistema`,
+`phone-mirroring`, `cloud`, `cockpit`. Ancorados em coordenadas absolutas (px,py,pz)
+das peças do placeholder. Externalizados em `prototypes/assets/cockpit_hotspots.json`
+— arquivo reestruturado em duas seções: **`exterior`** (5, inalterados) e **`interior`**
+(8). Fonte única da verdade preservada: `def` é só prévia provisória; no sistema real
+vem da API pelo `term_slug`. Sobrescrevível via `window.STELLANTIS_HOTSPOTS_INTERIOR`.
+Oclusão: no interior desliga-se o teste de "normal externa" (válido só p/ carro
+convexo) e mantém-se só o teste de "atrás da câmera".
+
+### (d) Screenshots (Playwright, /opt/pw-browsers)
+- `prototypes/screenshots/t04c-exterior-desktop.png` (1440×900)
+- `prototypes/screenshots/t04c-interior-desktop.png` (1440×900)
+- `prototypes/screenshots/t04c-exterior-mobile.png` (390×844)
+- `prototypes/screenshots/t04c-interior-mobile.png` (390×844)
+  (os `t04b-*.png` anteriores foram mantidos.)
+
+### (e) Verificação / console
+- **0 erros de console** nas 4 combinações; `aria-pressed` alterna corretamente
+  (ext↔int); `fallback` não acionado (WebGL OK); hotspots visíveis = 5 (exterior)
+  e 8 (interior). Fallback sem WebGL mantido (esconde tabs/dica/botão girar).
+
+### (f) Pendências para o CEO
+1. **Trocar o placeholder por um `.glb` de cockpit de licença livre** (CC0/CC-BY)
+   quando aprovado — o ponto de troca já está pronto; falta escolher/baixar o modelo
+   e registrar a licença. O placeholder é intencionalmente esquemático.
+2. **Fallback sem WebGL do interior**: hoje o fallback é o genérico (mensagem). Falta
+   um image-map específico do cockpit (mesmos `term_slug`) — fase posterior.
+3. **Posições finais dos hotspots internos** dependem do modelo real; as atuais casam
+   com a geometria do placeholder.
+4. Confirmar se o interior deve ter **auto-rotação** (hoje herda o estado girar/parar
+   do exterior) ou câmera "de dentro" fixa olhando o painel.
+
+---
 ### Prompt de retomada
 Quando o usuário disser **"continuar T04b"** (ou "continuar T04bo"), implementar
 os itens 1–5 acima em `prototypes/main-3d-explorer.html`, testar via headless
