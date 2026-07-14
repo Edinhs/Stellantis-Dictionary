@@ -165,6 +165,22 @@
   }
   .hint svg { color: var(--cyan-light); }
 
+  /* Botão minimalista girar/pausar (canto superior direito) */
+  .rotbtn {
+    position: absolute; right: 14px; top: 14px; z-index: 3;
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 11px;
+    border-radius: var(--radius-pill); background: rgba(9,14,34,0.62);
+    border: 1px solid rgba(143,208,255,0.22); color: var(--on-dark-soft);
+    font-family: inherit; font-size: 12.5px; font-weight: 600; cursor: pointer;
+    backdrop-filter: blur(6px); transition: color .18s, border-color .18s, background .18s;
+  }
+  .rotbtn:hover { color: #fff; border-color: rgba(143,208,255,0.45); background: rgba(15,22,52,0.72); }
+  .rotbtn:focus-visible { outline: 3px solid var(--cyan-light); outline-offset: 3px; }
+  .rotbtn svg { color: var(--cyan-light); flex-shrink: 0; }
+  .rotbtn .ico-pause { display: none; }
+  .rotbtn.is-paused .ico-play { display: none; }
+  .rotbtn.is-paused .ico-pause { display: block; }
+
   /* Barra de zoom inferior, minimalista e levemente curvada */
   .zoomctl { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 3; touch-action: none; user-select: none; }
   .zoomctl svg { overflow: visible; display: block; cursor: pointer; }
@@ -225,6 +241,9 @@
   .hotspot__tip .d { color: #ecc9c9; display: block; margin-bottom: 7px; line-height: 1.42; font-style: italic; font-family: var(--ff-serif); }
   .hotspot__tip .go { color: var(--hot-red-soft); font-weight: 700; }
   .hotspot:hover .hotspot__tip, .hotspot:focus-within .hotspot__tip, .hotspot.is-active .hotspot__tip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  /* quando o hotspot está no topo do palco, o rótulo abre PARA BAIXO (não é cortado) */
+  .hotspot.tip-below .hotspot__tip { bottom: auto; top: calc(100% + 14px); transform: translateX(-50%) translateY(-6px); }
+  .hotspot.tip-below:hover .hotspot__tip, .hotspot.tip-below:focus-within .hotspot__tip, .hotspot.tip-below.is-active .hotspot__tip { transform: translateX(-50%) translateY(0); }
 
   .fallback { position: absolute; inset: 0; z-index: 5; display: none; place-items: center; text-align: center; padding: 30px; color: var(--on-dark-soft); }
   .fallback.show { display: grid; }
@@ -303,6 +322,11 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3M6 6l2 2M16 16l2 2M18 6l-2 2M8 16l-2 2"/></svg>
         Arraste para girar • clique nos pontos
       </div>
+      <button class="rotbtn" id="rotbtn" type="button" aria-label="Pausar rotação automática" aria-pressed="true">
+        <svg class="ico-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+        <svg class="ico-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5l12 7-12 7z"/></svg>
+        <span id="rotbtnLabel">Girando</span>
+      </button>
     </div>
   </section>
 
@@ -379,6 +403,9 @@
   scene.add(key);
   var fill = new THREE.DirectionalLight(0x6fa8ff, 0.7);
   fill.position.set(-5, 2, -3); scene.add(fill);
+  // luz de contorno (rim) fria por trás: separa o carro do fundo, aspecto mais premium
+  var rim = new THREE.DirectionalLight(0x8fd0ff, 1.1);
+  rim.position.set(-2, 3.5, -6); scene.add(rim);
 
   if (DEBUG) scene.add(new THREE.AxesHelper(3));
 
@@ -404,11 +431,27 @@
   // Chão com sombra de contato
   var ground = new THREE.Mesh(
     new THREE.PlaneGeometry(40, 40),
-    new THREE.ShadowMaterial({ opacity: 0.28 })
+    new THREE.ShadowMaterial({ opacity: 0.34 })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   scene.add(ground);
+
+  // sombra de contato "falsa": disco radial escuro sob o carro, reforça o apoio no chão
+  var contactShadow = null;
+  (function () {
+    var c = document.createElement("canvas"); c.width = c.height = 256;
+    var ctx = c.getContext("2d");
+    var g = ctx.createRadialGradient(128, 128, 8, 128, 128, 128);
+    g.addColorStop(0, "rgba(0,0,0,0.55)"); g.addColorStop(0.55, "rgba(0,0,0,0.22)"); g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
+    var tex = new THREE.CanvasTexture(c);
+    var mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false });
+    contactShadow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat);
+    contactShadow.rotation.x = -Math.PI / 2;
+    contactShadow.position.y = 0.002;
+    scene.add(contactShadow);
+  })();
 
   var gltfLoader = new THREE.GLTFLoader();
   gltfLoader.load("./assets/jeep.glb", function (gltf) {
@@ -438,6 +481,12 @@
     fitCenter.copy(sph.center);
     // maior extensão que o carro projeta (footprint em qualquer azimute / vista de cima)
     fitDim = Math.max(Math.hypot(carSize.x, carSize.z), carSize.y);
+    // ajusta a sombra de contato ao footprint do carro (um pouco maior que o corpo)
+    if (contactShadow) {
+      var shW = carSize.x * 1.7, shD = carSize.z * 1.35;
+      contactShadow.scale.set(shW, shD, 1);
+      contactShadow.position.x = fitCenter.x; contactShadow.position.z = fitCenter.z;
+    }
     controls.target.copy(fitCenter);
     applyZoomLimits();
     // começa com o carro grande, porém INTEIRO (distância mínima = sem corte)
@@ -503,12 +552,32 @@
   });
   stage.addEventListener("pointerup", function (e) {
     if (pdT && !pdMoved && e.target === canvas && (Date.now() - pdT) < 400) {
-      spinning = !spinning;
-      controls.autoRotate = spinning;
-      updateHintText();
+      setSpinning(!spinning);
     }
     pdT = 0;
   });
+
+  // fonte única do estado girar/parar: sincroniza carro, botão e dica
+  var rotbtn = document.getElementById("rotbtn");
+  var rotbtnLabel = document.getElementById("rotbtnLabel");
+  function setSpinning(v) {
+    spinning = v;
+    controls.autoRotate = v;
+    updateHintText();
+    if (rotbtn) {
+      rotbtn.classList.toggle("is-paused", !v);
+      rotbtn.setAttribute("aria-pressed", v ? "true" : "false");
+      rotbtn.setAttribute("aria-label", v ? "Pausar rotação automática" : "Retomar rotação automática");
+    }
+    if (rotbtnLabel) rotbtnLabel.textContent = v ? "Girando" : "Parado";
+  }
+  if (rotbtn) rotbtn.addEventListener("click", function () { setSpinning(!spinning); });
+
+  // respeita prefers-reduced-motion: inicia parado (acessibilidade / skill 3d-cockpit)
+  var reduceMotion = false;
+  try { reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  if (reduceMotion) setSpinning(false);
+
   function updateHintText() {
     if (!hint) return;
     hint.lastChild.textContent = spinning
@@ -614,6 +683,8 @@
         h.el.classList.remove("occluded");
         h.el.style.left = x + "px";
         h.el.style.top = y + "px";
+        // rótulo abre para baixo quando o hotspot está perto do topo (não corta no palco)
+        h.el.classList.toggle("tip-below", y < 132);
       }
     }
   }
