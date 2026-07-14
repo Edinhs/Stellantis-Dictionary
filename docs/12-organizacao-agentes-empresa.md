@@ -112,20 +112,27 @@ orquestrador:
 
 Arquivos de definição em `.claude/agents/`. Cada linha = um cargo/agente ativo.
 
-| Cargo / Agente | Arquivo | Reporta a | Missão resumida | Pode criar sub-agentes? |
-|---|---|---|---|---|
-| **CEO** | — (o usuário) | — | Visão, prioridade, aprovação | — |
-| **Agente Geral** | (este assistente) | CEO | Orquestra, delega, integra | Sim |
-| Documentação Lead | `doc-lead.md` | Agente Geral | PDRs, SPECs, ADRs, backlog, changelog | Sim |
-| Produto Lead | `product-lead.md` | Agente Geral | Requisitos, priorização, backlog, aceite | Sim |
-| Engenharia Lead | `eng-lead.md` | Agente Geral | Coordena implementação; contratos de API | Sim |
-| QA Lead | `qa-lead.md` | Agente Geral | Testes, verificação, critérios de aceite | Sim |
-| Segurança Lead | `security-lead.md` | Agente Geral | Revisão de segurança, OWASP, LGPD, RBAC | Sim |
-| DevOps Lead | `devops-lead.md` | Agente Geral | Docker, CI/CD, ambientes, observabilidade | Sim |
-| Backend Engineer | `backend-engineer.md` | Engenharia Lead | API, auth, modelo de dados, Postgres | Sob demanda |
-| Frontend Engineer | `frontend-engineer.md` | Engenharia Lead | SPA, telas, acessibilidade, responsividade | Sob demanda |
-| 3D/WebGL Engineer | `threed-engineer.md` | Engenharia Lead | Explorador 3D, hotspots, fallback | Sob demanda |
-| RAG/IA Engineer | `rag-engineer.md` | Engenharia Lead | Embeddings, chunking, adapter de LLM | Sob demanda |
+| Cargo / Agente | Arquivo | Reporta a | Missão resumida | Pode criar sub-agentes? | Estado |
+|---|---|---|---|---|---|
+| **CEO** | — (o usuário) | — | Visão, prioridade, aprovação | — | Ativo |
+| **Agente Geral** | (este assistente) | CEO | Orquestra, delega, integra | Sim | Ativo |
+| Documentação Lead | `doc-lead.md` | Agente Geral | PDRs, SPECs, ADRs, backlog, changelog | Sim | Ativo |
+| Produto Lead | `product-lead.md` | Agente Geral | Requisitos, priorização, backlog, aceite | Sim | Ativo |
+| Engenharia Lead | `eng-lead.md` | Agente Geral | Coordena implementação; contratos de API | Sim | Ativo |
+| QA Lead | `qa-lead.md` | Agente Geral | Testes, verificação, critérios de aceite | Sim | Ativo |
+| Segurança Lead | `security-lead.md` | Agente Geral | Revisão de segurança, OWASP, LGPD, RBAC | Sim | Ativo |
+| DevOps Lead | `devops-lead.md` | Agente Geral | Docker, CI/CD, ambientes, observabilidade | Sim | Ativo |
+| Backend Engineer | `backend-engineer.md` | Engenharia Lead | API, auth, modelo de dados, Postgres | Sob demanda | Ativo |
+| Frontend Engineer | `frontend-engineer.md` | Engenharia Lead | SPA, telas, acessibilidade, responsividade | Sob demanda | Ativo |
+| 3D/WebGL Engineer | `threed-engineer.md` | Engenharia Lead | Explorador 3D, hotspots, fallback | Sob demanda | Ativo |
+| RAG/IA Engineer | `rag-engineer.md` | Engenharia Lead | Embeddings, chunking, adapter de LLM | Sob demanda | Ativo |
+| Sicky (testes ao vivo) | `sicky.md` | QA Lead (colabora) | Testes manuais ao vivo no navegador (Playwright/Chromium); dirige o app rodável como usuário real p/ achar gargalos, fluxos quebrados e problemas de UX; produz relatório final de melhorias com autonomia | Não | Dormente (sob demanda) |
+
+> **Estado "Dormente (sob demanda)".** Todos os agentes só agem quando invocados,
+> mas o **Sicky** é explicitamente **reservado para sessões de teste sob demanda**:
+> permanece inativo e só é acionado mediante **solicitação explícita do CEO ou do
+> Agente Geral**. Na fase atual (planejamento) ele fica inativo por não haver app
+> rodável para exercitar no navegador.
 
 ## 5. Mapa setor → responsabilidades → docs/skills
 
@@ -141,9 +148,16 @@ Skills marcados como **criados** existem em `.claude/skills/<nome>/SKILL.md` (ve
 | Frontend | Frontend Engineer | `02-spec` §3, protótipos | `ui-design-system` (criado) |
 | 3D/WebGL | 3D/WebGL Engineer | `05-cockpit-3d-reference`, `08` | `3d-cockpit` (criado) |
 | RAG/IA | RAG/IA Engineer | `02-spec` §3.4, `11` §4 | `rag-pipeline` (criado) |
-| QA | QA Lead | `04-tasks` (critérios) | `qa-checklist` (criado) |
+| QA | QA Lead (+ Sicky, testes ao vivo) | `04-tasks` (critérios) | `qa-checklist` (criado) |
 | Segurança | Segurança Lead | `02-spec` §3.6, `09` §7 | `security-checklist` (criado) |
 | DevOps | DevOps Lead | `02-spec` §5 | `devops-baseline` (criado) |
+
+> **Nota — testes ao vivo (setor QA).** Além do QA Lead (verificação e critérios de
+> aceite), o setor conta com o **Sicky**, um **testador ao vivo complementar**: dirige
+> o app em execução no navegador (Playwright/Chromium) como usuário real para
+> identificar gargalos, fluxos quebrados e problemas de UX, e entrega um relatório
+> final de melhorias com autonomia. Colabora com o QA Lead e permanece **dormente
+> até ser explicitamente chamado** (ver §4).
 
 ### 5.1 Skills criados
 
@@ -188,3 +202,9 @@ próxima sessão** (ou após recarregar a configuração).
   `rag-pipeline`, `security-checklist`, `qa-checklist`, `devops-baseline`,
   `doc-standards`, `product-backlog`. Registrados no roster (§5 atualizada e nova
   subseção §5.1); entram em vigor na próxima sessão.
+- 2026-07-14 — Criado o agente de **testes ao vivo Sicky** (`.claude/agents/sicky.md`),
+  **dormente / sob demanda**: dirige o app rodável no navegador (Playwright/Chromium)
+  como usuário real para achar gargalos, fluxos quebrados e problemas de UX, com
+  relatório final de melhorias autônomo. Colabora com o QA Lead. Registrado no roster
+  (§4, com coluna **Estado**) e no mapa do setor QA (§5). Fica inativo na fase de
+  planejamento e só é acionado sob solicitação explícita do CEO/Agente Geral.
