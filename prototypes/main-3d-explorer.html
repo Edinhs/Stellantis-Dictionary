@@ -157,7 +157,7 @@
 
   /* Hint */
   .hint {
-    position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 3;
+    position: absolute; left: 14px; top: 14px; z-index: 3;
     display: inline-flex; align-items: center; gap: 8px; padding: 8px 15px;
     border-radius: var(--radius-pill); background: rgba(9,14,34,0.62);
     border: 1px solid rgba(143,208,255,0.22); color: var(--on-dark-soft); font-size: 12.5px;
@@ -165,14 +165,13 @@
   }
   .hint svg { color: var(--cyan-light); }
 
-  /* Barra de zoom curvada (arco) com alça deslizante */
-  .zoomctl { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); z-index: 3; touch-action: none; user-select: none; }
+  /* Barra de zoom inferior, minimalista e levemente curvada */
+  .zoomctl { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 3; touch-action: none; user-select: none; }
   .zoomctl svg { overflow: visible; display: block; cursor: pointer; }
-  .zoomctl .zt { fill: none; stroke: rgba(143,208,255,0.32); stroke-width: 6; stroke-linecap: round; }
-  .zoomctl .zh { fill: #fff; stroke: var(--blue-vivid-b); stroke-width: 3; cursor: grab; }
+  .zoomctl .zt { fill: none; stroke: rgba(143,208,255,0.30); stroke-width: 3.5; stroke-linecap: round; }
+  .zoomctl .zh { fill: #fff; stroke: var(--blue-vivid-b); stroke-width: 2.5; cursor: grab; }
   .zoomctl .zh:active { cursor: grabbing; }
-  .zoomctl text { fill: var(--on-dark-soft); font-size: 20px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; font-family: var(--ff-sans); }
-  @media (max-width: 940px) { .zoomctl { right: 2px; transform: translateY(-50%) scale(0.82); } }
+  .zoomctl text { fill: var(--on-dark-soft); font-size: 16px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; font-family: var(--ff-sans); }
 
   /* ===== Hotspots — estilo de realce VERMELHO (referência Stellantis) ===== */
   .hotspot {
@@ -399,7 +398,7 @@
   var hotspotEls = [];
   var spinning = true;                 // intenção de girar (toggle por clique no carro)
   var fitCenter = new THREE.Vector3(); // centro para enquadrar/orbitar
-  var fitRadius = 1.5;                 // raio da esfera envolvente do carro
+  var fitDim = 3;                      // maior extensão projetável do carro (nunca cortar)
   var FIT_MARGIN = 1.08;               // folga: o carro nunca encosta nas bordas
 
   // Chão com sombra de contato
@@ -437,13 +436,14 @@
     fb.getSize(carSize);
     var sph = fb.getBoundingSphere(new THREE.Sphere());
     fitCenter.copy(sph.center);
-    fitRadius = sph.radius;
+    // maior extensão que o carro projeta (footprint em qualquer azimute / vista de cima)
+    fitDim = Math.max(Math.hypot(carSize.x, carSize.z), carSize.y);
     controls.target.copy(fitCenter);
     applyZoomLimits();
-    // começa totalmente enquadrado (carro inteiro visível)
+    // começa com o carro grande, porém INTEIRO (distância mínima = sem corte)
     var dir0 = camera.position.clone().sub(fitCenter);
     if (dir0.lengthSq() < 1e-6) dir0.set(3.4, 1.8, 4.2);
-    dir0.setLength(controls.maxDistance);
+    dir0.setLength(controls.minDistance);
     camera.position.copy(fitCenter).add(dir0);
     controls.update();
 
@@ -518,15 +518,16 @@
 
   // ---- Enquadramento responsivo (o carro cabe sempre) + limites de zoom ----
   function fitDistanceForAspect() {
+    // distância em que o carro INTEIRO cabe, em qualquer rotação (nunca corta)
     var vFov = camera.fov * Math.PI / 180;
     var hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
     var fov = Math.min(vFov, hFov);
-    return (fitRadius / Math.sin(fov / 2)) * FIT_MARGIN;
+    return (fitDim / 2) / Math.tan(fov / 2) * FIT_MARGIN;
   }
   function applyZoomLimits() {
     var fit = fitDistanceForAspect();
-    controls.maxDistance = fit;         // zoom-out total = carro inteiro visível
-    controls.minDistance = fit * 0.62;  // zoom-in máximo (mantém o carro visível)
+    controls.minDistance = fit;         // zoom-in máximo = carro inteiro (sem corte)
+    controls.maxDistance = fit * 1.85;  // zoom-out = carro menor
   }
   function clampDistance() {
     var dir = camera.position.clone().sub(controls.target);
@@ -535,46 +536,47 @@
     if (cd !== d) { dir.setLength(cd); camera.position.copy(controls.target).add(dir); }
   }
 
-  // ---- Barra de zoom CURVADA (arco) com alça deslizante ----
-  var ZC = { cx: 150, cy: 115, r: 120, a0: 118, a1: 242 }; // ângulos em graus (a0=baixo/−, a1=topo/+)
+  // ---- Barra de zoom (inferior, minimalista, levemente curvada) ----
+  var ZS = { x0: 16, x1: 204, yEnd: 22, yMid: 30, vbW: 220, vbH: 40 };
   var zHandle = null, zSvg = null, zDragging = false;
-  function zPolar(deg) { var a = deg * Math.PI / 180; return { x: ZC.cx + ZC.r * Math.cos(a), y: ZC.cy + ZC.r * Math.sin(a) }; }
+  function zPos(t) {
+    var x = ZS.x0 + (ZS.x1 - ZS.x0) * t;
+    var y = ZS.yEnd * ((1 - t) * (1 - t) + t * t) + 2 * (1 - t) * t * ZS.yMid; // Bézier quadrática
+    return { x: x, y: y };
+  }
   function buildZoomSlider() {
     var NS = "http://www.w3.org/2000/svg";
     var wrap = document.createElement("div");
     wrap.className = "zoomctl";
     zSvg = document.createElementNS(NS, "svg");
-    zSvg.setAttribute("viewBox", "20 -8 92 246");
-    zSvg.setAttribute("width", "84"); zSvg.setAttribute("height", "224");
+    zSvg.setAttribute("viewBox", "0 0 " + ZS.vbW + " " + ZS.vbH);
+    zSvg.setAttribute("width", "210"); zSvg.setAttribute("height", "40");
     zSvg.setAttribute("role", "slider"); zSvg.setAttribute("aria-label", "Zoom do veículo");
-    var top = zPolar(ZC.a1), bot = zPolar(ZC.a0);
+    var mid = (ZS.x0 + ZS.x1) / 2;
     var track = document.createElementNS(NS, "path");
     track.setAttribute("class", "zt");
-    track.setAttribute("d", "M " + bot.x.toFixed(1) + " " + bot.y.toFixed(1) + " A " + ZC.r + " " + ZC.r + " 0 0 1 " + top.x.toFixed(1) + " " + top.y.toFixed(1));
+    track.setAttribute("d", "M " + ZS.x0 + " " + ZS.yEnd + " Q " + mid + " " + ZS.yMid + " " + ZS.x1 + " " + ZS.yEnd);
     zHandle = document.createElementNS(NS, "circle");
-    zHandle.setAttribute("class", "zh"); zHandle.setAttribute("r", "9");
-    var plus = document.createElementNS(NS, "text"); plus.setAttribute("x", (top.x + 9).toFixed(1)); plus.setAttribute("y", (top.y - 3).toFixed(1)); plus.textContent = "+";
-    var minus = document.createElementNS(NS, "text"); minus.setAttribute("x", (bot.x + 9).toFixed(1)); minus.setAttribute("y", (bot.y + 5).toFixed(1)); minus.textContent = "−";
-    zSvg.appendChild(track); zSvg.appendChild(plus); zSvg.appendChild(minus); zSvg.appendChild(zHandle);
+    zHandle.setAttribute("class", "zh"); zHandle.setAttribute("r", "8");
+    var minus = document.createElementNS(NS, "text"); minus.setAttribute("x", "8"); minus.setAttribute("y", ZS.yEnd); minus.textContent = "−";
+    var plus = document.createElementNS(NS, "text"); plus.setAttribute("x", ZS.vbW - 8); plus.setAttribute("y", ZS.yEnd); plus.textContent = "+";
+    zSvg.appendChild(track); zSvg.appendChild(minus); zSvg.appendChild(plus); zSvg.appendChild(zHandle);
     wrap.appendChild(zSvg);
     stage.appendChild(wrap);
 
-    function pointerToP(e) {
+    function pointerToT(e) {
       var r = zSvg.getBoundingClientRect();
-      var vx = 20 + (e.clientX - r.left) / r.width * 92;
-      var vy = -8 + (e.clientY - r.top) / r.height * 246;
-      var ang = Math.atan2(vy - ZC.cy, vx - ZC.cx) * 180 / Math.PI;
-      if (ang < 0) ang += 360;
-      ang = Math.min(Math.max(ang, ZC.a0), ZC.a1);
-      return (ang - ZC.a0) / (ZC.a1 - ZC.a0);
+      var vx = (e.clientX - r.left) / r.width * ZS.vbW;
+      return Math.min(Math.max((vx - ZS.x0) / (ZS.x1 - ZS.x0), 0), 1);
     }
-    function applyP(p) {
-      var d = controls.maxDistance + p * (controls.minDistance - controls.maxDistance);
+    function applyT(t) {
+      // t=0 (−, esquerda) → zoom-out (maxDistance); t=1 (+, direita) → zoom-in (minDistance)
+      var d = controls.maxDistance + t * (controls.minDistance - controls.maxDistance);
       var dir = camera.position.clone().sub(controls.target); dir.setLength(d);
       camera.position.copy(controls.target).add(dir); controls.update();
     }
-    zSvg.addEventListener("pointerdown", function (e) { zDragging = true; try { zSvg.setPointerCapture(e.pointerId); } catch (x) {} applyP(pointerToP(e)); e.preventDefault(); });
-    zSvg.addEventListener("pointermove", function (e) { if (zDragging) applyP(pointerToP(e)); });
+    zSvg.addEventListener("pointerdown", function (e) { zDragging = true; try { zSvg.setPointerCapture(e.pointerId); } catch (x) {} applyT(pointerToT(e)); e.preventDefault(); });
+    zSvg.addEventListener("pointermove", function (e) { if (zDragging) applyT(pointerToT(e)); });
     zSvg.addEventListener("pointerup", function (e) { zDragging = false; try { zSvg.releasePointerCapture(e.pointerId); } catch (x) {} });
     zSvg.addEventListener("pointercancel", function () { zDragging = false; });
     syncHandle();
@@ -583,9 +585,9 @@
     if (!zHandle) return;
     var span = controls.maxDistance - controls.minDistance;
     var d = camera.position.distanceTo(controls.target);
-    var p = span > 1e-6 ? (controls.maxDistance - d) / span : 0;
-    p = Math.min(Math.max(p, 0), 1);
-    var pt = zPolar(ZC.a0 + p * (ZC.a1 - ZC.a0));
+    var t = span > 1e-6 ? (controls.maxDistance - d) / span : 0;
+    t = Math.min(Math.max(t, 0), 1);
+    var pt = zPos(t);
     zHandle.setAttribute("cx", pt.x.toFixed(1));
     zHandle.setAttribute("cy", pt.y.toFixed(1));
   }
