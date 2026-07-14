@@ -129,18 +129,40 @@ Arquivos de definição em `.claude/agents/`. Cada linha = um cargo/agente ativo
 
 ## 5. Mapa setor → responsabilidades → docs/skills
 
-| Setor | Responsável | Docs de referência | Skills previstas (PDR §5) |
+Skills marcados como **criados** existem em `.claude/skills/<nome>/SKILL.md` (ver
+§5.1). Os demais permanecem previstos no PDR §5.
+
+| Setor | Responsável | Docs de referência | Skills (criados em `.claude/skills/`) |
 |---|---|---|---|
-| Documentação | Documentação Lead | todos os `docs/` | — |
-| Produto | Produto Lead | `01-briefing`, `03-pdr`, `04-tasks` | — |
+| Documentação | Documentação Lead | todos os `docs/` | `doc-standards` (criado) |
+| Produto | Produto Lead | `01-briefing`, `03-pdr`, `04-tasks` | `product-backlog` (criado) |
 | Engenharia | Engenharia Lead | `02-spec`, `08`, `09`, `11` | — |
-| Backend | Backend Engineer | `02-spec` §3–4, `09` | `backend-api`, `db-schema` |
-| Frontend | Frontend Engineer | `02-spec` §3, protótipos | `ui-design-system` |
-| 3D/WebGL | 3D/WebGL Engineer | `05-cockpit-3d-reference`, `08` | `3d-cockpit` |
-| RAG/IA | RAG/IA Engineer | `02-spec` §3.4, `11` §4 | `rag-pipeline` |
-| QA | QA Lead | `04-tasks` (critérios) | — |
-| Segurança | Segurança Lead | `02-spec` §3.6, `09` §7 | `security-checklist` |
-| DevOps | DevOps Lead | `02-spec` §5 | — |
+| Backend | Backend Engineer | `02-spec` §3–4, `09` | `backend-api` (criado), `db-schema` (criado) |
+| Frontend | Frontend Engineer | `02-spec` §3, protótipos | `ui-design-system` (criado) |
+| 3D/WebGL | 3D/WebGL Engineer | `05-cockpit-3d-reference`, `08` | `3d-cockpit` (criado) |
+| RAG/IA | RAG/IA Engineer | `02-spec` §3.4, `11` §4 | `rag-pipeline` (criado) |
+| QA | QA Lead | `04-tasks` (critérios) | `qa-checklist` (criado) |
+| Segurança | Segurança Lead | `02-spec` §3.6, `09` §7 | `security-checklist` (criado) |
+| DevOps | DevOps Lead | `02-spec` §5 | `devops-baseline` (criado) |
+
+### 5.1 Skills criados
+
+Dez skills reais foram criados em `.claude/skills/`, cada um com seu `SKILL.md`.
+O carregador lê `.claude/skills/` na inicialização, portanto **entram em vigor na
+próxima sessão** (ou após recarregar a configuração).
+
+| Skill (`.claude/skills/<nome>/SKILL.md`) | Setor autor | O que faz |
+|---|---|---|
+| `backend-api/SKILL.md` | Engenharia/Backend | Padrões de API REST, autenticação e contratos do backend. |
+| `db-schema/SKILL.md` | Engenharia/Backend | Modelo de dados, migrações e convenções de schema Postgres. |
+| `ui-design-system/SKILL.md` | Engenharia/Frontend | Design system, componentes e padrões de UI da SPA. |
+| `3d-cockpit/SKILL.md` | Engenharia/3D-WebGL | Explorador 3D do cockpit, hotspots e fallback sem WebGL. |
+| `rag-pipeline/SKILL.md` | Engenharia/RAG-IA | Pipeline de embeddings, chunking e citação de fontes. |
+| `security-checklist/SKILL.md` | Segurança | Checklist OWASP/ASVS, RBAC, LGPD e gestão de segredos. |
+| `qa-checklist/SKILL.md` | QA | Critérios de aceite, planos de teste e verificação de regressão. |
+| `devops-baseline/SKILL.md` | DevOps | Baseline de Docker, CI/CD, ambientes e observabilidade. |
+| `doc-standards/SKILL.md` | Documentação | Padrões de PDR/SPEC/ADR, numeração e referências cruzadas. |
+| `product-backlog/SKILL.md` | Produto | Estrutura do backlog, priorização e critérios de aceite. |
 
 ## 6. Como abrir um novo setor/cargo (extensibilidade)
 
@@ -161,3 +183,8 @@ Arquivos de definição em `.claude/agents/`. Cada linha = um cargo/agente ativo
   delegado, inclusive interações triviais e decisões de organização/configuração
   (config/hooks → `devops-lead`; redação/registro → `doc-lead`). Hook e §3.1
   atualizados.
+- 2026-07-14 — Criados **10 skills de setor** em `.claude/skills/` (um por setor +
+  os de engenharia): `backend-api`, `db-schema`, `ui-design-system`, `3d-cockpit`,
+  `rag-pipeline`, `security-checklist`, `qa-checklist`, `devops-baseline`,
+  `doc-standards`, `product-backlog`. Registrados no roster (§5 atualizada e nova
+  subseção §5.1); entram em vigor na próxima sessão.
