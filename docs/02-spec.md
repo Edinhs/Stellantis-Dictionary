@@ -29,7 +29,7 @@ Status: **rascunho para validação** (nenhuma decisão aqui é final até aprov
 | Backend | Node.js + TypeScript (Fastify/Express) | Tipagem forte, mesma linguagem do frontend, boas libs de segurança (helmet, rate-limit) |
 | Banco de dados | PostgreSQL + extensão `pgvector` | Um único banco para dados relacionais (usuários, termos) e vetores (embeddings) — evita depender de serviço externo de vetores, mais fácil de auditar/isolar dados confidenciais |
 | Autenticação | JWT (access + refresh token) com hash de senha via `argon2`/`bcrypt`, MFA opcional na fase 2 | Padrão robusto e amplamente auditado |
-| Autorização | RBAC simples (papéis: `admin`, `usuário`) | Atende ao requisito multiusuário sem complexidade excessiva no MVP |
+| Autorização | 3 cargos (`user`/`coordinator`/`admin`) + **permissões nomeadas** resolvidas por cargo via `can()` (não `if role ==`) — ver SPEC `09-plataforma-comunitaria-cargos-spec.md` | Atende ao requisito multiusuário/comunitário mantendo a checagem de permissão desacoplada do cargo |
 | LLM | Camada de adapter (`LlmProvider` interface) suportando Claude e OpenAI | Decisão de provedor pode mudar sem reescrever a aplicação |
 | Hospedagem | A definir — recomenda-se ambiente interno/privado (VPC ou servidor on-prem) dado o caráter confidencial dos dados | Ver seção "Segurança" |
 
@@ -118,11 +118,12 @@ conecta ao dicionário.
 - (Opcional) `terms.slug` — identificador amigável para URL do verbete, usado tanto
   pelo dicionário quanto pelos hotspots do Explorador 3D.
 
-### Extensões comunitárias (ver SPECs `08` e `09`)
+### Extensões comunitárias (ver SPECs `08`, `09` e `11`)
 - **Diretório** (`08`): `sectors`, `people`, `sector_owners`, `component_specialists`.
 - **Cargos/permissões** (`09`): `role_permissions (role, permission)`.
 - **Fluxo de trabalho** (`09`): `workflows (id, slug, title, description, category, steps, related_terms[], status, created_by, metadata, ...)`.
 - **Contribuição/histórico** (`09`): `contributions`, `content_revisions` (rollback), `audit_log` (append-only).
+- **Comunidade / Q&A** (`11`): `questions`, `answers`, `qa_comments`, `qa_votes`, `tags`, `question_tags`, `qa_reports`.
 - Toda tabela nova inclui `metadata jsonb` + timestamps (regra de extensibilidade).
 
 ## 5. Requisitos não funcionais

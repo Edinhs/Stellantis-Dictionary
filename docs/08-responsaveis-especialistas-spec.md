@@ -135,7 +135,7 @@ Desenhado para acomodar, sem reescrever:
 - **Integração futura com RH/AD** → substituir a carga do JSON por um
   sincronizador, mantendo o mesmo contrato de API.
 
-## 9. Perguntas em aberto (herdadas do PDR)
+## 9. Perguntas em aberto (herdadas do PDR `07`)
 
 1. Uma pessoa pode responder por mais de um setor? (schema já permite).
 2. Quais dados de contato exibir? (e-mail corporativo, Teams, ramal?)

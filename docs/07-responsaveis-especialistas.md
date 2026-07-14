@@ -41,14 +41,17 @@ duplicar conteúdo:
 
 ## 3. Decisões propostas (a confirmar)
 
+> Numeração própria deste módulo (`DE` = Decisões de Especialistas) para não
+> colidir com as decisões `D10`–`D17` do PDR mestre `03-pdr.md` §1.
+
 | # | Decisão | Status |
 |---|---|---|
-| D10 | Criar módulo "Responsáveis e Especialistas" como diretório de contatos interno | Proposto |
-| D11 | Dados preenchidos **manualmente** pelo admin/stakeholder (sem integração automática com RH/AD no MVP) | Proposto |
-| D12 | Duas relações distintas: **responsável por setor** (1 pessoa ↔ 1 setor) e **especialista de componente** (N pessoas ↔ N termos/componentes) | Proposto |
-| D13 | Fonte da verdade das ligações = `term_slug` (mesmo identificador usado por dicionário e hotspots 3D) | Proposto |
-| D14 | Dados de contato são **dados pessoais** → tratar com cuidado (LGPD): expor só o necessário, apenas a usuários autenticados | Proposto |
-| D15 | No protótipo/MVP, os dados podem vir de um **JSON de sementes versionado**; CRUD pelo admin vem depois | Proposto |
+| DE1 | Criar módulo "Responsáveis e Especialistas" como diretório de contatos interno | Proposto |
+| DE2 | Dados preenchidos **manualmente** pelo admin/stakeholder (sem integração automática com RH/AD no MVP) | Proposto |
+| DE3 | Duas relações distintas: **responsável por setor** (1 pessoa ↔ 1 setor) e **especialista de componente** (N pessoas ↔ N termos/componentes) | Proposto |
+| DE4 | Fonte da verdade das ligações = `term_slug` (mesmo identificador usado por dicionário e hotspots 3D) | Proposto |
+| DE5 | Dados de contato são **dados pessoais** → tratar com cuidado (LGPD): expor só o necessário, apenas a usuários autenticados | Proposto |
+| DE6 | No protótipo/MVP, os dados podem vir de um **JSON de sementes versionado**; CRUD pelo admin vem depois | Proposto |
 
 ## 4. Esboço de modelo de dados (rascunho)
 
