@@ -76,6 +76,74 @@ com WebGL/swiftshader — `prototypes/screenshots/t04b-desktop.png`):
   por `term_slug` (fonte única da verdade).
 
 ---
+---
+## Rodada 2 de refinamento (14/07/2026) — 3D/WebGL Engineer
+
+Três frentes priorizadas pelo CEO. Aplicadas em `prototypes/main-3d-explorer.html`
+sem quebrar o que já funcionava. Verificado em Chromium headless (swiftshader) a
+1440px, 768px e 390px — **0 erros de console, WebGL renderizou (sem fallback)**.
+
+### Frente 1 — Ajustes visuais mobile
+- **Sobreposição dica × botão girar/pausar resolvida** (novo `@media (max-width:480px)`
+  e `@media (max-width:360px)`): a dica (topo-esq.) passa a quebrar em 2 linhas com
+  `max-width: calc(100% - 132px)` e fonte 11px; o botão (topo-dir.) fica compacto
+  (`max-width:118px`). Em telas < 360px o rótulo textual do botão some (fica só o
+  ícone, `aria-label` preservado). Confirmado por screenshot: não se encobrem mais.
+- **Sombra de contato mais visível**: `ShadowMaterial` opacity 0.34 → 0.5; disco
+  radial "falso" com mais estágios e alpha maior (core 0.55 → 0.82, meio 0.45);
+  footprint ampliado (x*1.85, z*1.5). Não some mais em fundo escuro.
+- Responsividade conferida a 390px e 768px (carro inteiro, controles legíveis).
+
+### Frente 2 — Compressão Draco (FEITA)
+- `jeep.glb` **19.31 MB → `jeep.draco.glb` 1.73 MB (~91% menor)**. Original mantido.
+- Comando usado (gltf-transform, geometria Draco + texturas WebP — o grosso dos
+  19MB eram texturas, não geometria):
+  ```
+  npx @gltf-transform/cli optimize prototypes/assets/jeep.glb \
+      prototypes/assets/jeep.draco.glb --compress draco --texture-compress webp
+  ```
+- Loader ajustado: `DRACOLoader` local (`lib/DRACOLoader.js` + decoder em
+  `lib/draco/gltf/` — offline, sem CDN). Carrega `jeep.draco.glb` primeiro; se o
+  decoder falhar, **cai automaticamente** para `jeep.glb` (não quebra).
+
+### Frente 3 — Hotspots do interior (VEREDITO: precisa de modelo com interior)
+- **`jeep.glb` é EXTERIOR-only**. Inspeção do `.glb`: 20 meshes, todas de
+  carroceria/vidros/rodas (CarPaint, black, windows, Plastic). Sem geometria de
+  painel, cluster, volante ou console. (Bancos aparecem vagamente pelos vidros,
+  mas não há cockpit interno navegável.)
+- **Não inventamos interior.** Alinhamos ao doc 05 o que faz sentido no exterior:
+  o hotspot do para-brisa passou a referenciar o `term_slug` **`hud`** (doc 05:
+  "Projeção de informações no para-brisa"). Os demais seguem termos de exterior
+  (`grade-farois`, `rodas`, `lanternas`, `carroceria`).
+- Config externalizada em semente versionada `prototypes/assets/cockpit_hotspots.json`
+  (futura tabela `cockpit_hotspots`); o HTML ainda aceita `window.STELLANTIS_HOTSPOTS`.
+
+#### DECISÃO PENDENTE PARA O CEO
+Marcar peças de **cockpit INTERNO** (`cluster-digital`, `central-display`,
+`comandos-volante`, `audio-sistema`, `phone-mirroring`, `cloud`) exige um modelo
+com interior. Opções propostas:
+1. **Obter um `.glb` de licença livre com interior** (ex.: Sketchfab CC/CC0,
+   Poly Pizza) — mantém a mesma cena/câmera (auto-escala já existe). Simples, mas
+   não será o Jeep exato.
+2. **Cena separada de interior** (segundo `.glb` ou câmera "entra" no cockpit) com
+   seu próprio conjunto de hotspots internos — mais trabalho, melhor didática.
+Recomendação do 3D/WebGL Engineer: opção 1 para o MVP (placeholder de interior de
+licença livre) e evoluir para a opção 2 depois.
+
+### Verificação (screenshots atualizados)
+- `prototypes/screenshots/t04b-desktop.png` (1440×900)
+- `prototypes/screenshots/t04b-mobile.png` (390×844)
+- `prototypes/screenshots/t04b-tablet.png` (768×1024)
+- Console: **0 erros**; loader escondeu (modelo Draco renderizou); fallback WebGL
+  não foi acionado.
+
+### Entrega
+Para **QA**: validar interação (hover/clique nos hotspots, toggle girar/parar,
+zoom) e o fallback sem WebGL; conferir a não-sobreposição no mobile real.
+Para **Segurança**: `jeep.draco.glb` é asset estático sem dado sensível; libs e
+decoder Draco locais (sem CDN/código externo).
+
+---
 ### Prompt de retomada
 Quando o usuário disser **"continuar T04b"** (ou "continuar T04bo"), implementar
 os itens 1–5 acima em `prototypes/main-3d-explorer.html`, testar via headless

@@ -1,0 +1,11 @@
+{
+  "_comment": "Semente versionada dos hotspots do Explorador 3D (futura tabela cockpit_hotspots, editavel pelo admin - ver SPEC 3.5 e docs/05). FONTE UNICA DA VERDADE: cada hotspot referencia um termo por term_slug; nome/previa vem do verbete via API, NAO se duplica texto aqui. O campo 'def' abaixo e apenas PREVIA PROVISORIA do prototipo. Posicao normalizada nx/ny/nz em [-0.5..0.5] no bounding box do modelo (nz+ = frente, nx+ = lateral direita, ny+ = topo).",
+  "_modelo": "jeep.glb / jeep.draco.glb — EXTERIOR-only. Pecas de cockpit INTERNO do doc 05 (cluster-digital, central-display, comandos-volante, audio-sistema, phone-mirroring, cloud) exigem modelo com interior — decisao pendente para o CEO (docs/06).",
+  "hotspots": [
+    { "slug": "hud",          "label": "Head-Up Display (HUD)", "def": "Projecao de informacoes no para-brisa, no campo de visao do motorista (Digital Cockpit).", "nx": 0.00, "ny": 0.30, "nz": 0.22, "w": 128, "h": 66 },
+    { "slug": "grade-farois", "label": "Grade & Farois",        "def": "Grade frontal de 7 fendas e conjunto optico: iluminacao e assinatura de luz do Jeep.", "nx": 0.18, "ny": -0.02, "nz": 0.48, "w": 120, "h": 62 },
+    { "slug": "rodas",        "label": "Rodas & Pneus",         "def": "Conjunto roda/pneu: dimensoes, calibragem e tipos conforme o modelo.", "nx": 0.50, "ny": -0.26, "nz": 0.26, "w": 88, "h": 88 },
+    { "slug": "lanternas",    "label": "Lanternas / Traseira",  "def": "Lanternas traseiras, para-choque e porta-malas do veiculo.", "nx": 0.14, "ny": 0.04, "nz": -0.49, "w": 110, "h": 66 },
+    { "slug": "carroceria",   "label": "Carroceria",            "def": "Estrutura externa, portas e pintura do veiculo.", "nx": 0.50, "ny": 0.14, "nz": -0.02, "w": 150, "h": 92 }
+  ]
+}

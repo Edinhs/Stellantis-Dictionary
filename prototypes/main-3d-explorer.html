@@ -260,6 +260,28 @@
     .btn--pill-light { order: 2; }
     .hero__copy { text-align: left; padding-top: 6px; }
   }
+
+  /* ===== Ajustes mobile ~390px: dica (topo-esq.) x botão girar/pausar (topo-dir.)
+     não podem se encobrir. Encurtamos a dica (fonte menor, quebra em 2 linhas,
+     largura limitada) e compactamos o botão; ambos cabem na mesma linha do topo. */
+  @media (max-width: 480px) {
+    .stage { min-height: 52vh; }
+    .hint {
+      font-size: 11px; padding: 6px 10px; gap: 6px; line-height: 1.25;
+      white-space: normal; max-width: calc(100% - 132px); /* deixa espaço p/ o botão à direita */
+    }
+    .hint svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .rotbtn { font-size: 11px; padding: 6px 10px 6px 9px; gap: 6px; max-width: 118px; }
+    .rotbtn svg { width: 12px; height: 12px; }
+    .zoomctl svg { width: 168px; }
+  }
+  @media (max-width: 360px) {
+    /* telas muito estreitas: esconde o rótulo textual do botão, mantém só o ícone
+       (a11y preservada via aria-label), liberando ainda mais espaço para a dica */
+    .rotbtn { max-width: none; }
+    .rotbtn #rotbtnLabel { display: none; }
+    .hint { max-width: calc(100% - 78px); }
+  }
 </style>
 
 <div class="page">
@@ -338,6 +360,7 @@
 <script src="./lib/three.min.js"></script>
 <script src="./lib/OrbitControls.js"></script>
 <script src="./lib/GLTFLoader.js"></script>
+<script src="./lib/DRACOLoader.js"></script>
 <script src="./lib/RoomEnvironment.js"></script>
 <script>
 (function () {
@@ -364,8 +387,17 @@
   // w,h = tamanho (px) da zona de realce vermelha exibida no hover.
   // EM ABERTO / configurável: sobrescreva definindo window.STELLANTIS_HOTSPOTS
   // antes deste <script> para trocar onde marcar e o que é cada peça.
+  // NOTA (rodada 2): o jeep.glb é um modelo EXTERIOR (sem interior navegável).
+  // As peças de COCKPIT INTERNO do doc 05 (cluster-digital, central-display,
+  // comandos-volante, audio-sistema…) NÃO têm âncora neste modelo — decisão
+  // pendente p/ o CEO (ver docs/06). Aqui alinhamos ao doc 05 o que faz sentido
+  // no exterior: o `hud` é a projeção no PARA-BRISA (doc 05), então o hotspot do
+  // para-brisa referencia o term_slug `hud`. Os demais são termos de exterior.
+  // `def` é texto de prévia PROVISÓRIO do protótipo — no sistema real virá da API
+  // pelo term_slug (fonte única da verdade). Config editável via
+  // window.STELLANTIS_HOTSPOTS (ver semente em assets/cockpit_hotspots.json).
   var HOTSPOTS = window.STELLANTIS_HOTSPOTS || [
-    { slug: "para-brisa",   label: "Para-brisa / HUD",     def: "Vidro dianteiro onde o Head-Up Display (HUD) projeta informações no campo de visão.", nx: 0.00, ny: 0.30, nz: 0.22, w: 128, h: 66 },
+    { slug: "hud",          label: "Head-Up Display (HUD)", def: "Projeção de informações no para-brisa, no campo de visão do motorista (Digital Cockpit).", nx: 0.00, ny: 0.30, nz: 0.22, w: 128, h: 66 },
     { slug: "grade-farois", label: "Grade & Faróis",       def: "Grade frontal de 7 fendas e conjunto óptico: iluminação e assinatura de luz do Jeep.", nx: 0.18, ny: -0.02, nz: 0.48, w: 120, h: 62 },
     { slug: "rodas",        label: "Rodas & Pneus",        def: "Conjunto roda/pneu: dimensões, calibragem e tipos conforme o modelo.", nx: 0.50, ny: -0.26, nz: 0.26, w: 88, h: 88 },
     { slug: "lanternas",    label: "Lanternas / Traseira", def: "Lanternas traseiras, para-choque e porta-malas do veículo.", nx: 0.14, ny: 0.04, nz: -0.49, w: 110, h: 66 },
@@ -431,7 +463,7 @@
   // Chão com sombra de contato
   var ground = new THREE.Mesh(
     new THREE.PlaneGeometry(40, 40),
-    new THREE.ShadowMaterial({ opacity: 0.34 })
+    new THREE.ShadowMaterial({ opacity: 0.5 })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
@@ -443,7 +475,8 @@
     var c = document.createElement("canvas"); c.width = c.height = 256;
     var ctx = c.getContext("2d");
     var g = ctx.createRadialGradient(128, 128, 8, 128, 128, 128);
-    g.addColorStop(0, "rgba(0,0,0,0.55)"); g.addColorStop(0.55, "rgba(0,0,0,0.22)"); g.addColorStop(1, "rgba(0,0,0,0)");
+    // sombra mais densa/contrastada — não some em fundo escuro (feedback rodada 2)
+    g.addColorStop(0, "rgba(0,0,0,0.82)"); g.addColorStop(0.45, "rgba(0,0,0,0.45)"); g.addColorStop(0.75, "rgba(0,0,0,0.18)"); g.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
     var tex = new THREE.CanvasTexture(c);
     var mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false });
@@ -453,8 +486,29 @@
     scene.add(contactShadow);
   })();
 
+  // Loader com suporte a Draco (modelo comprimido: ./assets/jeep.draco.glb ~1.7MB
+  // vs. ./assets/jeep.glb ~19MB). Decoder Draco local (offline) em ./lib/draco/gltf/.
   var gltfLoader = new THREE.GLTFLoader();
-  gltfLoader.load("./assets/jeep.glb", function (gltf) {
+  var dracoLoader = null;
+  try {
+    if (THREE.DRACOLoader) {
+      dracoLoader = new THREE.DRACOLoader();
+      dracoLoader.setDecoderPath("./lib/draco/gltf/"); // draco_wasm_wrapper.js + .wasm locais
+      gltfLoader.setDRACOLoader(dracoLoader);
+    }
+  } catch (e) {}
+
+  // Fonte primária = versão comprimida (Draco). Se falhar (ex.: decoder indisponível),
+  // cai para o .glb original — sem quebrar o que já funcionava.
+  var MODEL_MAIN = "./assets/jeep.draco.glb";
+  var MODEL_FALLBACK = "./assets/jeep.glb";
+  gltfLoader.load(MODEL_MAIN, onModelLoaded, onModelProgress, function (err) {
+    // tentativa de recuperação: modelo original não comprimido
+    var g2 = new THREE.GLTFLoader();
+    g2.load(MODEL_FALLBACK, onModelLoaded, onModelProgress, onModelError);
+  });
+
+  function onModelLoaded(gltf) {
     var car = gltf.scene;
     var box = new THREE.Box3().setFromObject(car);
     var size = box.getSize(new THREE.Vector3());
@@ -483,7 +537,7 @@
     fitDim = Math.max(Math.hypot(carSize.x, carSize.z), carSize.y);
     // ajusta a sombra de contato ao footprint do carro (um pouco maior que o corpo)
     if (contactShadow) {
-      var shW = carSize.x * 1.7, shD = carSize.z * 1.35;
+      var shW = carSize.x * 1.85, shD = carSize.z * 1.5;
       contactShadow.scale.set(shW, shD, 1);
       contactShadow.position.x = fitCenter.x; contactShadow.position.z = fitCenter.z;
     }
@@ -500,15 +554,17 @@
     buildZoomSlider();
     carReady = true;
     loader.classList.add("hide");
-  }, function (xhr) {
+  }
+  function onModelProgress(xhr) {
     if (xhr.total) {
       var pct = Math.round((xhr.loaded / xhr.total) * 100);
       var t = loader.querySelector(".loader__txt");
       if (t) t.textContent = "Carregando o veículo 3D… " + pct + "%";
     }
-  }, function (err) {
+  }
+  function onModelError(err) {
     loader.classList.add("hide"); fallback.classList.add("show"); if (hint) hint.style.display = "none";
-  });
+  }
 
   function buildHotspots() {
     HOTSPOTS.forEach(function (h) {
