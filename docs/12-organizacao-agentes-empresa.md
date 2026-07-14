@@ -63,6 +63,44 @@ demais; (5) governança — toda entrega passa por QA e Segurança antes de "pro
 7. **Segredos**: nenhum agente commita segredos (API keys, tokens) — sempre via
    variáveis de ambiente.
 
+## 3.1. Protocolo de delegação obrigatória
+
+**Regra (efetiva a partir de 2026-07-14).** Todo prompt que chega ao projeto é
+**delegado pelo Agente Geral ao(s) agente(s) de setor apropriado(s)** via a
+ferramenta Agent, em vez de executado diretamente. O Agente Geral atua como
+**orquestrador**: interpreta o pedido, escolhe o setor, delega, integra as
+entregas e responde ao CEO — mas **não executa o trabalho de setor por conta
+própria** quando há um lead responsável por aquele domínio.
+
+**Mecanismo.** A regra é reforçada por um hook `UserPromptSubmit` configurado em
+`.claude/settings.json`, que **injeta um lembrete de delegação a cada turno**.
+O hook passa a valer **na próxima sessão** (ou após recarregar a configuração via
+`/hooks`), garantindo que a orquestração por delegação seja o comportamento padrão
+e não dependa de o Agente Geral "lembrar" da regra.
+
+**Como escolher o setor.** A seleção segue a natureza do pedido:
+
+| Natureza do pedido | Agente de setor |
+|---|---|
+| Documentação (PDR, SPEC, ADR, backlog, changelog) | `doc-lead` |
+| Requisitos, priorização, escopo, critérios de aceite | `product-lead` |
+| Arquitetura, contratos de API, implementação | `eng-lead` (delega aos engenheiros) |
+| Testes, verificação, regressão, "pronto?" | `qa-lead` |
+| Segurança, OWASP/ASVS, LGPD, RBAC, segredos | `security-lead` |
+| Docker, CI/CD, ambientes, observabilidade | `devops-lead` |
+
+Quando um pedido **abrange vários setores**, o Agente Geral aciona **múltiplos
+agentes** (em paralelo quando independentes) e integra os resultados antes de
+responder.
+
+**Exceções tratadas direto pelo orquestrador.** O Agente Geral responde sem
+delegar apenas em dois casos:
+1. **Interações triviais** — saudações, confirmações e esclarecimentos de escopo
+   que não produzem entrega de setor.
+2. **Organização/configuração da própria "empresa"** — decisões sobre o
+   organograma, criação/ajuste de cargos e agentes, cadeia de comando e
+   configuração de orquestração (incluindo este documento e os hooks).
+
 ## 4. Registro (roster) de agentes
 
 Arquivos de definição em `.claude/agents/`. Cada linha = um cargo/agente ativo.
@@ -108,3 +146,7 @@ Arquivos de definição em `.claude/agents/`. Cada linha = um cargo/agente ativo
 - 2026-07-14 — Criação da estrutura de empresa: 6 leads (Documentação, Produto,
   Engenharia, QA, Segurança, DevOps) + 4 engenheiros especialistas (Backend,
   Frontend, 3D/WebGL, RAG/IA).
+- 2026-07-14 — Instituída a **regra de delegação obrigatória** (§3.1): todo prompt
+  é delegado pelo Agente Geral ao(s) agente(s) de setor via ferramenta Agent, com
+  reforço por hook `UserPromptSubmit` em `.claude/settings.json`; exceções apenas
+  para interações triviais e para organização/configuração da própria "empresa".
