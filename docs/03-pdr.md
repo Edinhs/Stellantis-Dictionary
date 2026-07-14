@@ -44,6 +44,14 @@
 
 ## 4. Estrutura de agentes de IA (para a implementação, via subagentes)
 
+> **Atualização (2026-07-14):** esta seção evoluiu para o modelo de **empresa de
+> software**, com um agente responsável por setor (Documentação, Produto,
+> Engenharia, QA, Segurança, DevOps) e engenheiros especialistas. Os agentes
+> foram **criados de fato** em `.claude/agents/`. O organograma e o registro
+> (roster) oficial vivem em `docs/12-organizacao-agentes-empresa.md` (documento
+> vivo, reenviado ao CEO a cada novo cargo/agente). O diagrama abaixo é a
+> proposta original, mantida como referência histórica.
+
 Hierarquia proposta para quando formos implementar (nada será criado ainda):
 
 ```
