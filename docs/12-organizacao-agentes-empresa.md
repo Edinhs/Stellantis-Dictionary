@@ -65,12 +65,14 @@ demais; (5) governança — toda entrega passa por QA e Segurança antes de "pro
 
 ## 3.1. Protocolo de delegação obrigatória
 
-**Regra (efetiva a partir de 2026-07-14).** Todo prompt que chega ao projeto é
-**delegado pelo Agente Geral ao(s) agente(s) de setor apropriado(s)** via a
-ferramenta Agent, em vez de executado diretamente. O Agente Geral atua como
-**orquestrador**: interpreta o pedido, escolhe o setor, delega, integra as
-entregas e responde ao CEO — mas **não executa o trabalho de setor por conta
-própria** quando há um lead responsável por aquele domínio.
+**Regra (efetiva a partir de 2026-07-14) — sem exceções.** Todo prompt que chega
+ao projeto é **delegado pelo Agente Geral ao(s) agente(s) de setor apropriado(s)**
+via a ferramenta Agent, em vez de executado diretamente. **Não há exceções**:
+mesmo interações triviais (saudações, confirmações, esclarecimentos de escopo) e
+decisões de organização/configuração da própria "empresa" são delegadas. O Agente
+Geral atua como **orquestrador**: interpreta o pedido, escolhe o setor, delega,
+integra as entregas e responde ao CEO — e **nunca executa o trabalho de setor por
+conta própria**.
 
 **Mecanismo.** A regra é reforçada por um hook `UserPromptSubmit` configurado em
 `.claude/settings.json`, que **injeta um lembrete de delegação a cada turno**.
@@ -93,13 +95,18 @@ Quando um pedido **abrange vários setores**, o Agente Geral aciona **múltiplos
 agentes** (em paralelo quando independentes) e integra os resultados antes de
 responder.
 
-**Exceções tratadas direto pelo orquestrador.** O Agente Geral responde sem
-delegar apenas em dois casos:
+**Sem exceções — nem interações triviais, nem organização/configuração.** Todo
+prompt é delegado, incluindo os casos que antes eram tratados direto pelo
+orquestrador:
 1. **Interações triviais** — saudações, confirmações e esclarecimentos de escopo
-   que não produzem entrega de setor.
+   também passam por um agente de setor (tipicamente `doc-lead` para registro ou
+   `product-lead` para esclarecimento de escopo).
 2. **Organização/configuração da própria "empresa"** — decisões sobre o
    organograma, criação/ajuste de cargos e agentes, cadeia de comando e
-   configuração de orquestração (incluindo este documento e os hooks).
+   configuração de orquestração são delegadas conforme a natureza: mudanças de
+   **configuração/hooks** (incluindo `.claude/settings.json`) vão para o
+   `devops-lead`; **redação e registro** (incluindo este documento) vão para o
+   `doc-lead`.
 
 ## 4. Registro (roster) de agentes
 
@@ -150,3 +157,7 @@ Arquivos de definição em `.claude/agents/`. Cada linha = um cargo/agente ativo
   é delegado pelo Agente Geral ao(s) agente(s) de setor via ferramenta Agent, com
   reforço por hook `UserPromptSubmit` em `.claude/settings.json`; exceções apenas
   para interações triviais e para organização/configuração da própria "empresa".
+- 2026-07-14 — Regra de delegação passou a valer **sem exceções**: todo prompt é
+  delegado, inclusive interações triviais e decisões de organização/configuração
+  (config/hooks → `devops-lead`; redação/registro → `doc-lead`). Hook e §3.1
+  atualizados.
