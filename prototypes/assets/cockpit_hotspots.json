@@ -12,17 +12,16 @@
     ]
   },
   "interior": {
-    "_modelo": "MODELO REAL de cockpit: cockpit-interior.draco.glb — 'Car Concept' de Eric Chadwick / Darmstadt Graphics Group GmbH (CC-BY-4.0), via Khronos glTF Sample Assets; derivado de um concept car CC0 de 'Unity Fan'. NAO e asset oficial da Stellantis. Ver prototypes/ASSETS.md e docs/06 (fonte, URL, autor, licenca, atribuicao exigida). Se o .glb falhar, o codigo cai num placeholder procedural own-work.",
-    "_ancoragem": "Cada hotspot ANCORA em PECAS REAIS do .glb pelo nome de mesh (campo 'mesh'); o runtime calcula o centro dessas pecas (modelo ja centralizado, escalado maxDim->3.0 e apoiado no chao) e aplica o ajuste fino ox/oy/oz. Eixos: pz+ = frente/painel, px = largura, py = altura (a partir do chao). px/py/pz sao FALLBACK do PLACEHOLDER procedural (usados so se a peca 'mesh' nao existir, ex.: se o .glb real falhar). Para referencia, as posicoes JA CALCULADAS no modelo real (centro da peca + offset, no frame acima) sao: hud[0.00,0.66,0.90] cluster-digital[0.00,0.55,0.79] central-display[0.00,0.48,0.90] comandos-volante[0.00,0.56,0.55] audio-sistema[0.58,0.55,0.00] phone-mirroring[0.00,0.38,0.90] cloud[0.00,0.85,-0.22] cockpit[0.00,0.61,0.01].",
+    "_modelo": "PLACEHOLDER procedural (geometria simples own-work, licenca livre) representando painel/cluster/HUD/volante/central/console/alto-falante/bancos. Substituivel por um .glb real de cockpit de licenca livre — ver docs/06 e o PONTO DE TROCA FACIL em main-3d-explorer.html (buildInterior). Posicao ABSOLUTA px/py/pz em unidades do grupo do cockpit (origem no centro; py = altura; pz+ = frente/painel; px- = lado do motorista).",
     "hotspots": [
-      { "slug": "hud",              "label": "Head-Up Display (HUD)",  "def": "Projecao de informacoes no para-brisa, no campo de visao do motorista (Digital Cockpit).", "mesh": ["InteriorSteeringDashColumn"], "oy": 0.16, "oz": 0.10, "px": -0.55, "py": 1.22, "pz": 0.52, "w": 96, "h": 46 },
-      { "slug": "cluster-digital",  "label": "Cluster / Painel Digital", "def": "Painel de instrumentos digital do motorista: velocidade, alertas e navegacao.", "mesh": ["InteriorSteeringDash"], "px": -0.55, "py": 1.04, "pz": 0.44, "w": 100, "h": 58 },
-      { "slug": "central-display",  "label": "Central Multimidia",     "def": "Tela central de informacao e entretenimento (infotainment).", "mesh": ["InteriorDashMid"], "oy": 0.03, "px": 0.02, "py": 1.04, "pz": 0.47, "w": 92, "h": 66 },
-      { "slug": "comandos-volante", "label": "Comandos do Volante",    "def": "Botoes fisicos no volante para audio, telefone e assistentes (Physical Cockpit).", "mesh": ["InteriorSteeringWheel", "InteriorSteeringHandle"], "px": -0.55, "py": 0.88, "pz": 0.34, "w": 82, "h": 82 },
-      { "slug": "audio-sistema",    "label": "Sistema de Audio",       "def": "Alto-falantes, amplificador e microfones: som e captacao de voz.", "mesh": ["InteriorDoorL"], "px": -1.00, "py": 0.87, "pz": 0.12, "w": 74, "h": 74 },
-      { "slug": "phone-mirroring",  "label": "Espelhamento de Telefone", "def": "Android Auto / Apple CarPlay: espelha o smartphone na central multimidia.", "mesh": ["InteriorDashMid"], "oy": -0.07, "px": 0.05, "py": 0.92, "pz": 0.28, "w": 74, "h": 60 },
-      { "slug": "cloud",            "label": "Nuvem (Cloud)",          "def": "Conectividade e servicos online do veiculo.", "mesh": ["BodyRoofPanel"], "oy": -0.04, "px": 0.00, "py": 1.50, "pz": 0.50, "w": 72, "h": 72 },
-      { "slug": "cockpit",          "label": "Cockpit (visao geral)",  "def": "Area de comando do motorista: telas, controles e conectividade.", "mesh": ["InteriorFloor"], "oy": 0.18, "px": 0.00, "py": 0.76, "pz": 0.10, "w": 120, "h": 82 }
+      { "slug": "hud",              "label": "Head-Up Display (HUD)",  "def": "Projecao de informacoes no para-brisa, no campo de visao do motorista (Digital Cockpit).", "px": -0.55, "py": 1.22, "pz": 0.52, "w": 96, "h": 46 },
+      { "slug": "cluster-digital",  "label": "Cluster / Painel Digital", "def": "Painel de instrumentos digital do motorista: velocidade, alertas e navegacao.", "px": -0.55, "py": 1.04, "pz": 0.44, "w": 100, "h": 58 },
+      { "slug": "central-display",  "label": "Central Multimidia",     "def": "Tela central de informacao e entretenimento (infotainment).", "px": 0.02, "py": 1.04, "pz": 0.47, "w": 92, "h": 66 },
+      { "slug": "comandos-volante", "label": "Comandos do Volante",    "def": "Botoes fisicos no volante para audio, telefone e assistentes (Physical Cockpit).", "px": -0.55, "py": 0.88, "pz": 0.34, "w": 82, "h": 82 },
+      { "slug": "audio-sistema",    "label": "Sistema de Audio",       "def": "Alto-falantes, amplificador e microfones: som e captacao de voz.", "px": -1.00, "py": 0.87, "pz": 0.12, "w": 74, "h": 74 },
+      { "slug": "phone-mirroring",  "label": "Espelhamento de Telefone", "def": "Android Auto / Apple CarPlay: espelha o smartphone na central multimidia.", "px": 0.05, "py": 0.92, "pz": 0.28, "w": 74, "h": 60 },
+      { "slug": "cloud",            "label": "Nuvem (Cloud)",          "def": "Conectividade e servicos online do veiculo.", "px": 0.00, "py": 1.50, "pz": 0.50, "w": 72, "h": 72 },
+      { "slug": "cockpit",          "label": "Cockpit (visao geral)",  "def": "Area de comando do motorista: telas, controles e conectividade.", "px": 0.00, "py": 0.76, "pz": 0.10, "w": 120, "h": 82 }
     ]
   }
 }
