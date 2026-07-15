@@ -7,13 +7,33 @@
 # Sem segredos reais: os testes usam Postgres/pgvector efêmero com valores DUMMY.
 # Credenciais reais (deploy) virão de GitHub Secrets/OIDC quando D6 for decidido,
 # sempre alinhadas com o Segurança Lead.
+#
+# --- Guards de Fase 0.5 (auto-ativação no bootstrap) -------------------------
+# Nesta fase o repositório ainda NÃO tem package.json/lockfile em backend/ e
+# frontend/. Para o CI ficar HONESTAMENTE VERDE (sem falsos vermelhos por
+# `npm ci` sem lockfile e sem annotations de cache), um job `detect`:
+#   (a) filtra por paths — Backend só reage a backend/**, Frontend a frontend/**,
+#       e ambos reagem a mudanças neste próprio workflow;
+#   (b) verifica a EXISTÊNCIA do manifesto/lockfile de cada pacote.
+# Os jobs pesados só rodam quando o pacote mudou E já tem lockfile. Assim, quando
+# o bootstrap adicionar `package.json` + `package-lock.json`, o CI se ativa
+# sozinho — sem reeditar este arquivo.
 
 name: CI
 
 on:
   push:
     branches: ["**"]
+    # Restringe o disparo aos diretórios de código e ao próprio workflow.
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/ci.yml"
   pull_request:
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - ".github/workflows/ci.yml"
 
 # Cancela execuções antigas do mesmo ref quando chega um push novo.
 concurrency:
@@ -24,10 +44,61 @@ permissions:
   contents: read
 
 jobs:
+  # ----------------------------------------------------------------- Detect ---
+  # Descobre (1) quais áreas mudaram e (2) se o lockfile de cada pacote já existe.
+  # A checagem de existência é feita APÓS o checkout (hashFiles/`-f` só enxergam
+  # o workspace depois de clonado — por isso não dá para gatear via `if` de job
+  # sem este passo). As saídas controlam os jobs pesados abaixo.
+  detect:
+    name: Detect (paths · lockfiles)
+    runs-on: ubuntu-latest
+    outputs:
+      backend_changed: ${{ steps.filter.outputs.backend }}
+      frontend_changed: ${{ steps.filter.outputs.frontend }}
+      backend_ready: ${{ steps.ready.outputs.backend_ready }}
+      frontend_ready: ${{ steps.ready.outputs.frontend_ready }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Filtro de paths por área. Inclui o próprio ci.yml para revalidar tudo
+      # quando o pipeline mudar. (dorny/paths-filter — o Segurança Lead pode
+      # pedir o pin por SHA quando formos endurecer a supply-chain.)
+      - name: Filter changed areas
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - 'backend/**'
+              - '.github/workflows/ci.yml'
+            frontend:
+              - 'frontend/**'
+              - '.github/workflows/ci.yml'
+
+      # Existência do lockfile = pacote pronto para lint/test/build de verdade.
+      - name: Check lockfiles
+        id: ready
+        run: |
+          if [ -f backend/package-lock.json ]; then
+            echo "backend_ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "backend_ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Backend CI dormant::backend/package-lock.json ausente — job Backend adormecido (Fase 0.5). Ativa automaticamente no bootstrap."
+          fi
+          if [ -f frontend/package-lock.json ]; then
+            echo "frontend_ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "frontend_ready=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Frontend CI dormant::frontend/package-lock.json ausente — job Frontend adormecido (Fase 0.5). Ativa automaticamente no bootstrap."
+          fi
+
   # ---------------------------------------------------------------- Backend ---
   backend:
     name: Backend (lint · test · build)
     runs-on: ubuntu-latest
+    needs: detect
+    # Só roda quando backend/** (ou o workflow) mudou E o lockfile já existe.
+    if: needs.detect.outputs.backend_changed == 'true' && needs.detect.outputs.backend_ready == 'true'
 
     # Postgres/pgvector como service container para testes de integração.
     # Valores DUMMY apenas para o CI — jamais segredos reais.
@@ -66,6 +137,7 @@ jobs:
         with:
           node-version: "20"
           cache: npm
+          # Seguro: este job só executa quando o lockfile existe (guard do detect).
           cache-dependency-path: backend/package-lock.json
 
       - name: Install deps
@@ -84,6 +156,9 @@ jobs:
   frontend:
     name: Frontend (lint · test · build)
     runs-on: ubuntu-latest
+    needs: detect
+    # Só roda quando frontend/** (ou o workflow) mudou E o lockfile já existe.
+    if: needs.detect.outputs.frontend_changed == 'true' && needs.detect.outputs.frontend_ready == 'true'
 
     defaults:
       run:
@@ -97,6 +172,7 @@ jobs:
         with:
           node-version: "20"
           cache: npm
+          # Seguro: este job só executa quando o lockfile existe (guard do detect).
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install deps
@@ -115,7 +191,9 @@ jobs:
   docker-build:
     name: Docker build (valida Dockerfile do app)
     runs-on: ubuntu-latest
-    needs: [backend]
+    needs: [detect, backend]
+    # Mesmo guard do Backend: sem manifesto/lockfile do app, não há o que buildar.
+    if: needs.detect.outputs.backend_changed == 'true' && needs.detect.outputs.backend_ready == 'true'
     steps:
       - uses: actions/checkout@v4
       - name: Build imagem do app (sem push, sem segredos)
