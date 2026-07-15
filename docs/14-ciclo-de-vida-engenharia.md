@@ -31,6 +31,15 @@ por número (ver `doc-standards`), (b) a DoD está integralmente satisfeita e (c
 etapa 14 — Correções, quando o defeito surge na homologação). Um retorno é
 registrado, não apagado.
 
+**Granularidade: por módulo/feature (decisão do CEO, 2026-07-15).** O ciclo de 19
+etapas com gates rígidos aplica-se **por módulo/feature**, não por release global.
+Cada módulo (dicionário, chat RAG, cockpit 3D, diretório, comunidade/Q&A) percorre
+seu **próprio** ciclo de gates. Etapas **transversais ao produto** já concluídas
+(ex.: Ideia, e a arquitetura base da etapa 8) **não se repetem** a cada módulo;
+mas o eixo **Requisitos → Testes → Homologação** (etapas 3–5 e 11–14) vale **por
+módulo**. Assim, dois módulos podem estar em gates diferentes ao mesmo tempo, cada
+um respeitando a regra sequencial dentro do seu ciclo.
+
 ### 1.1 Papéis de um gate
 
 | Papel | Quem | O que faz |
@@ -216,11 +225,15 @@ Para cada etapa: **dono**, **entrada** (critérios de entrada), **artefatos**,
 | 12 | Testes | `qa-lead` | skill `qa-checklist` | `qa-lead` |
 | 13 | Homologação | `qa-lead` + `sicky` + CEO | `16-homologacao-uat` | CEO |
 | 14 | Correções | `eng-lead` | código | `qa-lead` (reverificação) |
-| 15 | Deploy | `release-engineer` | `17-deploy-e-entrega` | `devops-lead` |
-| 16 | Entrega | `release-engineer` | `17-deploy-e-entrega` | CEO |
-| 17 | Manutenção | `devops-lead` | `18-manutencao-e-suporte` | `devops-lead` |
-| 18 | Monitoramento | `sre-engineer` | `19-monitoramento-observabilidade` | `devops-lead` |
-| 19 | Evolução Contínua | `sre-engineer` / `product-lead` | `19` → `04-tasks` | `product-lead` (→ CEO) |
+| 15 | Deploy | `release-engineer` | `17-deploy-e-entrega` | `devops-lead` + Segurança |
+| 16 | Entrega | `release-engineer` | `17-deploy-e-entrega` | CEO + Segurança |
+| 17 | Manutenção | `devops-lead` | `18-manutencao-e-suporte` | `devops-lead` + Segurança |
+| 18 | Monitoramento | `sre-engineer` | `19-monitoramento-observabilidade` | `devops-lead` + Segurança |
+| 19 | Evolução Contínua | `sre-engineer` / `product-lead` | `19` → `04-tasks` | `product-lead` (→ CEO) + Segurança |
+
+> Nota (§4): o **gate de Segurança** cobre as etapas 9, 11, 14, 15, 16, 17, 18 e 19.
+> As etapas 15–19 têm execução real **bloqueada por `D6`** (hospedagem), mas o gate
+> de Segurança já as cobre por definição.
 
 ## 4. Gates transversais obrigatórios (QA e Segurança)
 
@@ -232,8 +245,18 @@ obrigatórios — regra já vigente no roster `12-organizacao-agentes-empresa.md
    toque código** (etapas 9, 11, 14 e a própria 12). Nada é "pronto" sem
    verificação objetiva contra critérios de aceite (skill `qa-checklist`).
 2. **Gate de Segurança (`security-lead`).** Obrigatório antes de fechar **qualquer
-   gate que toque dados ou segurança** (etapas 9, 11, 14, 15) — OWASP/ASVS, RBAC,
-   LGPD (dados pessoais do diretório), gestão de segredos, superfícies de ataque.
+   gate que toque dados ou segurança** (etapas 9, 11, 14, 15, **16, 17, 18 e 19**) —
+   OWASP/ASVS, RBAC, LGPD (dados pessoais do diretório), gestão de segredos,
+   superfícies de ataque.
+   - **Extensão às etapas 16–19 (decisão do CEO, 2026-07-15).** As etapas de operação
+     também tocam segurança e por isso entram no escopo do gate: **16 (Entrega)** —
+     segredos em runtime e configuração de produção; **17 (Manutenção)** — segredos e
+     patches de segurança sob controle; **18 (Monitoramento)** — TLS, retenção de logs
+     e não-logar segredos sob **LGPD**; **19 (Evolução Contínua)** — dados reais em
+     produção realimentando o backlog. A **aplicação real** dessas etapas continua
+     **bloqueada por `D6`** (hospedagem em aberto no PDR `03`, ver nota da §5), mas o
+     gate de Segurança já as **cobre por definição** — quando forem executadas, o gate
+     de Segurança será obrigatório.
 
 Se QA **ou** Segurança reprovar, o gate **não fecha**: retorna ao dono (ou à etapa
 14). Estes gates são **cumulativos** ao aprovador nominal, nunca o substituem.
@@ -252,15 +275,19 @@ Se QA **ou** Segurança reprovar, o gate **não fecha**: retorna ao dono (ou à 
   porém, **todo novo trabalho segue os gates rígidos** deste documento. O gate 7
   formaliza-se na revisão `T05` (aprovação do CEO).
 - **Como as fases do backlog se encaixam nos gates.** As fases de `04-tasks.md`
-  mapeiam nos gates deste ciclo:
+  mapeiam nos gates deste ciclo. Coerente com a granularidade **por módulo/feature**
+  (§1), as fases de módulo (**1b** dicionário, **1c** chat RAG, **1f** diretório,
+  **1g/1h** comunidade/Q&A) são **instâncias do ciclo por módulo**: cada uma percorre
+  seu próprio eixo Requisitos → Testes → Homologação, reaproveitando as etapas
+  transversais já fechadas para o produto (Ideia e arquitetura base):
 
 | Fase do backlog (`04`) | Gates deste ciclo |
 |---|---|
 | Fase 0.5 — Protótipo (trabalho `T01`–`T04d`; `T05` = gate/aprovação CEO) | Etapa **7** (dono `design-lead`; aprova CEO) |
-| Fase 1a — Fundação (`T06`–`T09`) | Etapas **8, 9, 11** (arquitetura/BD/dev) |
-| Fase 1b/1b2/1c — Dicionário/3D/RAG | Etapas **11–12** (dev + testes) |
+| Fase 1a — Fundação (`T06`–`T09`) | Etapas **8, 9, 11** (arquitetura/BD/dev) — base transversal, não se repete por módulo |
+| Fase 1b/1b2/1c — Dicionário/3D/RAG | Etapas **11–12** (dev + testes) — **instância do ciclo por módulo** |
 | Fase 1d — Frontend real | Etapas **11–12** |
-| Fase 1f/1g/1h — Diretório/Comunidade/Q&A | Etapas **11–12** (+ Segurança no gate) |
+| Fase 1f/1g/1h — Diretório/Comunidade/Q&A | Etapas **11–12** (+ Segurança no gate) — **instância do ciclo por módulo** |
 | Fase 1e — Segurança transversal (`T18`/`T19`) | **Gate transversal de Segurança** (§4) |
 | Fases 2–4 — futuras | Etapas **15–19** entram quando houver deploy real |
 
@@ -290,9 +317,13 @@ Se QA **ou** Segurança reprovar, o gate **não fecha**: retorna ao dono (ou à 
 
 ## 8. Perguntas em aberto
 
-1. **Granularidade do ciclo.** O ciclo de 19 etapas aplica-se **por release** (macro)
-   ou também **por feature** dentro de uma fase? Recomendação: por release para os
-   gates 1–5/15–19 e por feature para 6–14 — *aguardando confirmação do CEO*.
+1. **Granularidade do ciclo. — RESOLVIDA (CEO, 2026-07-15): por módulo/feature.** O
+   ciclo de 19 etapas com gates rígidos aplica-se **por módulo/feature**, não por
+   release global. Cada módulo (dicionário, chat RAG, cockpit 3D, diretório,
+   comunidade/Q&A) percorre seu próprio ciclo; etapas transversais já concluídas para
+   o produto (Ideia, arquitetura base) não se repetem, mas Requisitos → Testes →
+   Homologação valem por módulo. Ver §1 (bloco *Granularidade*) e o mapa fase→gate da
+   §5. Registro canônico de decisões permanece no PDR `03-pdr.md`.
 2. **Registro de aprovação de gate.** Onde fica o carimbo de "gate N aprovado"? Um
    log de gates neste doc §9 (a criar) ou no próprio artefato de cada etapa? —
    *aguardando decisão*.
