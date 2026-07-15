@@ -4,6 +4,15 @@ Este backlog traduz o roadmap do PDR (`03-pdr.md`) em tarefas pequenas e
 sequenciais, para irmos avançando aos poucos e revisando a cada entrega.
 Marque `[x]` conforme formos concluindo.
 
+> **Nota — governança por gates (`D18`).** As fases abaixo se encaixam nas 19 etapas
+> do ciclo de vida `14-ciclo-de-vida-engenharia.md` (ver `14` §5 para o mapa
+> fase→gate): Fase 0.5 = etapa 7 (Protótipo, dono `design-lead`, aprova o CEO em
+> `T05`); Fases 1a–1h = etapas 8–12 (arquitetura/BD/dev/testes), com **QA e
+> Segurança como gates transversais obrigatórios** (`14` §4); Fase 1e = gate de
+> Segurança; Fases 2–4 alcançam as etapas 15–19 (deploy→evolução), **bloqueadas
+> enquanto `D6` — hospedagem — estiver em aberto**. O projeto está na **Fase 0.5 /
+> etapa 7** (grandfathering do protótipo já feito: não será refeito).
+
 ## Fase 0.5 — Protótipo visual (agora)
 > Objetivo: validar telas e fluxo antes de escrever código "de verdade".
 - [ ] T01 — Protótipo HTML: tela de login/cadastro

@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"[Governanca da empresa de software] Como Agente Geral (orquestrador), delegue TODA solicitacao ao agente de setor apropriado via a ferramenta Agent, SEM EXCECOES (inclusive saudacoes, esclarecimentos e decisoes de organizacao/configuracao da propria empresa), em vez de executar diretamente. Setores: doc-lead (Documentacao), product-lead (Produto), eng-lead (Engenharia; delega backend/frontend/threed/rag), qa-lead (QA), security-lead (Seguranca), devops-lead (DevOps/Infra). Escolha pela natureza do pedido e use multiplos agentes se abranger varios setores.\"",
+            "command": "echo \"[Governanca da empresa de software] Como Agente Geral (orquestrador), delegue TODA solicitacao ao agente de setor apropriado via a ferramenta Agent, SEM EXCECOES (inclusive saudacoes, esclarecimentos e decisoes de organizacao/configuracao da propria empresa), em vez de executar diretamente. Setores: doc-lead (Documentacao), product-lead (Produto; delega requisitos ao requirements-analyst), eng-lead (Engenharia; delega backend/frontend/threed/rag), qa-lead (QA), security-lead (Seguranca), devops-lead (DevOps/Infra; delega deploy/entrega ao release-engineer e monitoramento ao sre-engineer), design-lead (UX/UI Design). Escolha pela natureza do pedido e use multiplos agentes se abranger varios setores.\"",
             "statusMessage": "Aplicando regra de delegacao por setor"
           }
         ]

@@ -3,7 +3,7 @@
 > Documento **vivo**. É o organograma + registro (roster) oficial dos agentes e
 > cargos. **Sempre que criarmos um novo cargo ou agente, este documento é
 > atualizado e reenviado ao CEO.**
-> Última atualização: 2026-07-14.
+> Última atualização: 2026-07-15.
 
 ## 1. Estudo de caso — por que organizar como empresa
 
@@ -31,20 +31,19 @@ demais; (5) governança — toda entrega passa por QA e Segurança antes de "pro
                          │   Agente Geral        │  (este assistente)
                          │  orquestrador / CTO   │  planeja, delega, integra
                          └──────────┬───────────┘
-        ┌──────────┬───────────┬────┴─────┬───────────┬───────────┐
-        ▼          ▼           ▼          ▼           ▼           ▼
-   ┌─────────┐┌─────────┐┌──────────┐┌────────┐┌──────────┐┌──────────┐
-   │Documen- ││Produto  ││Engenharia││  QA /   ││Segurança ││ DevOps / │
-   │ tação   ││ (PM)    ││  (Eng)   ││Qualidade││          ││  Infra   │
-   │ Lead    ││ Lead    ││  Lead    ││ Lead    ││ Lead     ││ Lead     │
-   └─────────┘└─────────┘└────┬─────┘└────────┘└──────────┘└──────────┘
-                              │ sub-agentes especialistas
-        ┌──────────┬──────────┼──────────┬──────────────┐
-        ▼          ▼          ▼          ▼              ▼
-   ┌─────────┐┌─────────┐┌──────────┐┌──────────┐  (novos conforme
-   │ Backend ││Frontend ││ 3D/WebGL ││  RAG/IA  │   a necessidade)
-   │Engineer ││Engineer ││ Engineer ││ Engineer │
-   └─────────┘└─────────┘└──────────┘└──────────┘
+   ┌──────┬──────┬──────┬───┴──┬──────┬──────┬──────┐
+   ▼      ▼      ▼      ▼      ▼      ▼      ▼
+┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐┌──────┐
+│Docu- ││Prod. ││Enge- ││ QA / ││Segu- ││DevOps││Design│
+│menta.││(PM)  ││nharia││Qual. ││rança ││/Infra││UX/UI │
+│Lead  ││Lead  ││Lead  ││Lead  ││Lead  ││Lead  ││Lead  │
+└──────┘└──────┘└──────┘└──────┘└──────┘└──────┘└──────┘
+   (7 leads reportam ao Agente Geral)
+
+Especialistas (sub-agentes), por lead:
+  Produto Lead     ──▶ requirements-analyst        (etapas 2–5)
+  Engenharia Lead  ──▶ backend / frontend / 3d-webgl / rag-ia
+  DevOps Lead      ──▶ release-engineer (15–16), sre-engineer (18–19)
 ```
 
 ## 3. Cadeia de comando e regras
@@ -122,10 +121,14 @@ Arquivos de definição em `.claude/agents/`. Cada linha = um cargo/agente ativo
 | QA Lead | `qa-lead.md` | Agente Geral | Testes, verificação, critérios de aceite | Sim | Ativo |
 | Segurança Lead | `security-lead.md` | Agente Geral | Revisão de segurança, OWASP, LGPD, RBAC | Sim | Ativo |
 | DevOps Lead | `devops-lead.md` | Agente Geral | Docker, CI/CD, ambientes, observabilidade | Sim | Ativo |
+| **Design Lead (UX/UI)** | `design-lead.md` | Agente Geral | Pesquisa de UX + protótipos (etapa 7 do ciclo `14`) | Sim | Ativo |
 | Backend Engineer | `backend-engineer.md` | Engenharia Lead | API, auth, modelo de dados, Postgres | Sob demanda | Ativo |
 | Frontend Engineer | `frontend-engineer.md` | Engenharia Lead | SPA, telas, acessibilidade, responsividade | Sob demanda | Ativo |
 | 3D/WebGL Engineer | `threed-engineer.md` | Engenharia Lead | Explorador 3D, hotspots, fallback | Sob demanda | Ativo |
 | RAG/IA Engineer | `rag-engineer.md` | Engenharia Lead | Embeddings, chunking, adapter de LLM | Sob demanda | Ativo |
+| Analista de Requisitos | `requirements-analyst.md` | Produto Lead | Pesquisa, requisitos, regras de negócio, casos de uso (etapas 2–5 do ciclo `14`) | Sob demanda | Ativo |
+| Release/Deploy Engineer | `release-engineer.md` | DevOps Lead | Release, deploy, versionamento, rollback, entrega (etapas 15–16) | Sob demanda | Ativo |
+| SRE/Monitoramento | `sre-engineer.md` | DevOps Lead | Métricas/SLO, logs, alertas, dashboards, feedback→backlog (etapas 18–19) | Sob demanda | Ativo |
 | Sicky (testes ao vivo) | `sicky.md` | QA Lead (colabora) | Testes manuais ao vivo no navegador (Playwright/Chromium); dirige o app rodável como usuário real p/ achar gargalos, fluxos quebrados e problemas de UX; produz relatório final de melhorias com autonomia | Não | Dormente (sob demanda) |
 
 > **Estado "Dormente (sob demanda)".** Todos os agentes só agem quando invocados,
@@ -142,15 +145,19 @@ Skills marcados como **criados** existem em `.claude/skills/<nome>/SKILL.md` (ve
 | Setor | Responsável | Docs de referência | Skills (criados em `.claude/skills/`) |
 |---|---|---|---|
 | Documentação | Documentação Lead | todos os `docs/` | `doc-standards` (criado) |
-| Produto | Produto Lead | `01-briefing`, `03-pdr`, `04-tasks` | `product-backlog` (criado) |
-| Engenharia | Engenharia Lead | `02-spec`, `08`, `09`, `11` | — |
+| Produto | Produto Lead | `01-briefing`, `03-pdr`, `04-tasks`, `14` | `product-backlog` (criado) |
+| Requisitos | Analista de Requisitos (sob Produto) | `15-casos-de-uso`, SPECs `02`/`08`/`09`/`11` | `requirements-elicitation` (criado) |
+| Design (UX/UI) | Design Lead | `14` (etapa 7), `prototypes/`, `05`/`06` | `ux-research-prototyping` (criado) |
+| Engenharia | Engenharia Lead | `02-spec`, `08`, `09`, `11`, `13`, `14` | — |
 | Backend | Backend Engineer | `02-spec` §3–4, `09` | `backend-api` (criado), `db-schema` (criado) |
 | Frontend | Frontend Engineer | `02-spec` §3, protótipos | `ui-design-system` (criado) |
 | 3D/WebGL | 3D/WebGL Engineer | `05-cockpit-3d-reference`, `08` | `3d-cockpit` (criado) |
 | RAG/IA | RAG/IA Engineer | `02-spec` §3.4, `11` §4 | `rag-pipeline` (criado) |
 | QA | QA Lead (+ Sicky, testes ao vivo) | `04-tasks` (critérios) | `qa-checklist` (criado) |
 | Segurança | Segurança Lead | `02-spec` §3.6, `09` §7 | `security-checklist` (criado) |
-| DevOps | DevOps Lead | `02-spec` §5 | `devops-baseline` (criado) |
+| DevOps | DevOps Lead | `02-spec` §5, `17`, `18`, `19` | `devops-baseline` (criado) |
+| Release/Deploy | Release/Deploy Engineer (sob DevOps) | `17-deploy-e-entrega` | `release-deploy` (criado) |
+| SRE/Observabilidade | SRE/Monitoramento (sob DevOps) | `19-monitoramento-observabilidade`, `13` §6.2 | `observability-sre` (criado) |
 
 > **Nota — testes ao vivo (setor QA).** Além do QA Lead (verificação e critérios de
 > aceite), o setor conta com o **Sicky**, um **testador ao vivo complementar**: dirige
@@ -161,7 +168,7 @@ Skills marcados como **criados** existem em `.claude/skills/<nome>/SKILL.md` (ve
 
 ### 5.1 Skills criados
 
-Dez skills reais foram criados em `.claude/skills/`, cada um com seu `SKILL.md`.
+Quatorze skills reais existem em `.claude/skills/`, cada um com seu `SKILL.md`.
 O carregador lê `.claude/skills/` na inicialização, portanto **entram em vigor na
 próxima sessão** (ou após recarregar a configuração).
 
@@ -177,6 +184,10 @@ próxima sessão** (ou após recarregar a configuração).
 | `devops-baseline/SKILL.md` | DevOps | Baseline de Docker, CI/CD, ambientes e observabilidade. |
 | `doc-standards/SKILL.md` | Documentação | Padrões de PDR/SPEC/ADR, numeração e referências cruzadas. |
 | `product-backlog/SKILL.md` | Produto | Estrutura do backlog, priorização e critérios de aceite. |
+| `ux-research-prototyping/SKILL.md` | Design (UX/UI) | Pesquisa de UX e protótipos da Fase 0.5 (etapa 7). |
+| `requirements-elicitation/SKILL.md` | Requisitos | Pesquisa, requisitos, regras de negócio e casos de uso (etapas 2–5). |
+| `release-deploy/SKILL.md` | Release/Deploy | Release, deploy, versionamento, rollback e entrega (etapas 15–16). |
+| `observability-sre/SKILL.md` | SRE | Métricas/SLO, logs, alertas, dashboards, feedback→backlog (etapas 18–19). |
 
 ## 6. Como abrir um novo setor/cargo (extensibilidade)
 
@@ -208,3 +219,16 @@ próxima sessão** (ou após recarregar a configuração).
   relatório final de melhorias autônomo. Colabora com o QA Lead. Registrado no roster
   (§4, com coluna **Estado**) e no mapa do setor QA (§5). Fica inativo na fase de
   planejamento e só é acionado sob solicitação explícita do CEO/Agente Geral.
+- 2026-07-15 — Adotado o **ciclo de vida de Engenharia de 19 etapas com gates
+  sequenciais rígidos** como espinha dorsal governada do projeto (decisão `D18` do
+  PDR `03`; documento-mestre `docs/14-ciclo-de-vida-engenharia.md`). Criados os docs
+  de apoio `15-casos-de-uso`, `16-homologacao-uat`, `17-deploy-e-entrega`,
+  `18-manutencao-e-suporte` e `19-monitoramento-observabilidade`.
+- 2026-07-15 — Criados **4 novos cargos** (decisão `D19` do PDR `03`): **Design Lead
+  (UX/UI)** (`design-lead.md`) — 7º lead, reporta ao Agente Geral, dono da etapa 7;
+  **Analista de Requisitos** (`requirements-analyst.md`) — sob o Produto Lead, etapas
+  2–5; **Release/Deploy Engineer** (`release-engineer.md`) e **SRE/Monitoramento**
+  (`sre-engineer.md`) — ambos sob o DevOps Lead, etapas 15–16 e 18–19. Organograma
+  (§2), roster (§4) e mapa (§5/§5.1) atualizados. Criados 4 skills correspondentes:
+  `ux-research-prototyping`, `requirements-elicitation`, `release-deploy`,
+  `observability-sre` (total: 14 skills). Entram em vigor na próxima sessão.

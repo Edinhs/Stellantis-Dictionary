@@ -20,6 +20,8 @@
 | D15 | Novo tipo de conteúdo **`workflows`** (fluxo de trabalho), espelhando `terms` | Confirmado — ver SPEC `09` §5 |
 | D16 | Histórico/auditoria: `contributions` + `content_revisions` (rollback) + `audit_log` (append-only) | Confirmado — ver SPEC `09` §6 |
 | D17 | **Aba "Comunidade" (Q&A)**: usuários fazem e respondem perguntas | Confirmado — PDR/SPEC dedicados (docs `10`/`11`, em elaboração) |
+| D18 | **Ciclo de vida de Engenharia de 19 etapas com gates sequenciais rígidos** como espinha dorsal governada (cada etapa = portão com dono, DoD e aprovador) | Confirmado — ver doc `14-ciclo-de-vida-engenharia.md`; docs de apoio `15`–`19` |
+| D19 | **Criação de 4 cargos**: Design Lead (UX/UI, 7º lead → Agente Geral), Analista de Requisitos (→ Produto Lead), Release/Deploy Engineer e SRE/Monitoramento (→ DevOps Lead) | Confirmado — ver roster `12` §4/§7 |
 
 ## 2. Riscos e mitigação
 | Risco | Impacto | Mitigação |
