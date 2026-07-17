@@ -210,5 +210,3 @@ Registro para o parecer de segurança/LGPD (Security Lead):
    `componentes`, `plataformas`}, mas a especificação original cita "Tecnologia,
    Engenharia, Negócios, Gestão". Qual taxonomia vale para o produto? *Ainda em
    aberto* (a resolver em `21`).
-</content>
-</invoke>
