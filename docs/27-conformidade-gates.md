@@ -1,7 +1,8 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-17 (6ª rodada — Gate 5 (Casos de Uso) carimbado; doc `15` aprovado).
+> Última atualização: 2026-07-17 (7ª rodada — Gate 8 (Arquitetura) carimbado; aval oficial da Segurança APROVAR COM RESSALVA; nota R6 em `25` §8).
+> 6ª rodada — Gate 5 (Casos de Uso) carimbado; doc `15` aprovado.
 > 5ª rodada — Gate 4 (Regras de Negócio) carimbado; doc `28` aprovado.
 > 4ª rodada — Gate 3 (Requisitos) carimbado; docs `21`/`22` aprovados.
 > Nota da 3ª rodada — carimbos formais dos gates 1 (Ideia,
@@ -67,7 +68,7 @@ pergunta em aberto (§7).
 | 5 | Casos de Uso | `requirements-analyst` | `15` (CU-01..21) | **Sim** — todo RF com ≥1 CU (exceção justificada RF-070) | **CONFORME** ✔ | QA verificou rastreabilidade RF→CU | `product-lead` | **Gate 5 carimbado** (§5): `product-lead` 2026-07-17. Detalhar CU-01..08 [FUTURO] quando priorizados. |
 | 6 | Modelagem | `eng-lead`/`backend-engineer` | `02` §3–4, `13` §2, `25` §3 | Base sim; módulos novos pendentes de escopo | **CONFORME** (com ressalva) | Segurança (S6 LGPD no modelo) | `eng-lead` | Detalhar entidades dos 7 módulos novos na Etapa 9. |
 | 7 | Protótipo UI/UX | `design-lead` | `prototypes/`, `20`, `23` | Artefatos prontos; **falta aprovação formal do CEO (`T05`)** | **BLOQUEADO** (decisão CEO) | QA (regressão telas T01–T04d) | CEO | **B3** — executar `T05` (ato de aprovação do CEO). Sem lacuna de execução. |
-| 8 | Arquitetura | `eng-lead` | `13`, `25` | Sim (estilo, fronteiras, `D5`/`D6` isolados, S1–S9) | **CONFORME** | QA (esta auditoria) + Segurança (confirmar S1–S9) | `eng-lead` (→CEO p/ `Dxx`) | **Recomendado por eng-lead** (`25` §10) — carimbar após OK de Seg. |
+| 8 | Arquitetura | `eng-lead` | `13`, `25` | Sim (estilo, fronteiras, `D5`/`D6` isolados, S1–S9) | **CONFORME** ✔ | QA + **Segurança APROVOU COM RESSALVA** (S1–S9 vs `24`) | `eng-lead` (→CEO p/ `Dxx`) | **Gate 8 carimbado** (§5): 2026-07-17. Ressalva R6 (assets/IP). Pré-cond. Etapa 9: B2/S6/S9. |
 | 9 | Banco de Dados | `backend-engineer` | design em `02`/`09`/`11`/`13`/`25` §3.1 | **Não** — sem migrações; depende de escopo/LGPD | **BLOQUEADO** (decisão CEO + gate 8) | QA + **Segurança** (LGPD) | `eng-lead` + Segurança | Depende de gate 8 + **B1** (MVP) + **B2** (LGPD). |
 | 10 | Planejamento | `product-lead` | `03`, `04` | Base sim; **fronteira MVP das 7 famílias em aberto** | **BLOQUEADO** (decisão CEO) | — | CEO | **B1** — decidir escopo MVP (Fase 0.6, `04` T05a–T05g). |
 | 11 | Desenvolvimento | `eng-lead` | nenhum código de produção (só protótipo grandfathered) | Não iniciado | **BLOQUEADO** (gates 8→10) | **QA + Segurança** (obrigatórios) | `eng-lead` + QA + Seg | Aguarda gates 8→10. |
@@ -258,8 +259,17 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
   "rascunho".
 
 **Recomendados / prontos para carimbo:**
-- **Gate 8 — Arquitetura — RECOMENDADO por `eng-lead` (doc `25` §10) + verificado por
-  QA em 2026-07-17;** aguardando **Segurança** confirmar S1–S9 vs. doc `24`.
+- **Gate 8 — Arquitetura — APROVADO em 2026-07-17.** Recomendado por `eng-lead`
+  (doc `25` §10) + verificado por QA + **aval oficial da Segurança: APROVAR COM
+  RESSALVA** (não-bloqueante). S1–S9 do doc `25` §8 traduzem fielmente o parecer
+  `24` (CRÍTICO cobertos por S3/S6; ALTO por S9). **Ressalva registrada:** R6
+  (licença/proveniência de logos e imagens de terceiros) fica fora de S1–S9 por
+  design — governança de assets, tratada em `CREDITS.md`. **Pré-condições que o
+  gate carrega para a Etapa 9** (de-acordo de Segurança obrigatório, `14` L126):
+  decidir **B2** (LGPD, seed fictício recomendado) antes de materializar `directory`;
+  aplicar **S6** (pessoas atrás de `auth`, sem seed real) e **S9** (generalizar
+  códigos/fornecedores/domínios nos `seeds/`). Carimbo aplicado pelo Agente Geral
+  (aprovador nominal `eng-lead`, com o aval de Segurança que faltava).
 
 **Pendentes (não carimbar — bloqueio por decisão do CEO ou gate anterior):**
 - Gate 6 (base OK; ressalva de escopo), Gate 7 (aguarda `T05`/CEO — B3), Gates 9–14

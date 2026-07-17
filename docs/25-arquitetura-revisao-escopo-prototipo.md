@@ -218,6 +218,13 @@ módulos, novos e existentes). Rastreabilidade ao doc `24`:
 | S8 | **CDNs com versão fixa + SRI** (ou servidos localmente). | §2.5 INFO / R10 | `frontend` (build/assets) |
 | S9 | **Generalizar dados sensíveis nos seeds** (códigos de projeto, fornecedores, domínios internos) — placeholders. | §2.2 ALTO / R4–R5 | `seeds/` + `projects`/`components` |
 
+> **Nota (ressalva do gate 8, Segurança 2026-07-17):** o risco **R6** do doc `24`
+> (licença/proveniência dos logos de marca e imagens de terceiros) **não** integra
+> S1–S9 por design — é **governança de assets/IP**, não invariante de arquitetura
+> (não impõe fronteira de módulo nem regra de dependência). É tratado em
+> `prototypes/portal-spa/assets/CREDITS.md` e permanece **pré-condição de publicação
+> externa de marcas** (não deste gate). Registrado para não se perder do rastreamento.
+
 S1–S5 e S6 são **restrições de projeto** (afetam fronteiras/camadas) e por isso
 entram na arquitetura; S7–S9 são **conformidade de implementação** verificada pela
 Segurança na Etapa 11 (backlog `04`). A anonimização do organograma (R1/R2, doc
