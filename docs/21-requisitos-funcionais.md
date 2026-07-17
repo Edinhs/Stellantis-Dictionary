@@ -41,11 +41,18 @@
   campo, todos os termos reaparecem. Sem botão "buscar" e sem recarga de página.
 
 ### RF-002 — Filtro por categoria [PROTÓTIPO]
-- **Descrição:** Botões de categoria (ex.: Tecnologia, Engenharia, Negócios, Gestão)
-  segmentam o grid; combinável com a busca (RF-001).
-- **Critério de aceite:** Selecionar uma categoria exibe só os termos daquela
-  categoria; "Todos" remove o filtro; o filtro ativo tem destaque visual. Busca +
-  categoria aplicadas simultaneamente devolvem a interseção.
+- **Descrição:** Botões de categoria segmentam o grid; combinável com a busca
+  (RF-001). A **taxonomia canônica de categorias de termo** é a do protótipo
+  (fonte da verdade — diretriz "o protótipo manda", CEO 2026-07-17):
+  **`motorizacao`, `tecnologia`, `componentes`, `plataformas`** (doc `20` §4,
+  `stellantis_terms.category`; cada categoria tem cor própria no modal de detalhe —
+  doc `20` §5). A lista {Tecnologia, Engenharia, Negócios, Gestão} da spec-original
+  **fica descartada** para o produto (ver §12, pergunta 7 resolvida; nota ao PDR `03`).
+- **Critério de aceite:** Os botões de categoria são exatamente `motorizacao`,
+  `tecnologia`, `componentes`, `plataformas` (mais "Todos"). Selecionar uma
+  categoria exibe só os termos daquela categoria; "Todos" remove o filtro; o filtro
+  ativo tem destaque visual. Busca + categoria aplicadas simultaneamente devolvem a
+  interseção.
 
 ### RF-003 — Modal de detalhe do termo [PROTÓTIPO]
 - **Descrição:** Clicar em um termo abre um modal com definição estendida, categoria
@@ -69,6 +76,8 @@
 
 ### RF-006 — Cadastro/cocriação de termo (Create) [PROTÓTIPO]
 - **Descrição:** Modal para inserir novo termo (título, definição, categoria, autor).
+  O campo **categoria** aceita apenas os valores da taxonomia canônica de RF-002
+  (`motorizacao`/`tecnologia`/`componentes`/`plataformas`).
 - **Critério de aceite:** Ao salvar um termo válido, ele aparece imediatamente no
   grid, é persistido em `localStorage` (`stellantis_terms`) e concede **+50 XP**
   (ver RF-058). Campos obrigatórios validados antes de salvar.
@@ -387,18 +396,47 @@
 
 ## 10. Matriz de cobertura RF ↔ Casos de uso (doc `15`)
 
-| RF | Caso de uso (doc `15`) |
+> **Fechada na Etapa 5 (2026-07-17):** DoD exige que **todo RF** tenha ≥1 CU
+> rastreável. Os CU-16..CU-21 foram acrescentados ao doc `15` §3.2 para cobrir os RF
+> antes órfãos (Notebook, catálogos, institucionais, perfil, navegação, inspeção 3D).
+> **0 RF órfãos** — a única exceção justificada é RF-070 (migração de infraestrutura,
+> ver nota ao pé).
+
+| RF | Caso(s) de uso (doc `15`) |
 |---|---|
-| RF-001..RF-003 | CU-02 (buscar termo), CU-09 (buscar → GPT) |
-| RF-004, RF-020, RF-023 | CU-03 (perguntar no chat), CU-09 (buscar → GPT) |
-| RF-006, RF-058, RF-061 | CU-05 (contribuir conteúdo), CU-10 (contribuir termo) |
+| RF-001, RF-002, RF-003 | CU-02 (buscar termo), CU-09 (buscar → GPT) |
+| RF-004, RF-020, RF-021, RF-022, RF-023 | CU-03 (perguntar no chat), CU-09, CU-13 |
 | RF-005, RF-035, RF-036 | CU-11 (termo → criar flashcard) |
+| RF-006, RF-058, RF-061 | CU-05 (contribuir conteúdo), CU-10 (contribuir termo), CU-18 |
+| RF-007 | CU-05 (contribuir/editar), CU-06 (moderar — visão-alvo) |
+| RF-010, RF-011, RF-012 | CU-04 (cockpit 3D), CU-15 (hotspot → verbete) |
+| RF-013, RF-015 | CU-15, CU-17 (inspecionar componente 3D) |
+| RF-014 | CU-17 (inspecionar componente + anotar ideia) |
+| RF-030, RF-031, RF-032, RF-033, RF-034 | CU-16 (Notebook com IA assistiva) |
 | RF-037, RF-038, RF-057, RF-060 | CU-12 (concluir curso → XP/badge/level-up) |
+| RF-039, RF-040, RF-042, RF-043, RF-046, RF-046b | CU-18 (cocriar catálogos dos módulos) |
 | RF-041 | CU-13 (contatar especialista), CU-08 |
 | RF-044, RF-045, RF-045b | CU-14 (navegar/editar organograma) |
-| RF-010..RF-013, RF-015 | CU-04 (cockpit 3D), CU-15 (hotspot 3D → verbete) |
+| RF-047, RF-048, RF-049 | CU-19 (páginas institucionais: Diretrizes/Timeline/Veículos) |
+| RF-055, RF-056, RF-059 | CU-20 (perfil + insígnia de setor), CU-12 |
+| RF-065, RF-066 | CU-21 (navegação SPA); RF-066 transversal a CU-10/11/14/15/16/18 |
+| RF-062 [FUTURO] | CU-01 (cadastro/login) |
+| RF-063 [FUTURO] | CU-05, CU-06, CU-14 (RBAC governa estas ações) |
+| RF-064 [FUTURO] | CU-06 (moderar contribuições) |
+| RF-067 [FUTURO] | CU-07 (Comunidade Q&A) |
+| RF-068 [FUTURO] | CU-03 (chat na versão RAG real com fontes) |
+| RF-069 [FUTURO] | CU-08 (diretório), CU-13 (contatar especialista, dados reais) |
+| RF-070 [FUTURO] | — (ver justificativa abaixo) |
 
-> Os casos CU-09..CU-15 são detalhados no doc `15` §3.2 (expansão desta entrega).
+> Os casos CU-09..CU-21 são detalhados no doc `15` §3.2. As regras de negócio
+> associadas estão no doc `28` (Etapa 4).
+>
+> **Justificativa de RF sem CU:** **RF-070** (migração da persistência
+> `localStorage` → backend) é um requisito **de infraestrutura/dados transversal**,
+> sem fluxo de usuário próprio — ele **habilita** todos os CU quando o backend
+> entra, mas não é iniciado por um ator. Sua verificação é por critério técnico
+> (dados residem em Postgres via API autenticada), não por caso de uso. Portanto
+> **não** requer CU dedicado (não é um RF órfão por omissão, e sim por natureza).
 
 ---
 
@@ -469,3 +507,14 @@
 6. **Modelo 3D oficial vs. placeholder** — o protótipo usa um `.glb` do Grand
    Commander (~19 MB). PDR `03` D9 prevê placeholder de licença livre. Confirmar o
    asset para produção e o alvo de peso/compressão Draco. *— ainda em aberto.*
+7. ~~**Taxonomia de categorias de termo** — o protótipo usa {`motorizacao`,
+   `tecnologia`, `componentes`, `plataformas`} e a spec-original citava {Tecnologia,
+   Engenharia, Negócios, Gestão} (doc `20` §8 Q4; doc `26` R10). Qual vale para o
+   produto?~~ — **RESOLVIDO (2026-07-17):** adotada a **taxonomia do protótipo**
+   `{motorizacao, tecnologia, componentes, plataformas}` como **canônica**, por
+   força da diretriz do CEO **"o protótipo manda"** (fonte da verdade de escopo). A
+   lista da spec-original fica descartada. Refletido em **RF-002/RF-006**; nota de
+   fechamento no doc `26` R10. **Nota ao PDR `03`:** registrar como nova linha `Dn`
+   (próximo número livre, ~`D20`): *"Taxonomia canônica de categorias de termo =
+   `{motorizacao, tecnologia, componentes, plataformas}` (protótipo manda) — ver
+   `21` RF-002"*.

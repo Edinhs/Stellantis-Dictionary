@@ -190,7 +190,7 @@ Levantamento inicial de riscos (DoD Etapa 2, doc `14` L69). Mitigações são
 | R7 | **`StellantisGPT` simulado × RAG real** — expectativa criada pela demo (chat por palavras-chave) diverge do RAG real; risco de sobre-promessa. | Produto/expectativa | Médio | Comunicar que o chat do protótipo é **simulado** (doc `20` §3/§6); definir em que fase o RAG real substitui a simulação (briefing `01` §8 Q4). |
 | R8 | **Provedor de LLM e hospedagem indefinidos (`D5`/`D6`)** — decisão tardia pode travar integração se a arquitetura acoplar a um fornecedor. | Arquitetura/dependência | Médio | Abstrair por **port/adapter** (`LlmProvider`) e manter configurável (doc `25` §7; briefing `01` §6); tratar como não-bloqueante nesta fase (briefing `01` §8). |
 | R9 | **Reimplementação a partir do protótipo** — `localStorage`/SPA sem backend precisa virar CRUD `rota→serviço→repositório`, auth/RBAC/moderação inexistentes no protótipo (doc `20` §6). | Técnico/esforço | Médio | Usar o protótipo só como fonte de UX/escopo; mapear cada CRUD a permissão nomeada e a estados de publicação/moderação (doc `20` §6; SPEC `09`/`11`); requisitos `[FUTURO]` no doc `21` §11. |
-| R10 | **Taxonomia de categorias inconsistente** — protótipo usa {motorizacao, tecnologia, componentes, plataformas} e a spec-original cita {Tecnologia, Engenharia, Negócios, Gestão} (doc `20` §8 Q4). | Dados/requisitos | Baixo | Consolidar a taxonomia única na Etapa 3 (doc `21`); registrar como pergunta em aberto até decisão. |
+| R10 | **Taxonomia de categorias inconsistente** — protótipo usa {motorizacao, tecnologia, componentes, plataformas} e a spec-original cita {Tecnologia, Engenharia, Negócios, Gestão} (doc `20` §8 Q4). | Dados/requisitos | Baixo | **RESOLVIDO (2026-07-17):** adotada a taxonomia do protótipo como canônica (diretriz "o protótipo manda", CEO); ver doc `21` RF-002/RF-006 e §12 pergunta 7. Nota ao PDR `03` (nova linha `Dn`). |
 
 ## 6. Referências
 
@@ -238,9 +238,11 @@ o indefinido é apresentado como pergunta (doc-standards §5).
 4. **`StellantisGPT` simulado × RAG real** — em que fase o chat simulado é
    substituído pelo RAG com citação de fontes? (briefing `01` §8 Q4). *— ainda em
    aberto.*
-5. **Taxonomia de categorias de termo** — {motorizacao, tecnologia, componentes,
+5. ~~**Taxonomia de categorias de termo** — {motorizacao, tecnologia, componentes,
    plataformas} do protótipo × {Tecnologia, Engenharia, Negócios, Gestão} da
-   spec-original (doc `20` §8 Q4). *— a resolver na Etapa 3 (doc `21`).*
+   spec-original (doc `20` §8 Q4).~~ — **RESOLVIDO (2026-07-17):** adotada a do
+   protótipo como canônica (diretriz "o protótipo manda", CEO); ver doc `21`
+   RF-002/RF-006 e §12 pergunta 7; nota ao PDR `03` (nova linha `Dn`).
 6. **Dados de mercado e benchmark quantitativo** (participação, comparativos de
    concorrentes, métricas de LMS/LXP, boas práticas anti-alucinação com números) —
    exigem pesquisa externa real com fontes que esta etapa **não** tem acesso.
