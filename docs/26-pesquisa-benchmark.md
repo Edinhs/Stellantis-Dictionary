@@ -256,4 +256,7 @@ o indefinido é apresentado como pergunta (doc-standards §5).
 9. **Hospedagem (`D6`) e provedor de LLM (`D5`)** — seguem em aberto no PDR `03`;
    **não bloqueiam** esta etapa (configuráveis, doc `25` §7). *— ainda em aberto.*
 
-> Aprovação do gate da Etapa 2 pendente do **Produto Lead** (`product-lead`).
+> **Gate da Etapa 2 (Pesquisa) APROVADO pelo `product-lead` em 2026-07-17** — DoD do
+> `14` (L69) atendida (contexto §1, restrições §4, referências §6, riscos R1–R10 §5);
+> itens "a validar com fontes" (§7 Q6–Q8) são pendência aceitável, não bloqueio.
+> Carimbo formal registrado no log de gates `27` §5.

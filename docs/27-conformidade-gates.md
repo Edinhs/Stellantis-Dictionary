@@ -1,8 +1,9 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-17 (2ª rodada — re-verificação das correções das
-> etapas 3, 4 e 5).
+> Última atualização: 2026-07-17 (3ª rodada — carimbos formais dos gates 1 (Ideia,
+> briefing ampliado) e 2 (Pesquisa) após revisão de conformidade contra a DoD do `14`;
+> 2ª rodada — re-verificação das correções das etapas 3, 4 e 5).
 > Autoria: QA Lead (`qa-lead`, skill `qa-checklist`), a mando do CEO.
 > **Fonte da verdade da DoD:** `14-ciclo-de-vida-engenharia.md` — §2 (as 19 etapas:
 > dono, entrada, artefatos, DoD, aprovador), §3 (tabela mestre), §4 (gates
@@ -17,11 +18,16 @@
 ## 0. Registro de mudanças
 
 - **2026-07-17 (1ª rodada):** auditoria inicial. Etapas 3, 4, 5, 7 = LACUNA.
-- **2026-07-17 (2ª rodada, esta):** setores corrigiram as lacunas de execução das
+- **2026-07-17 (2ª rodada):** setores corrigiram as lacunas de execução das
   etapas 3, 4 e 5. **Re-verificado de verdade contra a DoD do `14`** — as três
   passam a **CONFORME** (evidência na §3). Lacunas de execução: **zeradas**. Restam
   apenas etapas dependentes de **decisão do CEO** ou de gate anterior (BLOQUEADO) e
   as de operação (N/A-futuro).
+- **2026-07-17 (3ª rodada, esta):** revisão de conformidade das etapas **1 (Ideia)** e
+  **2 (Pesquisa)** contra a DoD do `14` → ambas CONFORME. **Carimbos formais
+  aplicados** (§5): Gate 1 re-aprovado pelo CEO para o briefing ampliado; Gate 2
+  aprovado pelo `product-lead`. Ponteiro do ciclo pronto para focar a **Etapa 3
+  (Requisitos)**, já CONFORME (docs `21`/`22`).
 
 ---
 
@@ -51,8 +57,8 @@ pergunta em aberto (§7).
 
 | # | Etapa | Dono | Artefato(s) reais | DoD atendida? | Status | Gate transversal (QA/Seg) e situação | Aprovador | Ação necessária |
 |---|---|---|---|---|---|---|---|---|
-| 1 | Ideia | `product-lead` | `01` | Sim | **CONFORME** | — (não toca código/dados) | CEO | Aprovação já registrada no PDR `03` (2026-07-13). |
-| 2 | Pesquisa | `requirements-analyst` | `26` (+ `15` §1 atores) | Sim (contexto, restrições, refs, **riscos R1–R10**) | **CONFORME** | — | `product-lead` | Carimbar gate (doc `26` "aguardando `product-lead`"). |
+| 1 | Ideia | `product-lead` | `01` | Sim | **CONFORME** ✔ | — (não toca código/dados) | CEO | **Gate 1 carimbado** (§5): CEO 2026-07-13 + re-aprovação 2026-07-17 (briefing ampliado). |
+| 2 | Pesquisa | `requirements-analyst` | `26` (+ `15` §1 atores) | Sim (contexto, restrições, refs, **riscos R1–R10**) | **CONFORME** ✔ | — | `product-lead` | **Gate 2 carimbado** (§5): `product-lead` 2026-07-17. |
 | 3 | Requisitos | `requirements-analyst` | `21` (RF), `22` (RNF) | **Sim** — conflito de taxonomia **RESOLVIDO** | **CONFORME** ✔ | QA verificou verificabilidade e resolução | `product-lead` | Carimbar (conteúdo pronto; sair de "rascunho"). |
 | 4 | Regras de Negócio | `requirements-analyst` | **`28`** (RN-01..26) | **Sim** — regras explícitas gatilho→cond→efeito, ligadas a RF | **CONFORME** ✔ | QA (regras viram casos de teste) | `product-lead` | Carimbar (doc `28` "aguardando `product-lead`"). |
 | 5 | Casos de Uso | `requirements-analyst` | `15` (CU-01..21) | **Sim** — todo RF com ≥1 CU (exceção justificada RF-070) | **CONFORME** ✔ | QA verificou rastreabilidade RF→CU | `product-lead` | Carimbar; detalhar CU-01..08 [FUTURO] quando priorizados. |
@@ -210,7 +216,7 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 | A2 | Regras de negócio consolidadas | 4 | `requirements-analyst` | **FECHADO** ✔ (doc `28` RN-01..26) |
 | A5 | `assets/CREDITS.md` | 6/9 | Doc Lead | **FECHADO** ✔ (arquivo criado) |
 | A3 | Aprovar/sair de "rascunho" `21`/`22` (carimbo Etapa 3) | 3 | Produto Lead | Pendente (só carimbo) |
-| A4 | Carimbar gate 2 (doc `26`) e gate 4 (doc `28`) | 2, 4 | Produto Lead | Pendente (só carimbo) |
+| A4 | Carimbar gate 2 (doc `26`) e gate 4 (doc `28`) | 2, 4 | Produto Lead | Gate 2 **CARIMBADO** ✔ (2026-07-17, §5); gate 4 pendente (só carimbo) |
 | A6 | `D5` (provedor de LLM) — isolado por `LlmProvider` | 8/11 | CEO (com `eng-lead`) | Não bloqueia; registrar |
 | A7 | WCAG-alvo (acessibilidade básica do gate 7) | 7 | Design Lead | Pendente (dívida assumida) |
 
@@ -222,7 +228,16 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 > **Só se carimba com aprovação real registrável.**
 
 **Aprovados / verificados:**
-- **Gate 1 — Ideia — aprovado por CEO em 2026-07-13** (rodapé do PDR `03`).
+- **Gate 1 — Ideia — aprovado por CEO em 2026-07-13** (rodapé do PDR `03`);
+  **re-aprovado por CEO em 2026-07-17** para o **briefing ampliado a partir do
+  protótipo** (doc `01` §2/§3.1/§5/§8). QA/Produto verificaram a DoD (`14` L61):
+  problema (§1), valor (§2/§3), público (§4) e escopo macro MVP vs. futuro (§5)
+  cobertos; as perguntas em aberto (§8) são **decisões do CEO**, não lacunas de
+  descrição. Este carimbo soma-se (não substitui) ao de 2026-07-13.
+- **Gate 2 — Pesquisa — aprovado por `product-lead` em 2026-07-17** (QA verificou a
+  DoD `14` L69: doc `26` §1 contexto, §4 restrições, §6 referências, §5 riscos
+  R1–R10). Itens "a validar com fontes" (doc `26` §7 Q6–Q8: benchmark quantitativo
+  sem acesso a web) são **pendência aceitável**, não bloqueio da DoD.
 - **Gate 3 — Requisitos — verificado por QA em 2026-07-17** (DoD "conflitos
   resolvidos" satisfeita: taxonomia canônica fixada, doc `21` RF-002/RF-006, doc `26`
   R10 RESOLVIDO); **aprovação do `product-lead` pendente** (carimbo formal — A3).
@@ -234,7 +249,6 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
   justificada); **aprovação do `product-lead` pendente**.
 
 **Recomendados / prontos para carimbo:**
-- **Gate 2 — Pesquisa — verificado por QA (DoD atendida); aguardando `product-lead`.**
 - **Gate 8 — Arquitetura — RECOMENDADO por `eng-lead` (doc `25` §10) + verificado por
   QA em 2026-07-17;** aguardando **Segurança** confirmar S1–S9 vs. doc `24`.
 
