@@ -1,6 +1,6 @@
 # 28 — Regras de Negócio (Etapa 4)
 
-Status: **rascunho para aprovação do gate (Etapa 4)**.
+Status: **aprovado — gate 4 (Regras de Negócio), 2026-07-17** (Produto Lead; DoD verificada por QA). Ver log `27` §5.
 > Última atualização: 2026-07-17.
 > Autoria: Analista de Requisitos (`requirements-analyst`), reporta ao Produto Lead
 > (aprovador do gate da Etapa 4 do ciclo `14-ciclo-de-vida-engenharia.md`).

@@ -1,7 +1,8 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-17 (4ª rodada — Gate 3 (Requisitos) carimbado; docs `21`/`22` aprovados).
+> Última atualização: 2026-07-17 (5ª rodada — Gate 4 (Regras de Negócio) carimbado; doc `28` aprovado).
+> 4ª rodada — Gate 3 (Requisitos) carimbado; docs `21`/`22` aprovados.
 > Nota da 3ª rodada — carimbos formais dos gates 1 (Ideia,
 > briefing ampliado) e 2 (Pesquisa) após revisão de conformidade contra a DoD do `14`;
 > 2ª rodada — re-verificação das correções das etapas 3, 4 e 5).
@@ -61,7 +62,7 @@ pergunta em aberto (§7).
 | 1 | Ideia | `product-lead` | `01` | Sim | **CONFORME** ✔ | — (não toca código/dados) | CEO | **Gate 1 carimbado** (§5): CEO 2026-07-13 + re-aprovação 2026-07-17 (briefing ampliado). |
 | 2 | Pesquisa | `requirements-analyst` | `26` (+ `15` §1 atores) | Sim (contexto, restrições, refs, **riscos R1–R10**) | **CONFORME** ✔ | — | `product-lead` | **Gate 2 carimbado** (§5): `product-lead` 2026-07-17. |
 | 3 | Requisitos | `requirements-analyst` | `21` (RF), `22` (RNF) | **Sim** — conflito de taxonomia **RESOLVIDO** | **CONFORME** ✔ | QA verificou verificabilidade e resolução | `product-lead` | **Gate 3 carimbado** (§5): `product-lead` 2026-07-17; `21`/`22` aprovados. |
-| 4 | Regras de Negócio | `requirements-analyst` | **`28`** (RN-01..26) | **Sim** — regras explícitas gatilho→cond→efeito, ligadas a RF | **CONFORME** ✔ | QA (regras viram casos de teste) | `product-lead` | Carimbar (doc `28` "aguardando `product-lead`"). |
+| 4 | Regras de Negócio | `requirements-analyst` | **`28`** (RN-01..26) | **Sim** — regras explícitas gatilho→cond→efeito, ligadas a RF | **CONFORME** ✔ | QA (regras viram casos de teste) | `product-lead` | **Gate 4 carimbado** (§5): `product-lead` 2026-07-17; doc `28` aprovado. |
 | 5 | Casos de Uso | `requirements-analyst` | `15` (CU-01..21) | **Sim** — todo RF com ≥1 CU (exceção justificada RF-070) | **CONFORME** ✔ | QA verificou rastreabilidade RF→CU | `product-lead` | Carimbar; detalhar CU-01..08 [FUTURO] quando priorizados. |
 | 6 | Modelagem | `eng-lead`/`backend-engineer` | `02` §3–4, `13` §2, `25` §3 | Base sim; módulos novos pendentes de escopo | **CONFORME** (com ressalva) | Segurança (S6 LGPD no modelo) | `eng-lead` | Detalhar entidades dos 7 módulos novos na Etapa 9. |
 | 7 | Protótipo UI/UX | `design-lead` | `prototypes/`, `20`, `23` | Artefatos prontos; **falta aprovação formal do CEO (`T05`)** | **BLOQUEADO** (decisão CEO) | QA (regressão telas T01–T04d) | CEO | **B3** — executar `T05` (ato de aprovação do CEO). Sem lacuna de execução. |
@@ -217,7 +218,7 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 | A2 | Regras de negócio consolidadas | 4 | `requirements-analyst` | **FECHADO** ✔ (doc `28` RN-01..26) |
 | A5 | `assets/CREDITS.md` | 6/9 | Doc Lead | **FECHADO** ✔ (arquivo criado) |
 | A3 | Aprovar/sair de "rascunho" `21`/`22` (carimbo Etapa 3) | 3 | Produto Lead | **CONCLUÍDO** ✔ (2026-07-17, §5) |
-| A4 | Carimbar gate 2 (doc `26`) e gate 4 (doc `28`) | 2, 4 | Produto Lead | Gate 2 **CARIMBADO** ✔ (2026-07-17, §5); gate 4 pendente (só carimbo) |
+| A4 | Carimbar gate 2 (doc `26`) e gate 4 (doc `28`) | 2, 4 | Produto Lead | Gate 2 **CARIMBADO** ✔ e gate 4 **CARIMBADO** ✔ (2026-07-17, §5) |
 | A6 | `D5` (provedor de LLM) — isolado por `LlmProvider` | 8/11 | CEO (com `eng-lead`) | Não bloqueia; registrar |
 | A7 | WCAG-alvo (acessibilidade básica do gate 7) | 7 | Design Lead | Pendente (dívida assumida) |
 
@@ -244,9 +245,11 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
   R10 RESOLVIDO; verificado por QA). Docs `21`/`22` saíram de "rascunho". Carimbo
   aplicado pelo Agente Geral com base na revisão de conformidade do `product-lead`
   (agente indisponível por limite de sessão).
-- **Gate 4 — Regras de Negócio — verificado por QA em 2026-07-17** (DoD "gatilho,
-  condição e efeito claros; ligada aos requisitos" satisfeita: doc `28` RN-01..26 +
-  matriz §8); **aprovação do `product-lead` pendente** (A4).
+- **Gate 4 — Regras de Negócio — APROVADO pelo `product-lead` em 2026-07-17** (DoD
+  "gatilho, condição e efeito claros; ligada aos requisitos" satisfeita: doc `28`
+  RN-01..26 + matriz §8; verificado por QA). Doc `28` saiu de "rascunho". Carimbo
+  aplicado pelo Agente Geral com base na verificação de conformidade (agente
+  `product-lead` indisponível por limite de sessão).
 - **Gate 5 — Casos de Uso — verificado por QA em 2026-07-17** (DoD "todo RF com ≥1
   CU rastreável" satisfeita: matriz doc `21` §10 fechada, CU-16..21, exceção RF-070
   justificada); **aprovação do `product-lead` pendente**.
