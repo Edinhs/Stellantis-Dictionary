@@ -406,13 +406,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     (preview ? '<span class="hs-d">' + preview + '</span>' : '') +
                     '<span class="hs-go">Abrir no dicionário →</span></span>';
 
+                // Encaminhamento do drag: um pointerdown que começa SOBRE o hotspot
+                // arma a mesma máquina de arraste do canvas (onDown). Se virar arraste,
+                // o carro gira; se for tap curto, o 'click' navega (ver guarda dragMoved).
+                el.addEventListener('pointerdown', onDown);
                 el.addEventListener('click', function (ev) {
                     ev.stopPropagation();
+                    // se o gesto virou arraste (girou o carro), NÃO navega
+                    if (dragMoved) { ev.preventDefault(); return; }
                     if (window.stellantisNavigateToTerm) window.stellantisNavigateToTerm(h.slug);
                 });
-                // hover pausa a rotação (facilita clicar); ao sair, retoma a intenção do usuário
+                // hover/foco pausam a rotação (facilita clicar e evita que o hotspot
+                // focado por teclado "fuja" com a tooltip); ao sair, retoma a intenção.
                 el.addEventListener('mouseenter', function () { hoverPause = true; });
                 el.addEventListener('mouseleave', function () { hoverPause = false; needsRender = true; });
+                el.addEventListener('focusin', function () { hoverPause = true; needsRender = true; });
+                el.addEventListener('focusout', function () { hoverPause = false; needsRender = true; });
 
                 // âncora local (espaço do carro, y a partir do chão) + normal externa aprox.
                 h._anchor = new THREE.Vector3(h.nx * modelSize.x, h.ny * modelSize.y + modelSize.y * 0.5, h.nz * modelSize.z);
