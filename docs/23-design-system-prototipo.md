@@ -1,5 +1,6 @@
 # 23 — Design System do Protótipo (Stellantis Dictionary & Training Portal)
 
+Status: **rascunho**.
 > Última atualização: 2026-07-17.
 > Deriva do protótipo funcional entregue pelo CEO em `prototypes/portal-spa/`
 > (`index.html`, `style.css` com 6284 linhas, `app.js`, `car-interactivity.js`).

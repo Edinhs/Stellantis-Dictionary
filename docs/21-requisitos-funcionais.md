@@ -113,11 +113,18 @@
   correspondente; há caminho para navegar até o verbete no Dicionário. Cobre CU
   (doc `15`) "hotspot 3D → verbete".
 
-### RF-014 — Inspeção de componentes / registro de insight [PROTÓTIPO]
-- **Descrição:** A partir do hotspot, o usuário inspeciona o componente e/ou registra
-  um insight (Painel de Ideias), conforme README do protótipo.
-- **Critério de aceite:** A ação de inspeção exibe os dados do componente; o registro
-  de insight persiste localmente e fica disponível para reconsulta.
+### RF-014 — Inspeção de componente e registro de insight [PROTÓTIPO]
+- **Descrição:** A partir do hotspot, o Explorador 3D oferece duas ações distintas
+  sobre o componente selecionado: (a) **inspecionar** (painel de detalhe + foco de
+  câmera) e (b) **anotar uma ideia** (Painel de Ideias).
+- **Critério de aceite (a — inspecionar):** Ao acionar a inspeção, o painel
+  `inspectedInfo` exibe o **nome** do componente (`data.title`) e sua **descrição
+  técnica** (`data.desc`), e a câmera do Explorador reposiciona-se para enquadrar a
+  parte clicada (`car-interactivity.js` ~L577–594).
+- **Critério de aceite (b — anotar ideia):** O botão "Anotar Ideia sobre esta parte"
+  abre o modal de ideias já vinculado ao nome do componente
+  (`openIdeaModal(data.title)`, ~L581); a ideia salva persiste em `localStorage` e
+  fica disponível para reconsulta.
 
 ### RF-015 — Fallback sem WebGL / falha de carga do modelo [PROTÓTIPO]
 - **Descrição:** Se o `GLTFLoader` não estiver disponível, ou o `.glb` falhar
@@ -361,6 +368,8 @@
 ---
 
 ## 9. Requisitos transversais do protótipo
+> Doc `20` (Transversais/Shell da SPA) • README do protótipo • `app.js`
+> (`switchSection`, chaves `stellantis_*` no `localStorage`).
 
 ### RF-065 — Navegação SPA por abas [PROTÓTIPO]
 - **Descrição:** Troca de seções sem recarregar a página (`switchSection`).
@@ -380,16 +389,16 @@
 
 | RF | Caso de uso (doc `15`) |
 |---|---|
-| RF-001..RF-003 | CU-02 (buscar termo) |
-| RF-004, RF-020 | CU-03 (perguntar no chat) |
-| RF-006, RF-058 | CU-05 (contribuir conteúdo), CU-Novo "contribuir termo" |
-| RF-005, RF-036 | CU-Novo "termo → criar flashcard" |
-| RF-037, RF-038, RF-057 | CU-Novo "concluir curso → XP/badge/level-up" |
-| RF-041 | CU-Novo "contatar especialista", CU-08 |
-| RF-044, RF-045 | CU-Novo "navegar/editar organograma" |
-| RF-013 | CU-04 (cockpit 3D), CU-Novo "hotspot → verbete" |
+| RF-001..RF-003 | CU-02 (buscar termo), CU-09 (buscar → GPT) |
+| RF-004, RF-020, RF-023 | CU-03 (perguntar no chat), CU-09 (buscar → GPT) |
+| RF-006, RF-058, RF-061 | CU-05 (contribuir conteúdo), CU-10 (contribuir termo) |
+| RF-005, RF-035, RF-036 | CU-11 (termo → criar flashcard) |
+| RF-037, RF-038, RF-057, RF-060 | CU-12 (concluir curso → XP/badge/level-up) |
+| RF-041 | CU-13 (contatar especialista), CU-08 |
+| RF-044, RF-045, RF-045b | CU-14 (navegar/editar organograma) |
+| RF-010..RF-013, RF-015 | CU-04 (cockpit 3D), CU-15 (hotspot 3D → verbete) |
 
-> Os "CU-Novo" acima são detalhados no doc `15` (expansão desta entrega).
+> Os casos CU-09..CU-15 são detalhados no doc `15` §3.2 (expansão desta entrega).
 
 ---
 
