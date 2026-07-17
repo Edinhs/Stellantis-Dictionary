@@ -158,6 +158,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ---------------------------------------------------------------------
+    // PONTE 3D -> DICIONÁRIO (fonte única da verdade)
+    // O Explorador 3D da Início ancora hotspots por `term_slug` (= id do termo)
+    // e NÃO duplica texto: o nome/definição vêm daqui, dos termos reais. Estas
+    // funções são o "roteador" coerente com o SPA (switchSection) para levar do
+    // hotspot ao verbete — equivalente à rota #/dicionario/{slug}.
+    // ---------------------------------------------------------------------
+    window.stellantisGetTerm = function (slug) {
+        return terms.find(t => t.id === slug) || null;
+    };
+    window.stellantisNavigateToTerm = function (slug) {
+        switchSection('dicionario');
+        const term = terms.find(t => t.id === slug);
+        if (term) {
+            // pequeno atraso p/ o scroll suave da seção terminar antes do modal
+            setTimeout(() => openTermDetailsModal(term), 260);
+        } else if (searchInput) {
+            // termo ainda não cadastrado: cai numa busca (nada fica inacessível)
+            searchInput.value = slug;
+            searchInput.dispatchEvent(new Event('input'));
+        }
+    };
+
     // Botão de chamada para ação na Home direciona para o Dicionário
     const btnExploreDict = document.getElementById('btn-explore-dict');
     if (btnExploreDict) {

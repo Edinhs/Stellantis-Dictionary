@@ -636,6 +636,161 @@ body::before {
 }
 
 /* ==========================================
+   PALCO 3D DA INÍCIO (HomeStage — estilo T04b)
+   Carro 3D real como herói, hotspots ancorados nas peças.
+   ========================================== */
+.home3d-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    display: block;
+    z-index: 2;
+    cursor: grab;
+    /* touch-action: pan-y é setado via JS p/ NÃO travar a rolagem vertical */
+}
+.home3d-canvas:active { cursor: grabbing; }
+
+/* camada de overlay onde os hotspots são posicionados (projeção 3D->2D) */
+.home3d-hotspots {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none; /* só os botões de hotspot capturam clique */
+}
+
+/* loader */
+.home3d-loader {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--text-muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+}
+.home3d-spinner {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 3px solid rgba(111, 168, 255, 0.22);
+    border-top-color: var(--secondary, #6fa8ff);
+    animation: spin-loader 0.9s linear infinite;
+}
+
+/* ---- Hotspot ancorado (marcador vermelho pulsante + zona de realce) ---- */
+.home3d-hotspot {
+    position: absolute;
+    z-index: 5;
+    transform: translate(-50%, -50%);
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    pointer-events: auto;
+    transition: opacity 0.25s ease;
+    will-change: left, top, opacity;
+}
+.home3d-hotspot.occluded {
+    opacity: 0;
+    pointer-events: none;
+    /* remove o hotspot oculto (lado oposto do carro) da ordem de tab e da
+       árvore de acessibilidade — evita foco de teclado em marcador invisível */
+    visibility: hidden;
+}
+.home3d-hotspot .hs-mark {
+    display: block;
+    width: 13px;
+    height: 13px;
+    border-radius: 3px;
+    border: 2px solid #ff3b3b;
+    background: rgba(255, 60, 60, 0.18);
+    box-shadow: 0 0 10px 2px rgba(255, 60, 60, 0.5);
+    transition: opacity 0.18s ease;
+    animation: home3d-hotpulse 2.2s ease-in-out infinite;
+}
+@keyframes home3d-hotpulse {
+    0%, 100% { box-shadow: 0 0 8px 1px rgba(255, 60, 60, 0.45); }
+    50% { box-shadow: 0 0 16px 4px rgba(255, 60, 60, 0.8); }
+}
+.home3d-hotspot:hover .hs-mark,
+.home3d-hotspot:focus-visible .hs-mark { opacity: 0; }
+
+.home3d-hotspot .hs-zone {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.55);
+    border: 2px solid #ff3b3b;
+    border-radius: 12px;
+    background: rgba(255, 45, 45, 0.10);
+    box-shadow: 0 0 0 1px rgba(255, 80, 80, 0.35), 0 0 22px 5px rgba(255, 50, 50, 0.5),
+                inset 0 0 18px rgba(255, 80, 80, 0.28);
+    opacity: 0;
+    transition: opacity 0.18s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+.home3d-hotspot:hover .hs-zone,
+.home3d-hotspot:focus-visible .hs-zone {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+.home3d-hotspot:focus-visible {
+    outline: 3px solid #ff6a6a;
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
+/* tooltip: nome + prévia (vindos do TERMO real) + CTA */
+.home3d-hotspot .hs-tip {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 14px);
+    transform: translateX(-50%) translateY(6px);
+    background: rgba(10, 16, 34, 0.97);
+    border: 1px solid rgba(255, 80, 80, 0.38);
+    color: #fff;
+    padding: 10px 13px;
+    border-radius: 12px;
+    width: max-content;
+    max-width: 240px;
+    font-size: 12.5px;
+    line-height: 1.4;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s, transform 0.18s;
+    box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.75);
+    z-index: 8;
+}
+.home3d-hotspot .hs-tip b { display: block; font-size: 13.5px; margin-bottom: 3px; }
+.home3d-hotspot .hs-tip .hs-d { display: block; margin-bottom: 7px; color: #cdd8f5; }
+.home3d-hotspot .hs-tip .hs-go { color: #ff6a6a; font-weight: 700; }
+.home3d-hotspot:hover .hs-tip,
+.home3d-hotspot:focus-within .hs-tip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+/* quando o hotspot está no topo do palco, a tooltip abre para baixo (não corta) */
+.home3d-hotspot.tip-below .hs-tip {
+    bottom: auto;
+    top: calc(100% + 14px);
+    transform: translateX(-50%) translateY(-6px);
+}
+.home3d-hotspot.tip-below:hover .hs-tip,
+.home3d-hotspot.tip-below:focus-within .hs-tip {
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home3d-hotspot .hs-mark { animation: none; }
+}
+
+/* ==========================================
    SEÇÕES GENÉRICAS (Headers)
    ========================================== */
 .section-header {
