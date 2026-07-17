@@ -206,7 +206,10 @@ Registro para o parecer de segurança/LGPD (Security Lead):
    *Ainda em aberto* — depende de parecer do Security Lead.
 3. **`avatar_2.png` truncado** — o arquivo veio truncado no upload do protótipo;
    pendente reenvio pelo CEO. *Ainda em aberto*.
-4. **Categorias de termo** — o protótipo usa {`motorizacao`, `tecnologia`,
+4. ~~**Categorias de termo** — o protótipo usa {`motorizacao`, `tecnologia`,
    `componentes`, `plataformas`}, mas a especificação original cita "Tecnologia,
-   Engenharia, Negócios, Gestão". Qual taxonomia vale para o produto? *Ainda em
-   aberto* (a resolver em `21`).
+   Engenharia, Negócios, Gestão". Qual taxonomia vale para o produto?~~ —
+   **RESOLVIDO (CEO, 2026-07-17):** vale a taxonomia do protótipo
+   (`motorizacao`/`tecnologia`/`componentes`/`plataformas`) como canônica
+   ("o protótipo manda"); a lista da spec-original fica descartada. Ver doc `21`
+   RF-002/RF-006 e doc `26` R10; nota ao PDR `03`.
