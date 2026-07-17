@@ -135,7 +135,7 @@ o que exigir pesquisa real está marcado em §7 como "a validar com fontes".
 - **O que o protótipo faz:** Home com **hotspots 2D** sobre imagem do Jeep e um
   **Explorador 3D** em three.js (r128) com `OrbitControls`, `GLTFLoader` de um `.glb`
   local, alternância wireframe/sólido, hotspots que saltam para o verbete e
-  **fallback procedural** se o `.glb` falhar (doc `20` §2/§3; RF-006..RF-009). O
+  **fallback procedural** se o `.glb` falhar (doc `20` §2/§3; RF-010..RF-015). O
   diferencial do produto é usar o 3D como **porta de entrada visual do glossário**:
   hotspots ligados ao dicionário por `term_slug` (briefing `01` §3; doc `20` §6). No
   MVP entra como **versão simplificada** (modelo único + poucos hotspots) — briefing
