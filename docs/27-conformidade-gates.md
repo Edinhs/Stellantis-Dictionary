@@ -1,7 +1,8 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-17 (5ª rodada — Gate 4 (Regras de Negócio) carimbado; doc `28` aprovado).
+> Última atualização: 2026-07-17 (6ª rodada — Gate 5 (Casos de Uso) carimbado; doc `15` aprovado).
+> 5ª rodada — Gate 4 (Regras de Negócio) carimbado; doc `28` aprovado.
 > 4ª rodada — Gate 3 (Requisitos) carimbado; docs `21`/`22` aprovados.
 > Nota da 3ª rodada — carimbos formais dos gates 1 (Ideia,
 > briefing ampliado) e 2 (Pesquisa) após revisão de conformidade contra a DoD do `14`;
@@ -63,7 +64,7 @@ pergunta em aberto (§7).
 | 2 | Pesquisa | `requirements-analyst` | `26` (+ `15` §1 atores) | Sim (contexto, restrições, refs, **riscos R1–R10**) | **CONFORME** ✔ | — | `product-lead` | **Gate 2 carimbado** (§5): `product-lead` 2026-07-17. |
 | 3 | Requisitos | `requirements-analyst` | `21` (RF), `22` (RNF) | **Sim** — conflito de taxonomia **RESOLVIDO** | **CONFORME** ✔ | QA verificou verificabilidade e resolução | `product-lead` | **Gate 3 carimbado** (§5): `product-lead` 2026-07-17; `21`/`22` aprovados. |
 | 4 | Regras de Negócio | `requirements-analyst` | **`28`** (RN-01..26) | **Sim** — regras explícitas gatilho→cond→efeito, ligadas a RF | **CONFORME** ✔ | QA (regras viram casos de teste) | `product-lead` | **Gate 4 carimbado** (§5): `product-lead` 2026-07-17; doc `28` aprovado. |
-| 5 | Casos de Uso | `requirements-analyst` | `15` (CU-01..21) | **Sim** — todo RF com ≥1 CU (exceção justificada RF-070) | **CONFORME** ✔ | QA verificou rastreabilidade RF→CU | `product-lead` | Carimbar; detalhar CU-01..08 [FUTURO] quando priorizados. |
+| 5 | Casos de Uso | `requirements-analyst` | `15` (CU-01..21) | **Sim** — todo RF com ≥1 CU (exceção justificada RF-070) | **CONFORME** ✔ | QA verificou rastreabilidade RF→CU | `product-lead` | **Gate 5 carimbado** (§5): `product-lead` 2026-07-17. Detalhar CU-01..08 [FUTURO] quando priorizados. |
 | 6 | Modelagem | `eng-lead`/`backend-engineer` | `02` §3–4, `13` §2, `25` §3 | Base sim; módulos novos pendentes de escopo | **CONFORME** (com ressalva) | Segurança (S6 LGPD no modelo) | `eng-lead` | Detalhar entidades dos 7 módulos novos na Etapa 9. |
 | 7 | Protótipo UI/UX | `design-lead` | `prototypes/`, `20`, `23` | Artefatos prontos; **falta aprovação formal do CEO (`T05`)** | **BLOQUEADO** (decisão CEO) | QA (regressão telas T01–T04d) | CEO | **B3** — executar `T05` (ato de aprovação do CEO). Sem lacuna de execução. |
 | 8 | Arquitetura | `eng-lead` | `13`, `25` | Sim (estilo, fronteiras, `D5`/`D6` isolados, S1–S9) | **CONFORME** | QA (esta auditoria) + Segurança (confirmar S1–S9) | `eng-lead` (→CEO p/ `Dxx`) | **Recomendado por eng-lead** (`25` §10) — carimbar após OK de Seg. |
@@ -250,9 +251,11 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
   RN-01..26 + matriz §8; verificado por QA). Doc `28` saiu de "rascunho". Carimbo
   aplicado pelo Agente Geral com base na verificação de conformidade (agente
   `product-lead` indisponível por limite de sessão).
-- **Gate 5 — Casos de Uso — verificado por QA em 2026-07-17** (DoD "todo RF com ≥1
-  CU rastreável" satisfeita: matriz doc `21` §10 fechada, CU-16..21, exceção RF-070
-  justificada); **aprovação do `product-lead` pendente**.
+- **Gate 5 — Casos de Uso — APROVADO pelo `product-lead` em 2026-07-17** (DoD "todo
+  RF com ≥1 CU rastreável" satisfeita: matriz doc `21` §10 fechada, CU-16..21 cobrem
+  os RF antes órfãos, exceção RF-070 justificada — infra/dados, não iniciada por
+  ator; verificado por QA e reconfirmado pelo `product-lead`). Doc `15` saiu de
+  "rascunho".
 
 **Recomendados / prontos para carimbo:**
 - **Gate 8 — Arquitetura — RECOMENDADO por `eng-lead` (doc `25` §10) + verificado por
@@ -278,15 +281,16 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 
 **Conclusão.** As três lacunas de execução apontadas na 1ª rodada (etapas 3, 4, 5)
 foram corrigidas e **re-verificadas de verdade contra a DoD do `14`** — passam a
-CONFORME. **Não resta nenhuma lacuna de execução.** O avanço do ciclo agora depende
-**exclusivamente de decisões do CEO** (B1, B2, B3, B5) e de carimbos formais do
-`product-lead` (gates 2, 3, 4, 5) e da Segurança (gate 8). O Gate 8 é o mais maduro e
-pode ser carimbado assim que a Segurança confirmar S1–S9.
+CONFORME. **Não resta nenhuma lacuna de execução.** Os **gates 1–5 estão carimbados**
+(§5): Gate 1 (CEO), gates 2, 3, 4 e 5 (`product-lead`, 2026-07-17). O avanço do ciclo
+agora depende **exclusivamente de decisões do CEO** (B1, B2, B3, B5) e do carimbo do
+**Gate 8** pela Segurança/`eng-lead`. O Gate 8 é o mais maduro e pode ser carimbado
+assim que a Segurança confirmar S1–S9.
 
 **Ações por setor (para o Agente Geral despachar):**
 - **CEO:** B1 (escopo MVP), B2 (LGPD), B3 (aprovar `T05`), B5 (`D6`), A6 (`D5`).
-- **Produto Lead:** carimbar gates 2, 3, 4, 5 (conteúdo verificado por QA); sair de
-  "rascunho" em `21`/`22`/`26`/`28`.
+- **Produto Lead:** gates 2, 3, 4, 5 **carimbados** ✔ e docs `15`/`21`/`22`/`26`/`28`
+  fora de "rascunho". Sem pendência de carimbo nas etapas 1–5.
 - **Segurança Lead:** confirmar S1–S9 do doc `25` para carimbar o Gate 8; manter B2.
 - **`eng-lead`:** carimbar Gate 8 (após Seg); detalhar entidades novas na Etapa 9.
 - **Design Lead:** A7 (WCAG-alvo); conduzir `T05` com o CEO.

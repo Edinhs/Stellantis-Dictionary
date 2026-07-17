@@ -1,6 +1,8 @@
 # Casos de Uso e Atores — Stellantis-Dictionary
 
-> Status: **rascunho** (expandido com os casos reais do protótipo em 2026-07-17).
+> Status: **aprovado — gate 5 (Casos de Uso), 2026-07-17** (expandido com os casos
+> reais do protótipo). Detalhamento dos CU-01..08 [FUTURO] segue pendente de decisões
+> abertas (§4) — não afeta a DoD de cobertura RF→CU do gate 5.
 > Última atualização: 2026-07-17.
 > Autoria: Analista de Requisitos (`requirements-analyst`), reporta ao Produto Lead.
 > Consolida os **casos de uso (etapa 5)** e serve de artefato de rastreabilidade das
