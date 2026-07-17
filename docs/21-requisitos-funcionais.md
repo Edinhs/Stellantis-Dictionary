@@ -1,6 +1,6 @@
 # Requisitos Funcionais — Stellantis-Dictionary (derivados do protótipo)
 
-> Status: **rascunho para revisão do Produto Lead / CEO**.
+> Status: **aprovado — gate 3 (Requisitos), 2026-07-17** (Produto Lead; DoD verificada por QA). Ver log `27` §5.
 > Última atualização: 2026-07-17.
 > Autoria: Analista de Requisitos (`requirements-analyst`), reporta ao Produto Lead.
 > Cobre a **etapa 3 (Requisitos)** do ciclo de vida `14-ciclo-de-vida-engenharia.md`.
