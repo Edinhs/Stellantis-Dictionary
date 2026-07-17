@@ -13,20 +13,55 @@ Marque `[x]` conforme formos concluindo.
 > enquanto `D6` — hospedagem — estiver em aberto**. O projeto está na **Fase 0.5 /
 > etapa 7** (grandfathering do protótipo já feito: não será refeito).
 
-## Fase 0.5 — Protótipo visual (agora)
+> **Reconciliação com o protótipo (2026-07-17).** O CEO entregou um protótipo
+> funcional em `prototypes/portal-spa/` que **excede** o backlog original de
+> protótipo (T01–T05). O escopo/UX real do protótipo está catalogado nos docs
+> `20` (referência), `21` (RF), `22` (RNF) e `15` (casos de uso CU-09..CU-15). As
+> tarefas T01–T04d abaixo ficam **superadas pelo protótipo entregue** (marcadas
+> como cobertas); o que o protótipo trouxe **a mais** virou o bloco novo "Fase 0.6".
+> Divergências que mudam decisão viram nota ao PDR `03` (ver §"Notas ao PDR").
+
+## Fase 0.5 — Protótipo visual (superada pelo protótipo entregue)
 > Objetivo: validar telas e fluxo antes de escrever código "de verdade".
-- [ ] T01 — Protótipo HTML: tela de login/cadastro
-- [ ] T02 — Protótipo HTML: tela do dicionário (lista, busca, cadastro de termo)
-- [ ] T03 — Protótipo HTML: tela de chat (RAG) com exibição de fontes citadas
-- [ ] T04 — Protótipo HTML: painel admin (gestão de usuários e termos)
-- [ ] T04b — Protótipo HTML: página principal com Explorador 3D do cockpit
-  (modelo placeholder, girar com o mouse, hotspots com nome+prévia, clique →
-  vai para o verbete no dicionário). Referência visual: "Cockpit Introduction".
-- [ ] T04c — Protótipo HTML: página "Quem procurar" (diretório) + bloco de
-  especialista no verbete e no hotspot 3D, com dados de exemplo. Ref.: SPEC `08`.
-- [ ] T04d — Protótipo HTML: aba "Comunidade" (Q&A) — lista de perguntas,
-  perguntar, detalhe com respostas/votos/aceitar. Ref.: SPEC `11`.
-- [ ] T05 — Revisão do protótipo com você (aprovação antes do código real)
+- [x] T01 — Protótipo: ~~tela de login/cadastro~~ **NÃO no protótipo** (sem auth —
+  vira RF [FUTURO], doc `21` RF-062). Perfil é apenas local.
+- [x] T02 — Protótipo: dicionário (lista, busca, cadastro de termo) — coberto
+  (doc `21` RF-001..RF-007).
+- [x] T03 — Protótipo: chat — coberto como **StellantisGPT simulado** (doc `21`
+  RF-020); citação de fontes/RAG real fica [FUTURO] (RF-068).
+- [x] T04 — Protótipo: ~~painel admin~~ **NÃO no protótipo** (sem RBAC/moderação —
+  [FUTURO], RF-063/RF-064).
+- [x] T04b — Protótipo: Explorador 3D do cockpit — coberto e além (modelo `.glb`
+  real do Grand Commander, órbita/zoom, wireframe, hotspots→verbete, fallback
+  procedural; doc `21` RF-010..RF-015).
+- [ ] T04c — Protótipo: página "Quem procurar" (diretório) + especialista no verbete
+  e hotspot 3D. **Parcial:** há aba de Especialistas com "Contatar" (RF-041), mas
+  **sem** ligação por `term_slug` nem no hotspot — pendência [FUTURO] (RF-069).
+- [ ] T04d — Protótipo: aba "Comunidade" (Q&A). **NÃO no protótipo** — [FUTURO]
+  (RF-067). Ref.: SPEC `11`.
+- [ ] T05 — Revisão/aprovação do protótipo com o CEO (aprovação formal do escopo dos
+  docs `20`/`21`/`22`/`15` antes do código real).
+
+## Fase 0.6 — Módulos do protótipo além do backlog original (a decidir escopo MVP)
+> O protótipo trouxe módulos ricos ainda não previstos em T01–T05. Aqui ficam
+> registrados como itens de escopo; **MVP vs. futuro é decisão do CEO** (perguntas
+> em aberto abaixo). Rastreabilidade: doc `21` (RF) e `22` (RNF).
+- [ ] T05a — Notebook de Engenharia (split-screen, autosave debounce 1200ms,
+  ações IA Resumir/Melhorar/Extrair Siglas). RF-030..RF-034. **MVP?** — em aberto.
+- [ ] T05b — Treinamento/Gamificação: flashcards 3D + criação com autocomplete,
+  cursos→XP/badge/level-up, +50 XP por cocriação, níveis 1–4, insígnias, timeline.
+  RF-035..RF-040, RF-055..RF-061. **MVP?** — em aberto (gamificação não está no
+  roadmap do PDR `03`; ver nota ao PDR).
+- [ ] T05c — Canais Oficiais (CRUD) e Kit Colaborador (links rápidos). RF-039/RF-040.
+  **MVP?** — em aberto.
+- [ ] T05d — Informações: Componentes Infotainment (filtro Tier-1), Projetos+versões,
+  Diretrizes FaSTLAne 2030, Timeline, Veículos. RF-042..RF-049. **MVP?** — em aberto.
+- [ ] T05e — Automações & IA (vitrine + ajuda no chat). RF-046/RF-046b. **MVP?** —
+  em aberto.
+- [ ] T05f — Organograma drill-down + modo gestão (CRUD) + mapa global. RF-044/RF-045.
+  **Alvo:** restringir gestão a `coordinator`/`admin` (RBAC) — ver nota ao PDR.
+- [ ] T05g — Decisão de reaproveitamento do frontend: reusar `app.js`/CSS do
+  protótipo vs. reescrever modular na Fase 1d (doc `22` RNF-040/RNF-041). — em aberto.
 
 ## Fase 1a — Fundação do backend
 > Depende de: decisão de hospedagem (D6) e provedor de LLM (D5) — podem ficar
@@ -99,6 +134,25 @@ Marque `[x]` conforme formos concluindo.
 - [ ] Fase 2 — Ingestão de documentos (upload, chunking, embeddings automáticos)
 - [ ] Fase 3 — Histórico avançado, busca melhorada, métricas de uso
 - [ ] Fase 4 — MFA, auditoria completa, SSO, pentest leve
+
+## Notas ao PDR `03` (divergências protótipo × decisões — não reescrever SPECs agora)
+> Levantadas na reconciliação de 2026-07-17 (docs `20`/`21`/`22`/`15`). Cada uma pode
+> virar uma decisão nova `Dn` no PDR, a critério do CEO/Produto Lead.
+1. **Gamificação (XP/insígnias/level-up)** existe no protótipo (RF-055..RF-061) mas
+   **não** consta no roadmap do PDR `03` §3 — decidir se é escopo de produto e em que
+   fase (candidata a novo `Dn`).
+2. **Módulos "extras"** (Notebook, Automações, Kit Colaborador, Diretrizes, Timeline,
+   Veículos, Componentes, Projetos) não estavam no escopo MVP do PDR — confirmar
+   quais entram no MVP real (T05a–T05e).
+3. **Ausência de auth/RBAC/moderação no protótipo** (contraria D1/D12/D14) — confirmado
+   como limitação intencional da fase; produto real segue o PDR (RF-062..RF-064).
+4. **Chat simulado** (RF-020) vs. **RAG com fontes** (D2/D5, RF-068) — definir a fase
+   de substituição.
+5. **Modelo 3D:** protótipo usa `.glb` real (~19 MB) do Grand Commander; PDR `03` D9
+   prevê **placeholder de licença livre** — confirmar asset/licença e meta de peso
+   (Draco) para produção.
+6. **Dados pessoais reais** no Organograma/Especialistas expostos no cliente (LGPD,
+   doc `22` RNF-031) — recomendação: não publicar pessoas reais até a migração segura.
 
 ## Decisões que ainda bloqueiam algumas tarefas
 - D5 (provedor de LLM): pode ficar em "modo mock/configurável" até decidirmos, para não travar T12/T13.
