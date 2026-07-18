@@ -1,0 +1,27 @@
+{
+  "_comment": "Semente versionada dos hotspots do Explorador 3D (futura tabela cockpit_hotspots, editavel pelo admin - ver SPEC 3.5 e docs/05). FONTE UNICA DA VERDADE: cada hotspot referencia um termo por term_slug; nome/previa vem do verbete via API, NAO se duplica texto aqui. O campo 'def' abaixo e apenas PREVIA PROVISORIA do prototipo.",
+  "_vistas": "Duas cenas: 'exterior' (carro jeep.draco.glb) e 'interior' (cockpit por dentro). O alternador Exterior/Interior no prototipo troca entre elas.",
+  "exterior": {
+    "_modelo": "jeep.glb / jeep.draco.glb — EXTERIOR-only. Posicao normalizada nx/ny/nz em [-0.5..0.5] no bounding box do modelo (nz+ = frente, nx+ = lateral direita, ny+ = topo).",
+    "hotspots": [
+      { "slug": "hud",          "label": "Head-Up Display (HUD)", "def": "Projecao de informacoes no para-brisa, no campo de visao do motorista (Digital Cockpit).", "nx": 0.00, "ny": 0.30, "nz": 0.22, "w": 128, "h": 66 },
+      { "slug": "grade-farois", "label": "Grade & Farois",        "def": "Grade frontal de 7 fendas e conjunto optico: iluminacao e assinatura de luz do Jeep.", "nx": 0.18, "ny": -0.02, "nz": 0.48, "w": 120, "h": 62 },
+      { "slug": "rodas",        "label": "Rodas & Pneus",         "def": "Conjunto roda/pneu: dimensoes, calibragem e tipos conforme o modelo.", "nx": 0.50, "ny": -0.26, "nz": 0.26, "w": 88, "h": 88 },
+      { "slug": "lanternas",    "label": "Lanternas / Traseira",  "def": "Lanternas traseiras, para-choque e porta-malas do veiculo.", "nx": 0.14, "ny": 0.04, "nz": -0.49, "w": 110, "h": 66 },
+      { "slug": "carroceria",   "label": "Carroceria",            "def": "Estrutura externa, portas e pintura do veiculo.", "nx": 0.50, "ny": 0.14, "nz": -0.02, "w": 150, "h": 92 }
+    ]
+  },
+  "interior": {
+    "_modelo": "PLACEHOLDER procedural (geometria simples own-work, licenca livre) representando painel/cluster/HUD/volante/central/console/alto-falante/bancos. Substituivel por um .glb real de cockpit de licenca livre — ver docs/06 e o PONTO DE TROCA FACIL em main-3d-explorer.html (buildInterior). Posicao ABSOLUTA px/py/pz em unidades do grupo do cockpit (origem no centro; py = altura; pz+ = frente/painel; px- = lado do motorista).",
+    "hotspots": [
+      { "slug": "hud",              "label": "Head-Up Display (HUD)",  "def": "Projecao de informacoes no para-brisa, no campo de visao do motorista (Digital Cockpit).", "px": -0.55, "py": 1.22, "pz": 0.52, "w": 96, "h": 46 },
+      { "slug": "cluster-digital",  "label": "Cluster / Painel Digital", "def": "Painel de instrumentos digital do motorista: velocidade, alertas e navegacao.", "px": -0.55, "py": 1.04, "pz": 0.44, "w": 100, "h": 58 },
+      { "slug": "central-display",  "label": "Central Multimidia",     "def": "Tela central de informacao e entretenimento (infotainment).", "px": 0.02, "py": 1.04, "pz": 0.47, "w": 92, "h": 66 },
+      { "slug": "comandos-volante", "label": "Comandos do Volante",    "def": "Botoes fisicos no volante para audio, telefone e assistentes (Physical Cockpit).", "px": -0.55, "py": 0.88, "pz": 0.34, "w": 82, "h": 82 },
+      { "slug": "audio-sistema",    "label": "Sistema de Audio",       "def": "Alto-falantes, amplificador e microfones: som e captacao de voz.", "px": -1.00, "py": 0.87, "pz": 0.12, "w": 74, "h": 74 },
+      { "slug": "phone-mirroring",  "label": "Espelhamento de Telefone", "def": "Android Auto / Apple CarPlay: espelha o smartphone na central multimidia.", "px": 0.05, "py": 0.92, "pz": 0.28, "w": 74, "h": 60 },
+      { "slug": "cloud",            "label": "Nuvem (Cloud)",          "def": "Conectividade e servicos online do veiculo.", "px": 0.00, "py": 1.50, "pz": 0.50, "w": 72, "h": 72 },
+      { "slug": "cockpit",          "label": "Cockpit (visao geral)",  "def": "Area de comando do motorista: telas, controles e conectividade.", "px": 0.00, "py": 0.76, "pz": 0.10, "w": 120, "h": 82 }
+    ]
+  }
+}

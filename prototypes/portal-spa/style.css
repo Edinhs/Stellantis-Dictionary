@@ -799,6 +799,123 @@ body::before {
     .home3d-hotspot .hs-mark { animation: none; }
 }
 
+/* ---- Hotspot: marcador agora é um <button> (reset de aparência) ---- */
+.home3d-hotspot .hs-mark {
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 0;
+    cursor: pointer;
+}
+.home3d-hotspot .hs-mark:focus-visible {
+    outline: 3px solid var(--accent-red);
+    outline-offset: 3px;
+}
+/* tooltip fixada quando o hotspot está ativo (toque/clique) */
+.home3d-hotspot.is-active .hs-tip { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+.home3d-hotspot.is-active .hs-zone { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.home3d-hotspot.is-active .hs-mark { opacity: 0; }
+
+/* ---- tooltip: duas ações (Ver no dicionário / Inserir ideia) ---- */
+.home3d-hotspot .hs-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+.home3d-hotspot .hs-go,
+.home3d-hotspot .hs-idea {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.18s, border-color 0.18s;
+    white-space: nowrap;
+}
+.home3d-hotspot .hs-go { color: var(--secondary); border-color: rgba(111, 168, 255, 0.4); }
+.home3d-hotspot .hs-go:hover { background: rgba(111, 168, 255, 0.2); }
+.home3d-hotspot .hs-idea:hover { background: rgba(255, 255, 255, 0.14); }
+.home3d-hotspot .hs-go:focus-visible,
+.home3d-hotspot .hs-idea:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+
+/* ==========================================
+   CONTROLES DO MOTOR 3D T04b (c3d-*) — dica, girar/parar,
+   alternador Exterior/Interior, barra de zoom, fallback.
+   Injetados dentro de #carViewBox e #canvas3dContainer.
+   ========================================== */
+.c3d-hint {
+    position: absolute; left: 12px; top: 12px; z-index: 6;
+    display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px;
+    border-radius: 999px; background: rgba(9, 14, 34, 0.62);
+    border: 1px solid rgba(143, 208, 255, 0.22); color: var(--text-muted);
+    font-size: 11.5px; backdrop-filter: blur(6px); white-space: nowrap;
+    pointer-events: none;
+}
+.c3d-hint svg { color: var(--secondary); flex-shrink: 0; }
+
+.c3d-rotbtn {
+    position: absolute; right: 12px; top: 12px; z-index: 6;
+    display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px 7px 10px;
+    border-radius: 999px; background: rgba(9, 14, 34, 0.62);
+    border: 1px solid rgba(143, 208, 255, 0.22); color: var(--text-muted);
+    font-family: inherit; font-size: 11.5px; font-weight: 600; cursor: pointer;
+    backdrop-filter: blur(6px); transition: color .18s, border-color .18s, background .18s;
+}
+.c3d-rotbtn:hover { color: #fff; border-color: rgba(143, 208, 255, 0.45); background: rgba(15, 22, 52, 0.72); }
+.c3d-rotbtn:focus-visible { outline: 3px solid var(--secondary); outline-offset: 3px; }
+.c3d-rotbtn svg { color: var(--secondary); flex-shrink: 0; }
+.c3d-rotbtn .ico-pause { display: none; }
+.c3d-rotbtn.is-paused .ico-play { display: none; }
+.c3d-rotbtn.is-paused .ico-pause { display: block; }
+
+.c3d-viewtabs {
+    position: absolute; left: 50%; bottom: 60px; transform: translateX(-50%);
+    z-index: 6; display: inline-flex; gap: 4px; padding: 4px;
+    border-radius: 999px; background: rgba(9, 14, 34, 0.62);
+    border: 1px solid rgba(143, 208, 255, 0.22); backdrop-filter: blur(6px);
+}
+.c3d-viewtab {
+    font-family: inherit; cursor: pointer; border: 0; background: transparent;
+    color: var(--text-muted); font-size: 11.5px; font-weight: 600;
+    padding: 6px 13px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: color .18s, background .18s, box-shadow .18s;
+}
+.c3d-viewtab svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--secondary); }
+.c3d-viewtab:hover { color: #fff; }
+.c3d-viewtab[aria-pressed="true"] { color: #fff; background: rgba(59, 130, 246, 0.28); box-shadow: inset 0 0 0 1px rgba(143, 208, 255, 0.35); }
+.c3d-viewtab:focus-visible { outline: 3px solid var(--secondary); outline-offset: 3px; }
+
+.c3d-zoomctl { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 6; touch-action: none; user-select: none; }
+.c3d-zoomctl svg { overflow: visible; display: block; cursor: pointer; }
+.c3d-zoomctl .zt { fill: none; stroke: rgba(143, 208, 255, 0.30); stroke-width: 3.5; stroke-linecap: round; }
+.c3d-zoomctl .zh { fill: #fff; stroke: var(--secondary); stroke-width: 2.5; cursor: grab; }
+.c3d-zoomctl .zh:active { cursor: grabbing; }
+.c3d-zoomctl text { fill: var(--text-muted); font-size: 16px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; font-family: inherit; }
+
+/* hotspot oculto quando a vista ativa não é a dele */
+.home3d-hotspot.c3d-hidden { display: none !important; }
+
+/* fallback sem WebGL (usado no Explorador) */
+.c3d-fallback {
+    position: absolute; inset: 0; z-index: 8; display: none; place-items: center;
+    text-align: center; padding: 30px; color: var(--text-muted);
+    background: rgba(7, 11, 26, 0.4);
+}
+.c3d-fallback.show { display: grid; }
+.c3d-fallback strong { color: var(--text-main); }
+
+@media (max-width: 480px) {
+    .c3d-hint { font-size: 10.5px; padding: 6px 10px; max-width: calc(100% - 128px); white-space: normal; }
+    .c3d-rotbtn { font-size: 10.5px; padding: 6px 10px 6px 8px; }
+    .c3d-viewtabs { bottom: 54px; }
+}
+
 /* ==========================================
    SEÇÕES GENÉRICAS (Headers)
    ========================================== */
