@@ -1,0 +1,60 @@
+# =============================================================================
+# Deploy do PROTÓTIPO (portal-spa) no GitHub Pages
+# -----------------------------------------------------------------------------
+# PASSO MANUAL OBRIGATORIO (uma unica vez, feito pelo CEO/owner do repo):
+#   Settings -> Pages -> "Build and deployment" -> Source: "GitHub Actions"
+#   Nao ha como automatizar esse passo via API; sem ele o deploy falha.
+#
+# Depois de habilitado, a URL publica sera:
+#   https://<owner>.github.io/<repo>/
+#   (ex.: https://<owner>.github.io/Stellantis-Dictionary/)
+#
+# O site publicado tem a pasta `prototypes/portal-spa/` como RAIZ, entao os
+# caminhos relativos (lib/, assets/, app.js, Carro 3D/*.glb) funcionam como estao.
+# =============================================================================
+
+name: Deploy Prototipo (GitHub Pages)
+
+on:
+  # Disparo manual pela aba Actions
+  workflow_dispatch:
+  # Disparo automatico ao alterar o prototipo nesta branch
+  push:
+    branches:
+      - claude/ai-agent-tool-planning-xi33sh
+    paths:
+      - 'prototypes/portal-spa/**'
+      - '.github/workflows/pages-prototipo.yml'
+
+# Permissoes minimas exigidas pelo deploy do Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Garante um unico deploy por vez, sem cancelar um deploy em andamento
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact (raiz = prototypes/portal-spa)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: prototypes/portal-spa
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
