@@ -257,8 +257,16 @@ document.addEventListener('DOMContentLoaded', () => {
         let renderer, scene, camera, controls, canvas, loaderEl, fallbackEl;
         let carRoot = null, interiorGroup = null, ground = null, contactShadow = null;
         let carSize = new THREE.Vector3();
-        let fitCenter = new THREE.Vector3(), fitDim = 3;
-        const FIT_MARGIN = 0.92; // menor = câmera mais perto = carro maior (ajuste do CEO)
+        let fitCenter = new THREE.Vector3();
+        // Enquadramento POR EIXO (corrige o vazio vertical do "diagonal no eixo mais apertado"):
+        //   fitW = maior silhueta HORIZONTAL do carro em 360° (hypot(x,z)) → limitada pela FOV horizontal
+        //   fitH = altura do carro (y)                                    → limitada pela FOV vertical
+        // frameDist = distância que enquadra bem (câmera inicial / reset / troca de vista).
+        // minDistance/maxDistance ficam ABAIXO/ACIMA dela → dá pra APROXIMAR (zoom in) e afastar.
+        let fitW = 3, fitH = 2, frameDist = 3;
+        const FRAME_MARGIN = 1.06;   // folga pequena p/ o carro não encostar nas bordas
+        const ZOOM_IN_FACTOR = 0.5;  // zoom-in máximo = metade do enquadramento (carro ~2x maior)
+        const ZOOM_OUT_FACTOR = 1.9; // zoom-out máximo
         let currentView = 'exterior';
         let extHotspots = [], intHotspots = [], activeHotspots = [];
         let spinning = true, reduceMotion = false, wireframe = false;
@@ -396,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fb.getSize(carSize);
             const sph = fb.getBoundingSphere(new THREE.Sphere());
             fitCenter.copy(sph.center);
-            fitDim = Math.max(Math.hypot(carSize.x, carSize.z), carSize.y);
+            fitW = Math.hypot(carSize.x, carSize.z); fitH = carSize.y;
             if (contactShadow) {
                 contactShadow.scale.set(carSize.x * 1.85, carSize.z * 1.5, 1);
                 contactShadow.position.x = fitCenter.x; contactShadow.position.z = fitCenter.z;
@@ -405,7 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
             applyZoomLimits();
             let dir0 = camera.position.clone().sub(fitCenter);
             if (dir0.lengthSq() < 1e-6) dir0.set(3.4, 1.8, 4.2);
-            dir0.setLength(controls.minDistance);
+            dir0.setLength(frameDist); // parte no enquadramento (permite zoom in E out a partir dele)
             camera.position.copy(fitCenter).add(dir0);
             controls.update();
 
@@ -521,11 +529,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const sz = fb.getSize(new THREE.Vector3());
             const sph = fb.getBoundingSphere(new THREE.Sphere());
             fitCenter.copy(sph.center);
-            fitDim = Math.max(Math.hypot(sz.x, sz.z), sz.y);
+            fitW = Math.hypot(sz.x, sz.z); fitH = sz.y;
             controls.target.copy(fitCenter);
             applyZoomLimits();
             const d = dir.clone(); if (d.lengthSq() < 1e-6) d.set(3.4, 1.8, 4.2);
-            d.setLength(controls.minDistance);
+            d.setLength(frameDist);
             camera.position.copy(fitCenter).add(d);
             controls.update();
         }
@@ -645,16 +653,21 @@ document.addEventListener('DOMContentLoaded', () => {
             zHandle.setAttribute('cy', pt.y.toFixed(1));
         }
 
-        function fitDistanceForAspect() {
+        // Distância que enquadra o carro POR EIXO: a largura (fitW) é limitada pela
+        // FOV horizontal e a altura (fitH) pela FOV vertical; usa-se o maior dos dois.
+        // Assim, num palco largo, a LARGURA passa a mandar (a diagonal deixa de ser
+        // esticada contra o eixo vertical), o carro preenche o palco e some o vazio.
+        function computeFrameDistance() {
             const vFov = camera.fov * Math.PI / 180;
             const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
-            const fov = Math.min(vFov, hFov);
-            return (fitDim / 2) / Math.tan(fov / 2) * FIT_MARGIN;
+            const distH = (fitW / 2) / Math.tan(hFov / 2);
+            const distV = (fitH / 2) / Math.tan(vFov / 2);
+            return Math.max(distH, distV) * FRAME_MARGIN;
         }
         function applyZoomLimits() {
-            const fit = fitDistanceForAspect();
-            controls.minDistance = fit;
-            controls.maxDistance = fit * 1.85;
+            frameDist = computeFrameDistance();
+            controls.minDistance = frameDist * ZOOM_IN_FACTOR;  // permite aproximar além do enquadramento
+            controls.maxDistance = frameDist * ZOOM_OUT_FACTOR; // permite afastar
         }
         function clampDistance() {
             const dir = camera.position.clone().sub(controls.target);
@@ -752,7 +765,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     chassi: new THREE.Vector3(3.2, 1.6, 3.2)
                 };
                 const dir = (presets[key] || EXT_DIR).clone();
-                dir.setLength(controls.minDistance);
+                // closeup controlado: ~72% do enquadramento (respeitando o limite de zoom-in)
+                dir.setLength(Math.max(controls.minDistance, frameDist * 0.72));
                 camera.position.copy(controls.target).add(dir);
                 controls.update(); syncHandle();
             }
