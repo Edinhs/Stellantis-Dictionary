@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let carRoot = null, interiorGroup = null, ground = null, contactShadow = null;
         let carSize = new THREE.Vector3();
         let fitCenter = new THREE.Vector3(), fitDim = 3;
-        const FIT_MARGIN = 1.12;
+        const FIT_MARGIN = 0.92; // menor = câmera mais perto = carro maior (ajuste do CEO)
         let currentView = 'exterior';
         let extHotspots = [], intHotspots = [], activeHotspots = [];
         let spinning = true, reduceMotion = false, wireframe = false;
