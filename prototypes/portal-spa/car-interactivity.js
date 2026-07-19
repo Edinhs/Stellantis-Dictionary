@@ -296,6 +296,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let savedSpin = true; // lembra a intenção de girar ao alternar exterior/interior
         const _v = new THREE.Vector3(), _camDir = new THREE.Vector3(), _n = new THREE.Vector3();
 
+        // ---- Transição animada Exterior <-> Interior (sensação de ENTRAR / SAIR) ----
+        // Em vez de saltar a câmera/target ao trocar de vista, faz um tween suave
+        // (easeInOutCubic, ~1s) do enquadramento de origem ao de destino, via loop
+        // de render. Durante o percurso: controles/zoom/auto-rotação desligados e
+        // hotspots ocultos; luz de cabine e chão/sombra fazem fade. O ESTADO FINAL
+        // é idêntico ao aprovado (frameInterior / frameObject) — a animação é só o
+        // "caminho". Um novo clique no meio cancela o anterior e parte do ponto atual.
+        let transition = null;
+        const TRANS_DUR = 1000;   // duração do tween (ms)
+        const TRANS_ARC = 0.18;   // leve arco vertical no meio do trajeto (unidades de cena)
+        const GROUND_BASE_OP = 0.5; // opacidade base do chão (ShadowMaterial)
+        const SHADOW_BASE_OP = 1.0; // opacidade base da sombra de contato
+        function easeInOutCubic(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+
         // ---- elementos de UI (namespaced c3d-*) ----
         let rotbtn = null, rotbtnLabel = null, hintEl = null;
         let viewExtBtn = null, viewIntBtn = null;
@@ -551,32 +565,112 @@ document.addEventListener('DOMContentLoaded', () => {
         function switchView(view) {
             if (view === currentView || !carReady) return;
             const toInterior = view === 'interior';
+            // Guarda a intenção de girar do Exterior ANTES de qualquer troca (só quando
+            // saímos de um Exterior REALMENTE ativo, não no meio de um tween em curso).
+            if (toInterior && !transition && currentView === 'exterior') savedSpin = spinning;
             currentView = view;
-            // o carro REAL fica sempre visível (a vista Interior é a câmera dentro da cabine)
-            if (ground) ground.visible = !toInterior;      // esconde chão/sombra dentro da cabine
-            if (contactShadow) contactShadow.visible = !toInterior;
-            if (intLight) intLight.intensity = toInterior ? 1.3 : 0.0; // acende a luz da cabine
             // BANCOS: no Interior seguem o toggle do usuário (padrão = sem); no
             // Exterior ficam SEMPRE visíveis (aprovado). O botão só aparece no Interior.
-            applySeatVisibility();
             if (seatbtn) seatbtn.style.display = toInterior ? '' : 'none';
+            // troca os conjuntos de hotspots (ambos ficam ocultos durante o percurso;
+            // reprojetam sozinhos ao chegar — evita "voar" pela tela no meio do tween).
             extHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', toInterior); h._el.classList.add('occluded'); });
             intHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', !toInterior); h._el.classList.add('occluded'); });
             activeHotspots = toInterior ? intHotspots : extHotspots;
-            if (toInterior) {
-                // limites de órbita p/ manter a câmera olhando o painel dentro da cabine
+            if (viewExtBtn) viewExtBtn.setAttribute('aria-pressed', (!toInterior).toString());
+            if (viewIntBtn) viewIntBtn.setAttribute('aria-pressed', toInterior.toString());
+            startTransition(toInterior);
+        }
+
+        // Calcula o ESTADO FINAL aprovado de uma vista (posição da câmera + target),
+        // executando as funções de enquadramento existentes e restaurando o estado
+        // atual — assim o destino do tween é byte-a-byte o já aprovado.
+        function computeViewState(toInterior) {
+            const sPos = camera.position.clone(), sTgt = controls.target.clone();
+            const sMin = controls.minDistance, sMax = controls.maxDistance, sFrame = frameDist;
+            const sFitW = fitW, sFitH = fitH, sCenter = fitCenter.clone();
+            if (toInterior) frameInterior(); else frameObject(carRoot, EXT_DIR);
+            const dest = { pos: camera.position.clone(), tgt: controls.target.clone() };
+            camera.position.copy(sPos); controls.target.copy(sTgt);
+            controls.minDistance = sMin; controls.maxDistance = sMax; frameDist = sFrame;
+            fitW = sFitW; fitH = sFitH; fitCenter.copy(sCenter);
+            camera.updateMatrixWorld();
+            return dest;
+        }
+
+        function startTransition(toInterior) {
+            const dest = computeViewState(toInterior);
+            transition = {
+                toInterior: toInterior,
+                t0: (typeof performance !== 'undefined' ? performance.now() : Date.now()),
+                dur: reduceMotion ? 0 : TRANS_DUR,
+                fromPos: camera.position.clone(), toPos: dest.pos,
+                fromTgt: controls.target.clone(), toTgt: dest.tgt,
+                fromLight: intLight ? intLight.intensity : 0, toLight: toInterior ? 1.3 : 0.0,
+                seatsApplied: false
+            };
+            // congela interação/auto-rotação durante o percurso
+            controls.enabled = false;
+            controls.autoRotate = false;
+            // ao SAIR, chão/sombra reaparecem com fade — precisam estar visíveis (opacidade 0)
+            if (!toInterior) {
+                if (ground) { ground.visible = true; ground.material.opacity = 0; }
+                if (contactShadow) { contactShadow.visible = true; contactShadow.material.opacity = 0; }
+            }
+        }
+
+        function updateTransition() {
+            const t = transition; if (!t) return;
+            const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+            let u = t.dur > 0 ? (now - t.t0) / t.dur : 1;
+            if (u > 1) u = 1;
+            const e = easeInOutCubic(u);
+            camera.position.lerpVectors(t.fromPos, t.toPos, e);
+            controls.target.lerpVectors(t.fromTgt, t.toTgt, e);
+            camera.position.y += Math.sin(Math.PI * u) * TRANS_ARC; // leve arco (sensação de mergulhar)
+            camera.lookAt(controls.target);
+            if (intLight) intLight.intensity = t.fromLight + (t.toLight - t.fromLight) * e;
+            const gf = t.toInterior ? (1 - e) : e; // presença do chão/sombra: some ao entrar, volta ao sair
+            if (ground) ground.material.opacity = GROUND_BASE_OP * gf;
+            if (contactShadow) contactShadow.material.opacity = SHADOW_BASE_OP * gf;
+            if (!t.seatsApplied && u >= 0.55) { applySeatVisibility(); t.seatsApplied = true; }
+            if (u >= 1) finishTransition();
+        }
+
+        function finishTransition() {
+            const t = transition; transition = null;
+            // ESTADO FINAL EXATO = o aprovado (mesma câmera/limites/enquadramento)
+            if (t.toInterior) {
                 controls.minPolarAngle = INT_POLAR_MIN; controls.maxPolarAngle = INT_POLAR_MAX;
-                savedSpin = spinning;
-                setSpinning(false);   // enquadramento estável/foto-fiel (usuário pode reativar o giro)
                 frameInterior();
             } else {
                 controls.minPolarAngle = EXT_POLAR_MIN; controls.maxPolarAngle = EXT_POLAR_MAX;
                 frameObject(carRoot, EXT_DIR);
-                setSpinning(savedSpin && !reduceMotion);
             }
-            if (viewExtBtn) viewExtBtn.setAttribute('aria-pressed', (!toInterior).toString());
-            if (viewIntBtn) viewIntBtn.setAttribute('aria-pressed', toInterior.toString());
+            if (ground) { ground.material.opacity = GROUND_BASE_OP; ground.visible = !t.toInterior; }
+            if (contactShadow) { contactShadow.material.opacity = SHADOW_BASE_OP; contactShadow.visible = !t.toInterior; }
+            if (intLight) intLight.intensity = t.toInterior ? 1.3 : 0.0;
+            applySeatVisibility();
+            controls.enabled = true;
+            // reativa auto-rotação só no Exterior (Interior = enquadramento estável)
+            if (t.toInterior) setSpinning(false);
+            else setSpinning(savedSpin && !reduceMotion);
             syncHandle();
+        }
+
+        // Finaliza um tween em curso levando direto ao estado da vista de destino
+        // (usado por reset/foco de componente para não conflitar com a animação).
+        function cancelTransition() {
+            if (!transition) return;
+            const wasInterior = transition.toInterior;
+            transition = null;
+            controls.enabled = true;
+            if (ground) { ground.material.opacity = GROUND_BASE_OP; ground.visible = !wasInterior; }
+            if (contactShadow) { contactShadow.material.opacity = SHADOW_BASE_OP; contactShadow.visible = !wasInterior; }
+            if (intLight) intLight.intensity = wasInterior ? 1.3 : 0.0;
+            if (wasInterior) { controls.minPolarAngle = INT_POLAR_MIN; controls.maxPolarAngle = INT_POLAR_MAX; }
+            else { controls.minPolarAngle = EXT_POLAR_MIN; controls.maxPolarAngle = EXT_POLAR_MAX; }
+            applySeatVisibility();
         }
 
         // ---- UI: hint, botão girar/parar, alternador de vista, barra de zoom ----
@@ -686,7 +780,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return Math.min(Math.max((vx - ZS.x0) / (ZS.x1 - ZS.x0), 0), 1);
             }
             function applyT(t) {
-                if (!carReady) return;
+                if (!carReady || transition) return; // zoom bloqueado durante a transição
                 const d = controls.maxDistance + t * (controls.minDistance - controls.maxDistance);
                 const dir = camera.position.clone().sub(controls.target); dir.setLength(d);
                 camera.position.copy(controls.target).add(dir); controls.update();
@@ -732,7 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ---- projeção 3D→2D + oclusão dos hotspots ----
         function updateHotspots() {
-            if (!carReady) return;
+            if (!carReady || transition) return; // durante o tween os hotspots ficam ocultos
             const w = stage.clientWidth, hh = stage.clientHeight;
             for (let i = 0; i < activeHotspots.length; i++) {
                 const h = activeHotspots[i];
@@ -774,7 +868,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function tick() {
             if (!running) { rafId = null; return; }
-            controls.update();
+            if (transition) updateTransition();  // tween manual: NÃO chama controls.update()
+            else controls.update();
             updateHotspots();
             syncHandle();
             renderer.render(scene, camera);
@@ -806,13 +901,15 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             resetCamera: function () {
                 if (!carReady) return;
-                switchView('exterior');
+                // do Interior: volta ao Exterior com a transição animada (saindo do carro)
+                if (currentView === 'interior' || transition) { switchView('exterior'); return; }
                 frameObject(carRoot, EXT_DIR);
                 setSpinning(!reduceMotion);
                 syncHandle();
             },
             focusComponent: function (key) {
                 if (!carReady) return;
+                cancelTransition();
                 setSpinning(false);
                 // aproxima a câmera de um preset por componente (reaproveita o framing)
                 const presets = {
