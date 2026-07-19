@@ -261,6 +261,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let inited = false, running = false, failed = false, rafId = null, carReady = false;
         let renderer, scene, camera, controls, canvas, loaderEl, fallbackEl;
         let carRoot = null, ground = null, contactShadow = null, intLight = null;
+        // Malhas dos BANCOS (por NOME de nó) — ocultadas só na vista Interior para
+        // deixar o painel limpo (aprovado pelo CEO). São ocultadas por nó (não por
+        // material compartilhado) e RESTAURADAS ao voltar ao Exterior, para o
+        // exterior/entrada de luz pelas janelas seguir idêntico ao aprovado.
+        // NOTA: 'color_int_leather' NÃO entra — é o couro de TRIM (portas + console/
+        // painel inferior), não banco; escondê-lo apagaria revestimento legítimo.
+        const SEAT_NODE_KEYS = ['seats_mat', 'int_middle_seat'];
+        let seatMeshes = [];
         let carSize = new THREE.Vector3();
         let fitCenter = new THREE.Vector3();
         // Enquadramento POR EIXO (corrige o vazio vertical do "diagonal no eixo mais apertado"):
@@ -414,7 +422,13 @@ document.addEventListener('DOMContentLoaded', () => {
             box2.getSize(carSize);
             const c2 = box2.getCenter(new THREE.Vector3());
             car.position.x -= c2.x; car.position.z -= c2.z; car.position.y -= box2.min.y;
-            car.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+            seatMeshes = [];
+            car.traverse(o => {
+                if (o.isMesh) {
+                    o.castShadow = true; o.receiveShadow = true;
+                    if (SEAT_NODE_KEYS.some(k => o.name && o.name.indexOf(k) >= 0)) seatMeshes.push(o);
+                }
+            });
             scene.add(car);
 
             const fb = new THREE.Box3().setFromObject(car);
@@ -536,6 +550,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ground) ground.visible = !toInterior;      // esconde chão/sombra dentro da cabine
             if (contactShadow) contactShadow.visible = !toInterior;
             if (intLight) intLight.intensity = toInterior ? 1.3 : 0.0; // acende a luz da cabine
+            // Interior: oculta os BANCOS (painel limpo). Exterior: restaura (bancos
+            // visíveis por dentro pelas janelas — enquadramento externo inalterado).
+            seatMeshes.forEach(m => { m.visible = !toInterior; });
             extHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', toInterior); h._el.classList.add('occluded'); });
             intHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', !toInterior); h._el.classList.add('occluded'); });
             activeHotspots = toInterior ? intHotspots : extHotspots;
