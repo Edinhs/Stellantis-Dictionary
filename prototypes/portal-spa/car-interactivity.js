@@ -192,12 +192,17 @@ document.addEventListener('DOMContentLoaded', () => {
             { slug: 't270',            label: 'Lanternas / Traseira',   nx: 0.14, ny: 0.04,  nz: -0.49, w: 110, h: 66 },
             { slug: 'cluster-digital', label: 'Carroceria',             nx: 0.50, ny: 0.14,  nz: -0.02, w: 150, h: 92 }
         ],
+        // INTERIOR — âncoras em coordenadas REAIS do modelo (medidas dos bounding
+        // boxes das malhas do interior, no espaço normalizado do carro: x=largura,
+        // y=altura do chão, z=comprimento [+ = frente]). Volante = malha
+        // 'leather_int' (Cylinder012) em ~[0.13,0.50,0.31]; painel = 'int_plastic';
+        // console = 'int_metal'/'int_Chrome'. Slugs iguais aos já usados (ponte c/ dicionário).
         interior: [
-            { slug: 'adas',            label: 'Head-Up Display (HUD)',    px: -0.55, py: 1.22, pz: 0.52, w: 96,  h: 46 },
-            { slug: 'cluster-digital', label: 'Cluster / Painel Digital', px: -0.55, py: 1.04, pz: 0.44, w: 100, h: 58 },
-            { slug: 'cluster-digital', label: 'Central Multimídia',       px: 0.02,  py: 1.04, pz: 0.47, w: 92,  h: 66 },
-            { slug: 'adas',            label: 'Comandos do Volante',      px: -0.55, py: 0.88, pz: 0.34, w: 82,  h: 82 },
-            { slug: 'etcu',            label: 'Console / Eletrônica',     px: 0.00,  py: 0.90, pz: 0.24, w: 74,  h: 60 }
+            { slug: 'adas',            label: 'Head-Up Display (HUD)',    px: 0.00, py: 0.80, pz: 0.24, w: 96, h: 44 },
+            { slug: 'cluster-digital', label: 'Cluster / Painel Digital', px: 0.14, py: 0.62, pz: 0.40, w: 92, h: 52 },
+            { slug: 'cluster-digital', label: 'Central Multimídia',       px: 0.00, py: 0.57, pz: 0.47, w: 90, h: 66 },
+            { slug: 'adas',            label: 'Comandos do Volante',      px: 0.14, py: 0.49, pz: 0.30, w: 84, h: 74 },
+            { slug: 'etcu',            label: 'Console / Eletrônica',     px: 0.05, py: 0.42, pz: 0.47, w: 78, h: 58 }
         ]
     };
 
@@ -255,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
         opts = opts || {};
         let inited = false, running = false, failed = false, rafId = null, carReady = false;
         let renderer, scene, camera, controls, canvas, loaderEl, fallbackEl;
-        let carRoot = null, interiorGroup = null, ground = null, contactShadow = null;
+        let carRoot = null, ground = null, contactShadow = null, intLight = null;
         let carSize = new THREE.Vector3();
         let fitCenter = new THREE.Vector3();
         // Enquadramento POR EIXO (corrige o vazio vertical do "diagonal no eixo mais apertado"):
@@ -272,7 +277,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let spinning = true, reduceMotion = false, wireframe = false;
         let ro = null, resizeHandler = null;
         const EXT_DIR = new THREE.Vector3(3.4, 1.8, 4.2);
-        const INT_DIR = new THREE.Vector3(0.28, 0.34, -1);
+        // ---- Vista INTERIOR: câmera DENTRO da cabine, olhando à frente p/ o painel
+        // (enquadramento parecido com a foto real: volante + cluster + central + console).
+        // Coordenadas no espaço normalizado do carro (frente = +Z, altura do chão em Y).
+        const INT_TARGET = new THREE.Vector3(0.05, 0.55, 0.50); // alvo: painel/tela central
+        const INT_CAM = new THREE.Vector3(0.00, 0.76, -0.55);   // câmera: entre/sobre os bancos dianteiros
+        const INT_MIN = 0.6, INT_MAX = 1.6;                     // limites de zoom p/ ficar dentro da cabine
+        const EXT_POLAR_MIN = 0.15, EXT_POLAR_MAX = Math.PI * 0.52; // limites polares do exterior (restaurados)
+        const INT_POLAR_MIN = 0.55, INT_POLAR_MAX = 1.45;       // interior: não passa do teto nem sob o piso
+        let savedSpin = true; // lembra a intenção de girar ao alternar exterior/interior
         const _v = new THREE.Vector3(), _camDir = new THREE.Vector3(), _n = new THREE.Vector3();
 
         // ---- elementos de UI (namespaced c3d-*) ----
@@ -343,6 +356,10 @@ document.addEventListener('DOMContentLoaded', () => {
             key.shadow.bias = -0.0005; scene.add(key);
             const fill = new THREE.DirectionalLight(0x6fa8ff, 0.7); fill.position.set(-5, 2, -3); scene.add(fill);
             const rim = new THREE.DirectionalLight(0x8fd0ff, 1.1); rim.position.set(-2, 3.5, -6); scene.add(rim);
+            // luz de preenchimento da CABINE (quente, suave) — acesa só na vista Interior,
+            // pois o interior fica na sombra do teto/carroceria. Posição no centro da cabine.
+            intLight = new THREE.PointLight(0xfff1dc, 0.0, 4.0, 2.0);
+            intLight.position.set(0, 0.78, 0.05); scene.add(intLight);
 
             controls = new THREE.OrbitControls(camera, renderer.domElement);
             controls.enableDamping = true;
@@ -417,7 +434,7 @@ document.addEventListener('DOMContentLoaded', () => {
             camera.position.copy(fitCenter).add(dir0);
             controls.update();
 
-            buildInterior();
+            // (sem placeholder: a vista Interior usa a geometria REAL do modelo)
             extHotspots = buildHotspots(CAR.exterior, 'exterior');
             intHotspots = buildHotspots(CAR.interior, 'interior');
             activeHotspots = extHotspots;
@@ -481,47 +498,20 @@ document.addEventListener('DOMContentLoaded', () => {
             return arr;
         }
 
-        // ---- Cena de INTERIOR (placeholder procedural, licença livre / own work) ----
-        function buildInterior() {
-            interiorGroup = new THREE.Group();
-            interiorGroup.name = 'cockpit-interior-placeholder';
-            const matPlastic = new THREE.MeshStandardMaterial({ color: 0x141a30, roughness: 0.9, metalness: 0.05 });
-            const matDark = new THREE.MeshStandardMaterial({ color: 0x0c1020, roughness: 0.8 });
-            const matScreen = new THREE.MeshStandardMaterial({ color: 0x0a1638, emissive: 0x24408f, emissiveIntensity: 0.7, roughness: 0.35 });
-            const matHud = new THREE.MeshStandardMaterial({ color: 0x9fd8ff, emissive: 0x6fa8ff, emissiveIntensity: 1.0, transparent: true, opacity: 0.9 });
-            const matGlass = new THREE.MeshStandardMaterial({ color: 0x8fb4ff, transparent: true, opacity: 0.10, roughness: 0.1 });
-            const matMetal = new THREE.MeshStandardMaterial({ color: 0x2a3048, roughness: 0.4, metalness: 0.7 });
-            const matSeat = new THREE.MeshStandardMaterial({ color: 0x1a1f36, roughness: 1.0 });
-            const matAccent = new THREE.MeshStandardMaterial({ color: 0xff3b3b, emissive: 0x661010, emissiveIntensity: 0.4, roughness: 0.5 });
-            function box(w, h, d, mat, x, y, z, rx) {
-                const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
-                m.position.set(x, y, z); if (rx) m.rotation.x = rx;
-                m.castShadow = true; m.receiveShadow = true; interiorGroup.add(m); return m;
-            }
-            box(2.2, 0.05, 2.0, matDark, 0, 0.55, 0.0);
-            box(2.0, 0.34, 0.5, matPlastic, 0, 0.98, 0.62);
-            box(2.0, 0.06, 0.18, matDark, 0, 1.16, 0.5);
-            box(2.0, 0.6, 0.02, matGlass, 0, 1.35, 0.78, -0.5);
-            box(2.0, 0.05, 0.05, matPlastic, 0, 1.62, 0.5);
-            box(0.42, 0.22, 0.02, matScreen, -0.55, 1.02, 0.42, -0.15);
-            box(0.30, 0.12, 0.01, matHud, -0.55, 1.20, 0.50, -0.4);
-            box(0.34, 0.26, 0.02, matScreen, 0.02, 1.02, 0.45, -0.2);
-            box(0.36, 0.30, 0.9, matPlastic, 0.0, 0.72, 0.05);
-            box(0.28, 0.02, 0.2, matAccent, 0.0, 0.90, 0.24);
-            const wheel = new THREE.Mesh(new THREE.TorusGeometry(0.17, 0.03, 12, 32), matMetal);
-            wheel.position.set(-0.55, 0.9, 0.30); wheel.rotation.x = Math.PI / 2 - 0.5; wheel.castShadow = true; interiorGroup.add(wheel);
-            box(0.12, 0.08, 0.04, matDark, -0.55, 0.9, 0.30, -0.5);
-            box(0.05, 0.03, 0.02, matAccent, -0.63, 0.86, 0.33, -0.5);
-            box(0.05, 0.03, 0.02, matAccent, -0.47, 0.86, 0.33, -0.5);
-            const spk = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.03, 20), matDark);
-            spk.position.set(-1.0, 0.85, 0.1); spk.rotation.z = Math.PI / 2; interiorGroup.add(spk);
-            box(0.5, 0.5, 0.2, matSeat, -0.5, 0.85, -0.55);
-            box(0.5, 0.1, 0.5, matSeat, -0.5, 0.62, -0.4);
-            box(0.5, 0.5, 0.2, matSeat, 0.5, 0.85, -0.55);
-            box(0.5, 0.1, 0.5, matSeat, 0.5, 0.62, -0.4);
-            box(0.22, 0.07, 0.04, matDark, 0.0, 1.5, 0.5);
-            interiorGroup.visible = false;
-            scene.add(interiorGroup);
+        // ---- Vista INTERIOR: posiciona a câmera DENTRO da cabine, na geometria REAL
+        // do modelo, olhando à frente para o painel (volante à esquerda, central ao
+        // centro, console abaixo) — enquadramento fiel à foto do interior real. ----
+        function frameInterior() {
+            fitCenter.copy(INT_TARGET);
+            controls.target.copy(INT_TARGET);
+            applyInteriorZoomLimits();
+            camera.position.copy(INT_TARGET).add(new THREE.Vector3(INT_CAM.x - INT_TARGET.x, INT_CAM.y - INT_TARGET.y, INT_CAM.z - INT_TARGET.z));
+            controls.update();
+        }
+        function applyInteriorZoomLimits() {
+            frameDist = INT_TARGET.distanceTo(INT_CAM);
+            controls.minDistance = INT_MIN;
+            controls.maxDistance = INT_MAX;
         }
 
         function frameObject(obj, dir) {
@@ -540,16 +530,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function switchView(view) {
             if (view === currentView || !carReady) return;
-            currentView = view;
             const toInterior = view === 'interior';
-            if (carRoot) carRoot.visible = !toInterior;
-            if (ground) ground.visible = !toInterior;
+            currentView = view;
+            // o carro REAL fica sempre visível (a vista Interior é a câmera dentro da cabine)
+            if (ground) ground.visible = !toInterior;      // esconde chão/sombra dentro da cabine
             if (contactShadow) contactShadow.visible = !toInterior;
-            if (interiorGroup) interiorGroup.visible = toInterior;
+            if (intLight) intLight.intensity = toInterior ? 1.3 : 0.0; // acende a luz da cabine
             extHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', toInterior); h._el.classList.add('occluded'); });
             intHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', !toInterior); h._el.classList.add('occluded'); });
             activeHotspots = toInterior ? intHotspots : extHotspots;
-            frameObject(toInterior ? interiorGroup : carRoot, toInterior ? INT_DIR : EXT_DIR);
+            if (toInterior) {
+                // limites de órbita p/ manter a câmera olhando o painel dentro da cabine
+                controls.minPolarAngle = INT_POLAR_MIN; controls.maxPolarAngle = INT_POLAR_MAX;
+                savedSpin = spinning;
+                setSpinning(false);   // enquadramento estável/foto-fiel (usuário pode reativar o giro)
+                frameInterior();
+            } else {
+                controls.minPolarAngle = EXT_POLAR_MIN; controls.maxPolarAngle = EXT_POLAR_MAX;
+                frameObject(carRoot, EXT_DIR);
+                setSpinning(savedSpin && !reduceMotion);
+            }
             if (viewExtBtn) viewExtBtn.setAttribute('aria-pressed', (!toInterior).toString());
             if (viewIntBtn) viewIntBtn.setAttribute('aria-pressed', toInterior.toString());
             syncHandle();
@@ -712,7 +712,10 @@ document.addEventListener('DOMContentLoaded', () => {
             renderer.setSize(w, hh, false);
             camera.aspect = w / hh;
             camera.updateProjectionMatrix();
-            if (carReady) { applyZoomLimits(); clampDistance(); controls.update(); syncHandle(); }
+            if (carReady) {
+                if (currentView === 'interior') applyInteriorZoomLimits(); else applyZoomLimits();
+                clampDistance(); controls.update(); syncHandle();
+            }
         }
 
         function tick() {
