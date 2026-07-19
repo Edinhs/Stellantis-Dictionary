@@ -299,6 +299,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // ---- elementos de UI (namespaced c3d-*) ----
         let rotbtn = null, rotbtnLabel = null, hintEl = null;
         let viewExtBtn = null, viewIntBtn = null;
+        let seatbtn = null, seatbtnLabel = null;
+        // Estado do toggle de BANCOS (pedido do CEO): controle só da vista Interior.
+        // Padrão = SEM bancos (vista limpa aprovada). O usuário liga se quiser; o
+        // estado escolhido persiste enquanto navega Interior↔Exterior↔Interior nesta
+        // instância. No Exterior os bancos ficam SEMPRE visíveis (inalterado).
+        let seatsOn = false;
         let zSvg = null, zHandle = null, zDragging = false;
 
         function showFallback() {
@@ -550,9 +556,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (ground) ground.visible = !toInterior;      // esconde chão/sombra dentro da cabine
             if (contactShadow) contactShadow.visible = !toInterior;
             if (intLight) intLight.intensity = toInterior ? 1.3 : 0.0; // acende a luz da cabine
-            // Interior: oculta os BANCOS (painel limpo). Exterior: restaura (bancos
-            // visíveis por dentro pelas janelas — enquadramento externo inalterado).
-            seatMeshes.forEach(m => { m.visible = !toInterior; });
+            // BANCOS: no Interior seguem o toggle do usuário (padrão = sem); no
+            // Exterior ficam SEMPRE visíveis (aprovado). O botão só aparece no Interior.
+            applySeatVisibility();
+            if (seatbtn) seatbtn.style.display = toInterior ? '' : 'none';
             extHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', toInterior); h._el.classList.add('occluded'); });
             intHotspots.forEach(h => { h._el.classList.toggle('c3d-hidden', !toInterior); h._el.classList.add('occluded'); });
             activeHotspots = toInterior ? intHotspots : extHotspots;
@@ -605,6 +612,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 viewExtBtn.addEventListener('click', () => switchView('exterior'));
                 viewIntBtn.addEventListener('click', () => switchView('interior'));
                 stage.appendChild(vt);
+
+                // Toggle de BANCOS: aparece só na vista Interior (oculto por padrão,
+                // revelado em switchView('interior')). Ícone poltrona (inline SVG,
+                // consistente com os demais controles c3d-*).
+                seatbtn = document.createElement('button');
+                seatbtn.type = 'button';
+                seatbtn.className = 'c3d-seatbtn';
+                seatbtn.style.display = 'none';
+                seatbtn.setAttribute('aria-pressed', 'false');
+                seatbtn.setAttribute('aria-label', 'Mostrar ou ocultar os bancos da cabine');
+                seatbtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"/><path d="M3 11a2 2 0 0 1 2 2v3h14v-3a2 2 0 0 1 4 0v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5a2 2 0 0 1 0-2z"/><path d="M5 18v2M19 18v2"/></svg><span class="c3d-seatlabel">Bancos: sem</span>';
+                seatbtnLabel = seatbtn.querySelector('.c3d-seatlabel');
+                seatbtn.addEventListener('click', () => setSeats(!seatsOn));
+                stage.appendChild(seatbtn);
             }
             if (opts.showZoom !== false) buildZoomSlider();
             if (reduceMotion) setSpinning(false);
@@ -619,6 +640,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 rotbtn.setAttribute('aria-label', v ? 'Pausar rotação automática' : 'Retomar rotação automática');
             }
             if (rotbtnLabel) rotbtnLabel.textContent = v ? 'Girando' : 'Parado';
+        }
+
+        // ---- Toggle de BANCOS (só afeta a vista Interior) ----
+        // Exterior: bancos SEMPRE visíveis. Interior: visíveis apenas se seatsOn.
+        function applySeatVisibility() {
+            const show = (currentView !== 'interior') ? true : seatsOn;
+            seatMeshes.forEach(m => { m.visible = show; });
+        }
+        function setSeats(on) {
+            seatsOn = !!on;
+            applySeatVisibility();
+            if (seatbtn) {
+                seatbtn.setAttribute('aria-pressed', seatsOn ? 'true' : 'false');
+                seatbtn.classList.toggle('is-on', seatsOn);
+            }
+            if (seatbtnLabel) seatbtnLabel.textContent = seatsOn ? 'Bancos: com' : 'Bancos: sem';
         }
 
         // ---- Barra de zoom (curvada, minimalista) ----
