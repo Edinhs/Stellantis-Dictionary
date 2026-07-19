@@ -304,8 +304,8 @@ body::before {
    ========================================== */
 .hero-container {
     display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 40px;
+    grid-template-columns: 1fr 1.15fr; /* mais peso p/ o palco 3D (card maior) */
+    gap: 32px;
     align-items: center;
     padding-top: 20px;
     min-height: 70vh;
@@ -448,7 +448,8 @@ body::before {
 .car-view-box {
     position: relative;
     width: 100%;
-    aspect-ratio: 1.5;
+    aspect-ratio: 1.35;      /* mais alto = maior área de "ambiente" ao redor do carro */
+    min-height: 480px;        /* garante um palco generoso no desktop (o fit reenquadra) */
     background: radial-gradient(circle, rgba(15,36,84,0.3) 0%, rgba(5,10,24,0) 70%);
     border-radius: 20px;
     display: flex;
@@ -4150,8 +4151,15 @@ body::before {
     }
     
     .car-visualizer-container {
-        max-width: 500px;
+        max-width: 560px; /* card um pouco maior no tablet, ainda centrado */
         margin: 0 auto;
+    }
+
+    /* no empilhamento (1 coluna) a largura já define a altura; solta o min-height
+       do desktop p/ o card não ficar alto demais nem estourar em telas menores */
+    .car-view-box {
+        aspect-ratio: 1.45;
+        min-height: 0;
     }
 
     .explorador-3d-layout {
