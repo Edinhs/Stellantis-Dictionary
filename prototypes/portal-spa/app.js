@@ -4613,6 +4613,234 @@ document.addEventListener('DOMContentLoaded', () => {
         infotainmentComponents = [...defaultInfotainmentComponents];
     }
 
+    // ----------------------------------------------------------------
+    // Taxonomias dinâmicas de Componentes: Categorias e Fornecedores
+    // Semeadas a partir das listas fixas e persistidas em localStorage.
+    // ----------------------------------------------------------------
+    const defaultComponentCategories = [
+        { value: 'audio-tela', label: 'Telas & Áudio' },
+        { value: 'conectividade-auxilio', label: 'Conectividade & Auxílio' }
+    ];
+    const defaultComponentSuppliers = [
+        { value: 'aptiv', label: 'Aptiv', area: 'Conectividade & Elétrica', desc: 'Arquiteturas elétricas, conectividade e software para veículos definidos por software.' },
+        { value: 'marelli', label: 'Magneti Marelli', area: 'Eletrônica & Iluminação', desc: 'Eletrônica veicular, sistemas de iluminação, painéis e módulos de infotainment.' },
+        { value: 'harman', label: 'Harman Kardon', area: 'Áudio & Infotainment', desc: 'Sistemas de áudio premium, infotainment e conectividade embarcada.' },
+        { value: 'bosch', label: 'Bosch', area: 'Freios & Sensores', desc: 'Sistemas de freios, powertrain, sensores e eletrônica automotiva.' },
+        { value: 'continental', label: 'Continental', area: 'ADAS & Chassi', desc: 'Pneus, sistemas de freios, ADAS e soluções de conectividade e display.' },
+        { value: 'zf', label: 'ZF Friedrichshafen', area: 'Powertrain & Chassi', desc: 'Transmissões, sistemas de chassi, direção e tecnologias de segurança.' },
+        { value: 'valeo', label: 'Valeo', area: 'Térmico & ADAS', desc: 'Sistemas térmicos, iluminação, ADAS e eletrificação de powertrain.' },
+        { value: 'forvia', label: 'Forvia (Faurecia)', area: 'Interiores & Cockpit', desc: 'Interiores, assentos, sistemas de escape e eletrônica de cockpit.' }
+    ];
+
+    function slugifyComponentTaxonomy(str) {
+        return str.toString().toLowerCase().trim()
+            .normalize('NFD').replace(/[̀-ͯ]/g, '')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    let componentCategories = [];
+    let componentSuppliers = [];
+    try {
+        componentCategories = JSON.parse(localStorage.getItem('stellantis_component_categories')) || [...defaultComponentCategories];
+    } catch(e) { componentCategories = [...defaultComponentCategories]; }
+    try {
+        componentSuppliers = JSON.parse(localStorage.getItem('stellantis_component_suppliers')) || [...defaultComponentSuppliers];
+    } catch(e) { componentSuppliers = [...defaultComponentSuppliers]; }
+    if (!Array.isArray(componentCategories) || !componentCategories.length) componentCategories = [...defaultComponentCategories];
+    if (!Array.isArray(componentSuppliers) || !componentSuppliers.length) componentSuppliers = [...defaultComponentSuppliers];
+
+    // Backfill: garante que os fornecedores semeados existam e tenham metadados (area/desc)
+    // para o showcase, sem sobrescrever fornecedores criados pelo usuário.
+    defaultComponentSuppliers.forEach(def => {
+        const found = componentSuppliers.find(s => s.value === def.value);
+        if (!found) {
+            componentSuppliers.push({ ...def });
+        } else {
+            if (!found.area) found.area = def.area;
+            if (!found.desc) found.desc = def.desc;
+            if (!found.label) found.label = def.label;
+        }
+    });
+
+    function persistComponentTaxonomies() {
+        localStorage.setItem('stellantis_component_categories', JSON.stringify(componentCategories));
+        localStorage.setItem('stellantis_component_suppliers', JSON.stringify(componentSuppliers));
+    }
+    // Semear no primeiro carregamento para manter as listas visíveis/persistidas
+    persistComponentTaxonomies();
+
+    function getComponentCategoryLabel(value) {
+        const found = componentCategories.find(c => c.value === value);
+        if (found) return found.label;
+        // Compatibilidade com valores legados
+        if (value === 'conectividade' || value === 'auxilio') return 'Conectividade & Auxílio';
+        return value;
+    }
+    function getComponentSupplierLabel(value) {
+        const found = componentSuppliers.find(s => s.value === value);
+        return found ? found.label : (value || '').toUpperCase();
+    }
+
+    // Renderiza as opções do <select> de Categoria (com ação "+ Categoria" no início)
+    function renderComponentCategorySelect(preferredValue) {
+        const sel = document.getElementById('selectInfoCategory');
+        if (!sel) return;
+        const current = preferredValue || sel.value;
+        sel.innerHTML =
+            '<option value="__add_category__">+ Categoria (cadastrar nova)</option>' +
+            componentCategories.map(c => `<option value="${c.value}">${c.label}</option>`).join('');
+        if (current && componentCategories.some(c => c.value === current)) {
+            sel.value = current;
+        } else if (componentCategories[0]) {
+            sel.value = componentCategories[0].value;
+        }
+    }
+
+    // Renderiza as opções do <select> de Fornecedor (com ação "+ Fornecedor" no início)
+    function renderComponentSupplierSelect(preferredValue) {
+        const sel = document.getElementById('selectInfoSupplier');
+        if (!sel) return;
+        const current = preferredValue || sel.value;
+        sel.innerHTML =
+            '<option value="__add_supplier__">+ Fornecedor (cadastrar novo)</option>' +
+            componentSuppliers.map(s => `<option value="${s.value}">${s.label}</option>`).join('');
+        if (current && componentSuppliers.some(s => s.value === current)) {
+            sel.value = current;
+        } else if (componentSuppliers[0]) {
+            sel.value = componentSuppliers[0].value;
+        }
+    }
+
+    // Recalcula os filtros ativos a partir dos checkboxes vivos e re-renderiza a grade
+    function updateComponentFilters() {
+        const cats = [];
+        const sups = [];
+        document.querySelectorAll('#menuFilterComponent .filter-checkbox').forEach(cb => {
+            if (cb.checked) cats.push(cb.getAttribute('data-cat'));
+        });
+        document.querySelectorAll('#menuFilterSupplier .filter-checkbox').forEach(cb => {
+            if (cb.checked) sups.push(cb.getAttribute('data-sup'));
+        });
+        window.activeCategories = cats;
+        window.activeSuppliers = sups;
+        const btnC = document.getElementById('btnFilterComponentDropdown');
+        const btnS = document.getElementById('btnFilterSupplierDropdown');
+        if (btnC) btnC.classList.toggle('active', cats.length < componentCategories.length);
+        if (btnS) btnS.classList.toggle('active', sups.length < componentSuppliers.length);
+        if (typeof renderInfotainment === 'function') renderInfotainment();
+    }
+
+    // (Re)constrói os checkboxes de filtro de Categoria e Fornecedor, preservando marcações
+    function renderComponentFilterCheckboxes() {
+        const catMenu = document.getElementById('menuFilterComponent');
+        const supMenu = document.getElementById('menuFilterSupplier');
+        const labelStyle = 'display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 12.5px; cursor: pointer; padding: 6px 8px; border-radius: 6px; transition: background 0.2s;';
+        const boxStyle = 'accent-color: var(--secondary); cursor: pointer; width: 14px; height: 14px;';
+
+        // Preservar estado de marcação atual
+        const prevCats = {};
+        document.querySelectorAll('#menuFilterComponent .filter-checkbox').forEach(cb => { prevCats[cb.getAttribute('data-cat')] = cb.checked; });
+        const prevSups = {};
+        document.querySelectorAll('#menuFilterSupplier .filter-checkbox').forEach(cb => { prevSups[cb.getAttribute('data-sup')] = cb.checked; });
+
+        if (catMenu) {
+            catMenu.innerHTML = componentCategories.map(c => {
+                const checked = (prevCats[c.value] !== false) ? 'checked' : '';
+                return `<label class="filter-checkbox-label" style="${labelStyle}"><input type="checkbox" ${checked} class="filter-checkbox" data-cat="${c.value}" style="${boxStyle}"><span>${c.label}</span></label>`;
+            }).join('');
+        }
+        if (supMenu) {
+            supMenu.innerHTML = componentSuppliers.map(s => {
+                const checked = (prevSups[s.value] !== false) ? 'checked' : '';
+                return `<label class="filter-checkbox-label" style="${labelStyle}"><input type="checkbox" ${checked} class="filter-checkbox" data-sup="${s.value}" style="${boxStyle}"><span>${s.label}</span></label>`;
+            }).join('');
+        }
+        document.querySelectorAll('#menuFilterComponent .filter-checkbox, #menuFilterSupplier .filter-checkbox').forEach(cb => {
+            cb.addEventListener('change', updateComponentFilters);
+        });
+    }
+
+    // Cadastra uma nova categoria e a seleciona; retorna o value criado (ou existente)
+    function addComponentCategory(name) {
+        const label = (name || '').trim();
+        if (!label) return null;
+        let value = slugifyComponentTaxonomy(label);
+        if (!value) return null;
+        const existing = componentCategories.find(c => c.value === value);
+        if (!existing) {
+            componentCategories.push({ value, label });
+            persistComponentTaxonomies();
+            renderComponentFilterCheckboxes();
+        }
+        renderComponentCategorySelect(value);
+        updateComponentFilters();
+        return value;
+    }
+
+    function addComponentSupplier(name, details) {
+        const label = (name || '').trim();
+        if (!label) return null;
+        let value = slugifyComponentTaxonomy(label);
+        if (!value) return null;
+        const extra = details || {};
+        const existing = componentSuppliers.find(s => s.value === value);
+        if (!existing) {
+            componentSuppliers.push({ value, label, area: (extra.area || '').trim(), desc: (extra.desc || '').trim(), logo: (extra.logo || '').trim() });
+            persistComponentTaxonomies();
+            renderComponentFilterCheckboxes();
+        } else {
+            // Enriquecer metadados se vierem do cadastro do showcase
+            if (extra.area) existing.area = extra.area.trim();
+            if (extra.desc) existing.desc = extra.desc.trim();
+            if (extra.logo) existing.logo = extra.logo.trim();
+            persistComponentTaxonomies();
+        }
+        renderComponentSupplierSelect(value);
+        updateComponentFilters();
+        if (typeof renderSuppliersShowcase === 'function') renderSuppliersShowcase();
+        return value;
+    }
+
+    // ----------------------------------------------------------------
+    // Showcase de Fornecedores (fonte unificada: stellantis_component_suppliers)
+    // ----------------------------------------------------------------
+    function escapeSupplierText(str) {
+        return String(str == null ? '' : str)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function renderSuppliersShowcase() {
+        const grid = document.getElementById('suppliersGridContainer');
+        if (!grid) return;
+        grid.innerHTML = '';
+        componentSuppliers.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'infotainment-card';
+            card.setAttribute('data-supplier-value', s.value);
+            const label = escapeSupplierText(s.label || s.value);
+            const initial = (s.label || s.value || '?').trim().charAt(0).toUpperCase();
+            const logo = (s.logo || '').trim();
+            const logoHtml = logo
+                ? `<img src="${escapeSupplierText(logo)}" alt="${label}" style="width:100%;height:100%;object-fit:contain;border-radius:8px;">`
+                : `<span style="font-size:20px;font-weight:800;">${escapeSupplierText(initial)}</span>`;
+            const area = escapeSupplierText(s.area || 'Fornecedor Tier-1');
+            const desc = escapeSupplierText(s.desc || 'Fornecedor cadastrado no catálogo de Componentes da Stellantis.');
+            card.innerHTML = `
+                <div class="infotainment-card-icon blue" style="overflow:hidden;">${logoHtml}</div>
+                <div class="infotainment-card-content" style="width:100%;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                        <span class="info-cat-badge">${area}</span>
+                    </div>
+                    <h4>${label}</h4>
+                    <p>${desc}</p>
+                </div>`;
+            grid.appendChild(card);
+        });
+        if (window.lucide) lucide.createIcons();
+    }
+
     const infotainmentGridContainer = document.getElementById('infotainmentGridContainer');
     const btnOpenAddInfotainmentModal = document.getElementById('btnOpenAddInfotainmentModal');
     const addInfotainmentModal = document.getElementById('addInfotainmentModal');
@@ -4669,8 +4897,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="infotainment-card-icon ${iconClass}"><i data-lucide="${icon}"></i></div>
                 <div class="infotainment-card-content" style="width: 100%;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                        <span class="info-cat-badge">${item.category === 'audio-tela' ? 'Telas & Áudio' : 'Conectividade & Auxílio'}</span>
-                        <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">${item.supplier}</span>
+                        <span class="info-cat-badge">${getComponentCategoryLabel(item.category)}</span>
+                        <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">${getComponentSupplierLabel(item.supplier)}</span>
                     </div>
                     <h4>${item.title}</h4>
                     <p>${item.desc.substring(0, 140)}${item.desc.length > 140 ? '...' : ''}</p>
@@ -4692,7 +4920,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!infotainmentDetailsModal || !infoDetailsTitle || !infoDetailsSubtitle || !imgInfoDetails || !infoDetailsContent || !infoDetailsAppliedContainer) return;
 
         infoDetailsTitle.textContent = item.title;
-        infoDetailsSubtitle.textContent = `${item.category === 'audio-tela' ? 'Telas & Áudio' : 'Conectividade & Auxílio'} | Fornecedor: ${item.supplier.toUpperCase()}`;
+        infoDetailsSubtitle.textContent = `${getComponentCategoryLabel(item.category)} | Fornecedor: ${getComponentSupplierLabel(item.supplier)}`;
         
         // Tratar imagem
         imgInfoDetails.src = item.imageUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600';
@@ -4738,8 +4966,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnOpenAddInfotainmentModal && addInfotainmentModal) {
         btnOpenAddInfotainmentModal.addEventListener('click', () => {
             document.getElementById('inputInfoTitle').value = '';
-            document.getElementById('selectInfoCategory').value = 'audio-tela';
-            document.getElementById('selectInfoSupplier').value = 'aptiv';
+            // Reconstroi os selects (garante categorias/fornecedores recém-criados) e reseta o estado inline
+            renderComponentCategorySelect(componentCategories[0] && componentCategories[0].value);
+            renderComponentSupplierSelect(componentSuppliers[0] && componentSuppliers[0].value);
+            hideAddCategoryRow();
+            hideAddSupplierRow();
             document.getElementById('inputInfoApplied').value = '';
             document.getElementById('inputInfoImageUrl').value = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600';
             document.getElementById('textareaInfoDesc').value = '';
@@ -4779,6 +5010,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!title || !applied || !desc) {
                 alert('Por favor, preencha todos os campos obrigatórios (Nome, Aplicações e Descrição)!');
+                return;
+            }
+
+            if (category === '__add_category__') {
+                alert('Confirme o cadastro da nova categoria (botão OK) antes de salvar o componente.');
+                return;
+            }
+            if (supplier === '__add_supplier__') {
+                alert('Confirme o cadastro do novo fornecedor (botão OK) antes de salvar o componente.');
                 return;
             }
 
@@ -4824,9 +5064,146 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ----------------------------------------------------------------
+    // UI inline para cadastrar Categoria / Fornecedor no modal
+    // ----------------------------------------------------------------
+    function showAddCategoryRow() {
+        const row = document.getElementById('rowAddCategory');
+        const input = document.getElementById('inputNewCategory');
+        if (row) row.style.display = 'flex';
+        if (input) { input.value = ''; input.focus(); }
+    }
+    function hideAddCategoryRow() {
+        const row = document.getElementById('rowAddCategory');
+        if (row) row.style.display = 'none';
+    }
+    function showAddSupplierRow() {
+        const row = document.getElementById('rowAddSupplier');
+        const input = document.getElementById('inputNewSupplier');
+        if (row) row.style.display = 'flex';
+        if (input) { input.value = ''; input.focus(); }
+    }
+    function hideAddSupplierRow() {
+        const row = document.getElementById('rowAddSupplier');
+        if (row) row.style.display = 'none';
+    }
+
+    const selInfoCategory = document.getElementById('selectInfoCategory');
+    if (selInfoCategory) {
+        selInfoCategory.addEventListener('change', () => {
+            if (selInfoCategory.value === '__add_category__') {
+                showAddCategoryRow();
+            } else {
+                hideAddCategoryRow();
+            }
+        });
+    }
+    const selInfoSupplier = document.getElementById('selectInfoSupplier');
+    if (selInfoSupplier) {
+        selInfoSupplier.addEventListener('change', () => {
+            if (selInfoSupplier.value === '__add_supplier__') {
+                showAddSupplierRow();
+            } else {
+                hideAddSupplierRow();
+            }
+        });
+    }
+
+    function confirmNewCategory() {
+        const input = document.getElementById('inputNewCategory');
+        const name = input ? input.value.trim() : '';
+        if (!name) { alert('Informe o nome da nova categoria.'); return; }
+        const value = addComponentCategory(name);
+        if (!value) { alert('Nome de categoria inválido.'); return; }
+        hideAddCategoryRow();
+    }
+    function confirmNewSupplier() {
+        const input = document.getElementById('inputNewSupplier');
+        const name = input ? input.value.trim() : '';
+        if (!name) { alert('Informe o nome do novo fornecedor.'); return; }
+        const value = addComponentSupplier(name);
+        if (!value) { alert('Nome de fornecedor inválido.'); return; }
+        hideAddSupplierRow();
+    }
+
+    const btnConfirmNewCategory = document.getElementById('btnConfirmNewCategory');
+    const btnCancelNewCategory = document.getElementById('btnCancelNewCategory');
+    const inputNewCategory = document.getElementById('inputNewCategory');
+    if (btnConfirmNewCategory) btnConfirmNewCategory.addEventListener('click', confirmNewCategory);
+    if (btnCancelNewCategory) btnCancelNewCategory.addEventListener('click', () => {
+        hideAddCategoryRow();
+        renderComponentCategorySelect(componentCategories[0] && componentCategories[0].value);
+    });
+    if (inputNewCategory) inputNewCategory.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); confirmNewCategory(); }
+    });
+
+    const btnConfirmNewSupplier = document.getElementById('btnConfirmNewSupplier');
+    const btnCancelNewSupplier = document.getElementById('btnCancelNewSupplier');
+    const inputNewSupplier = document.getElementById('inputNewSupplier');
+    if (btnConfirmNewSupplier) btnConfirmNewSupplier.addEventListener('click', confirmNewSupplier);
+    if (btnCancelNewSupplier) btnCancelNewSupplier.addEventListener('click', () => {
+        hideAddSupplierRow();
+        renderComponentSupplierSelect(componentSuppliers[0] && componentSuppliers[0].value);
+    });
+    if (inputNewSupplier) inputNewSupplier.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); confirmNewSupplier(); }
+    });
+
+    // ----------------------------------------------------------------
+    // Modal CRUD do Showcase de Fornecedores
+    // ----------------------------------------------------------------
+    const addSupplierModal = document.getElementById('addSupplierModal');
+    const btnOpenAddSupplierModal = document.getElementById('btnOpenAddSupplierModal');
+    const btnCloseAddSupplierModal = document.getElementById('btnCloseAddSupplierModal');
+    const btnCancelAddSupplierModal = document.getElementById('btnCancelAddSupplierModal');
+    const btnSaveNewSupplier = document.getElementById('btnSaveNewSupplier');
+
+    function closeAddSupplierModal() {
+        if (addSupplierModal) addSupplierModal.classList.remove('open');
+    }
+    if (btnOpenAddSupplierModal && addSupplierModal) {
+        btnOpenAddSupplierModal.addEventListener('click', () => {
+            const n = document.getElementById('inputSupplierName');
+            const a = document.getElementById('inputSupplierArea');
+            const d = document.getElementById('textareaSupplierDesc');
+            const l = document.getElementById('inputSupplierLogo');
+            if (n) n.value = '';
+            if (a) a.value = '';
+            if (d) d.value = '';
+            if (l) l.value = '';
+            addSupplierModal.classList.add('open');
+        });
+    }
+    if (btnCloseAddSupplierModal) btnCloseAddSupplierModal.addEventListener('click', closeAddSupplierModal);
+    if (btnCancelAddSupplierModal) btnCancelAddSupplierModal.addEventListener('click', closeAddSupplierModal);
+    if (addSupplierModal) {
+        addSupplierModal.addEventListener('click', (e) => {
+            if (e.target === addSupplierModal) closeAddSupplierModal();
+        });
+    }
+    if (btnSaveNewSupplier) {
+        btnSaveNewSupplier.addEventListener('click', () => {
+            const name = (document.getElementById('inputSupplierName').value || '').trim();
+            const area = (document.getElementById('inputSupplierArea').value || '').trim();
+            const desc = (document.getElementById('textareaSupplierDesc').value || '').trim();
+            const logo = (document.getElementById('inputSupplierLogo').value || '').trim();
+            if (!name) { alert('Informe o nome do fornecedor.'); return; }
+            const value = addComponentSupplier(name, { area, desc, logo });
+            if (!value) { alert('Nome de fornecedor inválido.'); return; }
+            closeAddSupplierModal();
+            renderSuppliersShowcase();
+            alert(`Fornecedor "${name}" adicionado ao catálogo!\nJá disponível também no cadastro de Componentes.`);
+        });
+    }
+
     // Inicializar renderizações de Informações
     renderSpecialists();
-    renderInfotainment();
+    renderComponentCategorySelect();
+    renderComponentSupplierSelect();
+    renderComponentFilterCheckboxes();
+    updateComponentFilters(); // sincroniza activeCategories/activeSuppliers e renderiza a grade
+    renderSuppliersShowcase();
 
     // ========================================================
     // 21. GERENCIAMENTO DINÂMICO DE HIERARQUIA (ORGANIZAR)

@@ -136,7 +136,8 @@
                     <ul class="dropdown-menu">
                         <li><button class="dropdown-link" data-target="informacoes" data-sub="especialistas">Especialistas</button></li>
                         <li><button class="dropdown-link" data-target="informacoes" data-sub="projetos">Projetos</button></li>
-                        <li><button class="dropdown-link" data-target="informacoes" data-sub="infotainment">Infotainment</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="infotainment">Componentes</button></li>
+                        <li><button class="dropdown-link" data-target="informacoes" data-sub="fornecedores">Fornecedores</button></li>
                         <li><button class="dropdown-link" data-target="informacoes" data-sub="estrutura">Estrutura & Equipe</button></li>
                         <li><button class="dropdown-link" data-target="informacoes" data-sub="diretrizes">Diretrizes Globais</button></li>
                         <li><button class="dropdown-link" data-target="informacoes" data-sub="timeline">Marcos & Conquistas</button></li>
@@ -838,7 +839,10 @@
                     <i data-lucide="folder-git-2"></i> Projetos
                 </button>
                 <button class="sub-nav-btn" data-infosub="infotainment">
-                    <i data-lucide="tv"></i> Infotainment
+                    <i data-lucide="tv"></i> Componentes
+                </button>
+                <button class="sub-nav-btn" data-infosub="fornecedores">
+                    <i data-lucide="factory"></i> Fornecedores
                 </button>
                 <button class="sub-nav-btn" data-infosub="estrutura">
                     <i data-lucide="network"></i> Estrutura & Equipe
@@ -892,7 +896,7 @@
             <div id="info-sec-infotainment" class="info-sub-section">
                 <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 280px;">
-                        <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Componentes de Infotainment</h3>
+                        <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Componentes</h3>
                         <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Filtre e explore as principais tecnologias de infotretenimento, telas e conectividade do ecossistema Stellantis. Clique em qualquer card para ver a imagem e informações.</p>
                     </div>
                     <button class="btn-add-term-minimal" id="btnOpenAddInfotainmentModal" title="Adicionar Componente">
@@ -949,6 +953,23 @@
 
                 <div class="infotainment-grid" id="infotainmentGridContainer">
                     <!-- Injetado dinamicamente via JS -->
+                </div>
+            </div>
+
+            <!-- SUBABA: FORNECEDORES (SHOWCASE) -->
+            <div id="info-sec-fornecedores" class="info-sub-section">
+                <div class="welcome-intro-card" style="background: var(--glass-bg); border: 1px solid var(--glass-border); backdrop-filter: blur(12px); border-radius: 16px; padding: 30px; margin-bottom: 30px; border-left: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 280px;">
+                        <h3 style="font-size: 22px; color: var(--text-main); margin: 0 0 8px 0; font-weight: 700; font-family: 'Outfit', sans-serif;">Fornecedores</h3>
+                        <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; margin: 0;">Conheça os principais fornecedores (Tier-1) do ecossistema automotivo Stellantis. Esta lista é compartilhada com o cadastro de Componentes.</p>
+                    </div>
+                    <button class="btn-add-term-minimal" id="btnOpenAddSupplierModal" title="Adicionar Fornecedor">
+                        <i data-lucide="plus"></i> Adicionar Fornecedor
+                    </button>
+                </div>
+
+                <div class="infotainment-grid" id="suppliersGridContainer">
+                    <!-- Injetado dinamicamente via JS (renderSuppliersShowcase) -->
                 </div>
             </div>
 
@@ -2205,7 +2226,7 @@
     <div class="modal-overlay" id="addInfotainmentModal">
         <div class="modal-card" style="max-width: 550px;">
             <div class="modal-header">
-                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar Componente de Infotainment</h3>
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar Componente</h3>
                 <button class="btn-close-modal" id="btnCloseAddInfotainmentModal"><i data-lucide="x"></i></button>
             </div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
@@ -2217,18 +2238,24 @@
                     <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
                         <label for="selectInfoCategory" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Categoria do Componente</label>
                         <select id="selectInfoCategory" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
-                            <option value="audio-tela">Telas & Áudio</option>
-                            <option value="conectividade-auxilio">Conectividade & Auxílio</option>
+                            <!-- Opções injetadas dinamicamente via JS (renderComponentCategorySelect) -->
                         </select>
+                        <div id="rowAddCategory" style="display: none; gap: 8px; margin-top: 8px;">
+                            <input type="text" id="inputNewCategory" placeholder="Nome da nova categoria" style="flex: 1; min-width: 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: var(--text-main); font-size: 12px;">
+                            <button type="button" id="btnConfirmNewCategory" title="Salvar categoria" style="background: var(--secondary); border: none; color: #fff; padding: 0 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12px;">OK</button>
+                            <button type="button" id="btnCancelNewCategory" title="Cancelar" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); padding: 0 10px; border-radius: 8px; cursor: pointer; font-size: 12px;">✕</button>
+                        </div>
                     </div>
                     <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
                         <label for="selectInfoSupplier" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Fornecedor Tier-1</label>
                         <select id="selectInfoSupplier" style="background: rgba(20,20,30,0.95); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; height: 45px; cursor: pointer;">
-                            <option value="aptiv">Aptiv</option>
-                            <option value="marelli">Magneti Marelli</option>
-                            <option value="harman">Harman Kardon</option>
-                            <option value="bosch">Bosch</option>
+                            <!-- Opções injetadas dinamicamente via JS (renderComponentSupplierSelect) -->
                         </select>
+                        <div id="rowAddSupplier" style="display: none; gap: 8px; margin-top: 8px;">
+                            <input type="text" id="inputNewSupplier" placeholder="Nome do novo fornecedor" style="flex: 1; min-width: 0; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 10px 12px; border-radius: 8px; color: var(--text-main); font-size: 12px;">
+                            <button type="button" id="btnConfirmNewSupplier" title="Salvar fornecedor" style="background: var(--secondary); border: none; color: #fff; padding: 0 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 12px;">OK</button>
+                            <button type="button" id="btnCancelNewSupplier" title="Cancelar" style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); padding: 0 10px; border-radius: 8px; cursor: pointer; font-size: 12px;">✕</button>
+                        </div>
                     </div>
                 </div>
                 <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
@@ -2249,6 +2276,38 @@
             <div class="modal-footer" style="padding-top: 10px;">
                 <button class="btn-modal-action secondary" id="btnCancelAddInfotainmentModal">Cancelar</button>
                 <button class="btn-modal-action primary" id="btnSaveNewInfotainment">Adicionar Componente</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Adicionar Fornecedor -->
+    <div class="modal-overlay" id="addSupplierModal">
+        <div class="modal-card" style="max-width: 520px;">
+            <div class="modal-header">
+                <h3 style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Adicionar Fornecedor</h3>
+                <button class="btn-close-modal" id="btnCloseAddSupplierModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px; padding: 15px 0 20px 0;">
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputSupplierName" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Nome do Fornecedor</label>
+                    <input type="text" id="inputSupplierName" placeholder="Ex: Continental AG" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputSupplierArea" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Categoria / Área de Atuação</label>
+                    <input type="text" id="inputSupplierArea" placeholder="Ex: Áudio, Conectividade, Chassi, Freios" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaSupplierDesc" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Descrição Curta (o que fornece)</label>
+                    <textarea id="textareaSupplierDesc" rows="3" placeholder="Descreva de forma objetiva o que a empresa fornece ao setor automotivo..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 60px;"></textarea>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="inputSupplierLogo" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">URL do Logo (opcional)</label>
+                    <input type="text" id="inputSupplierLogo" placeholder="Ex: https://.../logo.png (deixe vazio para usar inicial)" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCancelAddSupplierModal">Cancelar</button>
+                <button class="btn-modal-action primary" id="btnSaveNewSupplier">Adicionar Fornecedor</button>
             </div>
         </div>
     </div>
