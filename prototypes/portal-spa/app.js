@@ -5174,14 +5174,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="project-desc">${proj.desc}</p>
                     <table class="project-info-table">
                         <tr>
-                            <td><strong>Plataforma:</strong></td>
-                            <td>${proj.platform}</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Motorização:</strong></td>
-                            <td>${proj.powertrain}</td>
-                        </tr>
-                        <tr>
                             <td><strong>Status:</strong></td>
                             <td><span class="status-indicator ${statusClass}">${proj.status}</span></td>
                         </tr>
@@ -5215,13 +5207,11 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSaveNewProject.addEventListener('click', () => {
             const code = document.getElementById('inputProjectCode').value.trim();
             const name = document.getElementById('inputProjectName').value.trim();
-            const platform = document.getElementById('inputProjectPlatform').value.trim();
-            const powertrain = document.getElementById('inputProjectPowertrain').value.trim();
             const status = document.getElementById('selectProjectStatus').value;
             const imageUrl = document.getElementById('inputProjectImageUrl').value.trim();
             const desc = document.getElementById('textareaProjectDesc').value.trim();
 
-            if (!code || !name || !platform || !powertrain || !desc) {
+            if (!code || !name || !desc) {
                 alert('Por favor, preencha todos os campos do projeto!');
                 return;
             }
@@ -5230,8 +5220,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: `proj-${Date.now()}`,
                 code: code.toUpperCase(),
                 name: name,
-                platform: platform,
-                powertrain: powertrain,
                 status: status,
                 imageUrl: imageUrl || 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600',
                 desc: desc
