@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let fitW = 3, fitH = 2, frameDist = 3;
         const FRAME_MARGIN = 1.06;   // folga pequena p/ o carro não encostar nas bordas
         const ZOOM_IN_FACTOR = 0.72;  // zoom-in máximo (mais conservador; evita aproximar demais)
-        const ZOOM_OUT_FACTOR = 1.9; // zoom-out máximo
+        const ZOOM_OUT_FACTOR = 1.5; // zoom-out máximo (mais conservador; carro não afasta tanto)
         let currentView = 'exterior';
         let extHotspots = [], intHotspots = [], activeHotspots = [];
         let spinning = true, reduceMotion = false, wireframe = false;
