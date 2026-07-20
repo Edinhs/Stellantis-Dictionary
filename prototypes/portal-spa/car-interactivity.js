@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // minDistance/maxDistance ficam ABAIXO/ACIMA dela → dá pra APROXIMAR (zoom in) e afastar.
         let fitW = 3, fitH = 2, frameDist = 3;
         const FRAME_MARGIN = 1.06;   // folga pequena p/ o carro não encostar nas bordas
-        const ZOOM_IN_FACTOR = 0.5;  // zoom-in máximo = metade do enquadramento (carro ~2x maior)
+        const ZOOM_IN_FACTOR = 0.72;  // zoom-in máximo (mais conservador; evita aproximar demais)
         const ZOOM_OUT_FACTOR = 1.9; // zoom-out máximo
         let currentView = 'exterior';
         let extHotspots = [], intHotspots = [], activeHotspots = [];
