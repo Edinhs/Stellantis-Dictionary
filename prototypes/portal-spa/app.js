@@ -4294,6 +4294,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================
     // 19. CORPO TÉCNICO DE ESPECIALISTAS (DINÂMICO)
     // ========================================================
+    // Deriva um e-mail corporativo fictício (primeiro.ultimo@stellantis.com)
+    // a partir do nome, removendo acentos e títulos (Dr., Engª, etc.).
+    function deriveSpecialistEmail(name) {
+        const titles = ['dr.', 'dr', 'dra.', 'dra', 'engª', 'eng.', 'eng', 'sr.', 'sr', 'sra.', 'sra'];
+        const parts = (name || '')
+            .normalize('NFD').replace(/[̀-ͯ]/g, '') // remove acentos
+            .replace(/[^a-zA-Z\s]/g, ' ')                     // remove pontuação/símbolos
+            .trim()
+            .split(/\s+/)
+            .filter(p => p && !titles.includes(p.toLowerCase()));
+        if (parts.length === 0) return 'especialista@stellantis.com';
+        const first = parts[0].toLowerCase();
+        const last = parts[parts.length - 1].toLowerCase();
+        const local = parts.length >= 2 ? `${first}.${last}` : first;
+        return `${local}@stellantis.com`;
+    }
+
+    // Garante um e-mail para o link do Teams, derivando do nome quando ausente.
+    function getSpecialistEmail(spec) {
+        return (spec && spec.email && spec.email.trim()) ? spec.email.trim() : deriveSpecialistEmail(spec ? spec.name : '');
+    }
+
+    // Valida um link de chat colado pelo admin (Teams web ou app nativo).
+    function isValidChatLink(link) {
+        if (!link) return false;
+        return /^(https?:\/\/|msteams:)/i.test(link.trim());
+    }
+
+    // Resolve o destino do "Contatar Especialista":
+    //  1) chatLink válido colado pelo admin -> usa direto;
+    //  2) e-mail (informado ou derivado do nome) -> monta deep link do Teams.
+    function resolveSpecialistContactUrl(spec) {
+        if (spec && isValidChatLink(spec.chatLink)) {
+            return spec.chatLink.trim();
+        }
+        const email = getSpecialistEmail(spec);
+        const greeting = `Olá ${spec ? spec.name : ''}, poderia me ajudar com uma dúvida técnica?`;
+        return `https://teams.microsoft.com/l/chat/0/0?users=${encodeURIComponent(email)}&message=${encodeURIComponent(greeting)}`;
+    }
+
     const defaultSpecialists = [
         {
             id: 'spec-1',
@@ -4303,6 +4343,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: "cpu",
             avatarColor: "blue",
             initials: "EN",
+            email: "enzo.nogueira@stellantis.com",
             bio: "Especialista em calibração de motores flex associados a motores de assistência leve de 48V."
         },
         {
@@ -4313,6 +4354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: "eye",
             avatarColor: "cian",
             initials: "AM",
+            email: "ana.martins@stellantis.com",
             bio: "Responsável pela calibração de frenagem de emergência autônoma e fusão de dados radar/câmera."
         },
         {
@@ -4323,6 +4365,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: "battery-charging",
             avatarColor: "green",
             initials: "CS",
+            email: "carlos.silva@stellantis.com",
             bio: "Arquiteto estrutural das plataformas BEV STLA Medium e Large para o mercado latino-americano."
         }
     ];
@@ -4366,22 +4409,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            // Vincular redirecionamento para o Chat IA
+            // Abrir conversa 1:1 diretamente no Microsoft Teams
             const btnContact = card.querySelector('.btn-contact-specialist');
             if (btnContact) {
                 btnContact.addEventListener('click', () => {
-                    const chatInput = document.getElementById('chatInput');
-                    const mainNavBtns = document.querySelectorAll('.nav-btn');
-                    
-                    // Simular troca para aba de chat
-                    const chatNavBtn = Array.from(mainNavBtns).find(btn => btn.getAttribute('data-target') === 'chat');
-                    if (chatNavBtn) {
-                        chatNavBtn.click();
-                        if (chatInput) {
-                            chatInput.value = `Olá, gostaria de falar com o especialista ${spec.name} sobre ${spec.dept}.`;
-                            chatInput.focus();
-                        }
-                    }
+                    const targetUrl = resolveSpecialistContactUrl(spec);
+                    window.open(targetUrl, '_blank', 'noopener');
                 });
             }
 
@@ -4397,6 +4430,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('inputSpecName').value = '';
             document.getElementById('inputSpecRole').value = '';
             document.getElementById('selectSpecDept').value = 'Bio-Hybrid Flex';
+            const emailField = document.getElementById('inputSpecEmail');
+            if (emailField) emailField.value = '';
+            const chatLinkField = document.getElementById('inputSpecChatLink');
+            if (chatLinkField) chatLinkField.value = '';
             document.getElementById('inputSpecBio').value = '';
             addSpecialistModal.classList.add('open');
         });
@@ -4420,6 +4457,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = document.getElementById('inputSpecName').value.trim();
             const role = document.getElementById('inputSpecRole').value.trim();
             const dept = document.getElementById('selectSpecDept').value;
+            const emailField = document.getElementById('inputSpecEmail');
+            const emailInput = emailField ? emailField.value.trim() : '';
+            const chatLinkField = document.getElementById('inputSpecChatLink');
+            const chatLinkInput = chatLinkField ? chatLinkField.value.trim() : '';
             const bio = document.getElementById('inputSpecBio').value.trim();
 
             if (!name || !role || !bio) {
@@ -4467,6 +4508,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 icon: icon,
                 avatarColor: avatarColor,
                 initials: initials,
+                email: emailInput || deriveSpecialistEmail(name),
+                chatLink: isValidChatLink(chatLinkInput) ? chatLinkInput : '',
                 bio: bio
             };
 
