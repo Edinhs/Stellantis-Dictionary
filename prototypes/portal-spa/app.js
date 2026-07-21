@@ -4622,14 +4622,30 @@ document.addEventListener('DOMContentLoaded', () => {
         { value: 'conectividade-auxilio', label: 'Conectividade & Auxílio' }
     ];
     const defaultComponentSuppliers = [
-        { value: 'aptiv', label: 'Aptiv', area: 'Conectividade & Elétrica', desc: 'Arquiteturas elétricas, conectividade e software para veículos definidos por software.' },
-        { value: 'marelli', label: 'Magneti Marelli', area: 'Eletrônica & Iluminação', desc: 'Eletrônica veicular, sistemas de iluminação, painéis e módulos de infotainment.' },
-        { value: 'harman', label: 'Harman Kardon', area: 'Áudio & Infotainment', desc: 'Sistemas de áudio premium, infotainment e conectividade embarcada.' },
-        { value: 'bosch', label: 'Bosch', area: 'Freios & Sensores', desc: 'Sistemas de freios, powertrain, sensores e eletrônica automotiva.' },
-        { value: 'continental', label: 'Continental', area: 'ADAS & Chassi', desc: 'Pneus, sistemas de freios, ADAS e soluções de conectividade e display.' },
-        { value: 'zf', label: 'ZF Friedrichshafen', area: 'Powertrain & Chassi', desc: 'Transmissões, sistemas de chassi, direção e tecnologias de segurança.' },
-        { value: 'valeo', label: 'Valeo', area: 'Térmico & ADAS', desc: 'Sistemas térmicos, iluminação, ADAS e eletrificação de powertrain.' },
-        { value: 'forvia', label: 'Forvia (Faurecia)', area: 'Interiores & Cockpit', desc: 'Interiores, assentos, sistemas de escape e eletrônica de cockpit.' }
+        { value: 'aptiv', label: 'Aptiv', area: 'Conectividade & Elétrica', desc: 'Arquiteturas elétricas, conectividade e software para veículos definidos por software.',
+          history: 'A Aptiv surgiu em 2017 a partir da divisão da Delphi e tem sede na Irlanda. Atua globalmente em arquiteturas elétricas, sensores e software para veículos definidos por software.',
+          partnership: 'Fornece soluções de conectividade e arquitetura elétrica para diversas montadoras, incluindo marcas do grupo Stellantis.' },
+        { value: 'marelli', label: 'Magneti Marelli', area: 'Eletrônica & Iluminação', desc: 'Eletrônica veicular, sistemas de iluminação, painéis e módulos de infotainment.',
+          history: 'A Magneti Marelli foi fundada em 1919 na Itália e, após a fusão com a Calsonic Kansei em 2019, tornou-se parte da Marelli. É reconhecida por iluminação e eletrônica automotiva.',
+          partnership: 'Fornece módulos de iluminação, painéis e eletrônica para várias montadoras, incluindo marcas do grupo Stellantis.' },
+        { value: 'harman', label: 'Harman Kardon', area: 'Áudio & Infotainment', desc: 'Sistemas de áudio premium, infotainment e conectividade embarcada.',
+          history: 'A Harman, fundada nos Estados Unidos em 1980 e hoje subsidiária da Samsung, é referência em áudio premium e sistemas de infotainment conectados.',
+          partnership: 'Fornece sistemas de áudio e infotainment para múltiplas montadoras, incluindo marcas do grupo Stellantis.' },
+        { value: 'bosch', label: 'Bosch', area: 'Freios & Sensores', desc: 'Sistemas de freios, powertrain, sensores e eletrônica automotiva.',
+          history: 'A Bosch, fundada em 1886 na Alemanha, é uma das maiores fornecedoras de tecnologia automotiva do mundo, atuando em freios, sensores e powertrain.',
+          partnership: 'Fornece sistemas de freios, sensores e eletrônica para diversas montadoras, incluindo marcas do grupo Stellantis.' },
+        { value: 'continental', label: 'Continental', area: 'ADAS & Chassi', desc: 'Pneus, sistemas de freios, ADAS e soluções de conectividade e display.',
+          history: 'A Continental foi fundada em 1871 na Alemanha. Além de pneus, desenvolve sistemas de freios, ADAS e soluções de conectividade e display.',
+          partnership: 'Fornece componentes de chassi, ADAS e display para várias montadoras, incluindo marcas do grupo Stellantis.' },
+        { value: 'zf', label: 'ZF Friedrichshafen', area: 'Powertrain & Chassi', desc: 'Transmissões, sistemas de chassi, direção e tecnologias de segurança.',
+          history: 'A ZF Friedrichshafen foi fundada em 1915 na Alemanha e é uma das líderes globais em transmissões, sistemas de chassi e tecnologias de segurança.',
+          partnership: 'Fornece transmissões e sistemas de chassi para diversas montadoras, incluindo marcas do grupo Stellantis.' },
+        { value: 'valeo', label: 'Valeo', area: 'Térmico & ADAS', desc: 'Sistemas térmicos, iluminação, ADAS e eletrificação de powertrain.',
+          history: 'A Valeo, fundada em 1923 na França, é especializada em sistemas térmicos, iluminação, ADAS e eletrificação de powertrain.',
+          partnership: 'Fornece sistemas térmicos, iluminação e ADAS para várias montadoras, incluindo marcas do grupo Stellantis.' },
+        { value: 'forvia', label: 'Forvia (Faurecia)', area: 'Interiores & Cockpit', desc: 'Interiores, assentos, sistemas de escape e eletrônica de cockpit.',
+          history: 'A Forvia nasceu em 2022 da união entre a Faurecia (fundada em 1997, França) e a HELLA, atuando em interiores, assentos e eletrônica de cockpit.',
+          partnership: 'Fornece interiores, assentos e soluções de cockpit para diversas montadoras, incluindo marcas do grupo Stellantis.' }
     ];
 
     function slugifyComponentTaxonomy(str) {
@@ -4660,6 +4676,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!found.area) found.area = def.area;
             if (!found.desc) found.desc = def.desc;
             if (!found.label) found.label = def.label;
+            if (!found.history) found.history = def.history;
+            if (!found.partnership) found.partnership = def.partnership;
         }
     });
 
@@ -4786,7 +4804,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const extra = details || {};
         const existing = componentSuppliers.find(s => s.value === value);
         if (!existing) {
-            componentSuppliers.push({ value, label, area: (extra.area || '').trim(), desc: (extra.desc || '').trim(), logo: (extra.logo || '').trim() });
+            componentSuppliers.push({ value, label, area: (extra.area || '').trim(), desc: (extra.desc || '').trim(), logo: (extra.logo || '').trim(), history: (extra.history || '').trim(), partnership: (extra.partnership || '').trim() });
             persistComponentTaxonomies();
             renderComponentFilterCheckboxes();
         } else {
@@ -4794,6 +4812,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (extra.area) existing.area = extra.area.trim();
             if (extra.desc) existing.desc = extra.desc.trim();
             if (extra.logo) existing.logo = extra.logo.trim();
+            if (extra.history) existing.history = extra.history.trim();
+            if (extra.partnership) existing.partnership = extra.partnership.trim();
             persistComponentTaxonomies();
         }
         renderComponentSupplierSelect(value);
@@ -4811,6 +4831,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
     }
 
+    // Placeholder genérico (sem logotipos de marca) para a imagem no topo das cards de fornecedor
+    const SUPPLIER_PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600';
+
     function renderSuppliersShowcase() {
         const grid = document.getElementById('suppliersGridContainer');
         if (!grid) return;
@@ -4821,25 +4844,53 @@ document.addEventListener('DOMContentLoaded', () => {
             card.setAttribute('data-supplier-value', s.value);
             const label = escapeSupplierText(s.label || s.value);
             const initial = (s.label || s.value || '?').trim().charAt(0).toUpperCase();
-            const logo = (s.logo || '').trim();
-            const logoHtml = logo
-                ? `<img src="${escapeSupplierText(logo)}" alt="${label}" style="width:100%;height:100%;object-fit:contain;border-radius:8px;">`
-                : `<span style="font-size:20px;font-weight:800;">${escapeSupplierText(initial)}</span>`;
+            const img = escapeSupplierText((s.logo || '').trim() || SUPPLIER_PLACEHOLDER_IMG);
             const area = escapeSupplierText(s.area || 'Fornecedor Tier-1');
             const desc = escapeSupplierText(s.desc || 'Fornecedor cadastrado no catálogo de Componentes da Stellantis.');
             card.innerHTML = `
-                <div class="infotainment-card-icon blue" style="overflow:hidden;">${logoHtml}</div>
-                <div class="infotainment-card-content" style="width:100%;">
-                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-                        <span class="info-cat-badge">${area}</span>
+                <div class="infotainment-image-container">
+                    <img src="${img}" alt="${label}" class="infotainment-image" onerror="this.src='${SUPPLIER_PLACEHOLDER_IMG}'">
+                    <span class="infotainment-image-badge">${area}</span>
+                </div>
+                <div class="infotainment-card-body">
+                    <div class="infotainment-card-icon blue" style="overflow:hidden;"><span style="font-size:20px;font-weight:800;">${escapeSupplierText(initial)}</span></div>
+                    <div class="infotainment-card-content" style="width:100%;">
+                        <h4>${label}</h4>
+                        <p>${desc}</p>
                     </div>
-                    <h4>${label}</h4>
-                    <p>${desc}</p>
                 </div>`;
+            card.addEventListener('click', () => openSupplierDetailsModal(s));
             grid.appendChild(card);
         });
         if (window.lucide) lucide.createIcons();
     }
+
+    // Modal de detalhes do Fornecedor
+    function openSupplierDetailsModal(s) {
+        const modal = document.getElementById('supplierDetailsModal');
+        if (!modal) return;
+        const label = escapeSupplierText(s.label || s.value);
+        const area = escapeSupplierText(s.area || 'Fornecedor Tier-1');
+        const img = escapeSupplierText((s.logo || '').trim() || SUPPLIER_PLACEHOLDER_IMG);
+        const fallbackDesc = s.desc ? escapeSupplierText(s.desc) : 'Sem descrição cadastrada.';
+        const history = s.history ? escapeSupplierText(s.history) : fallbackDesc;
+        const partnership = s.partnership ? escapeSupplierText(s.partnership) : fallbackDesc;
+
+        const imgEl = document.getElementById('supplierDetailsImg');
+        if (imgEl) { imgEl.src = img; imgEl.alt = label; imgEl.setAttribute('onerror', `this.src='${SUPPLIER_PLACEHOLDER_IMG}'`); }
+        const titleEl = document.getElementById('supplierDetailsTitle');
+        if (titleEl) titleEl.textContent = s.label || s.value;
+        const areaEl = document.getElementById('supplierDetailsArea');
+        if (areaEl) areaEl.textContent = s.area || 'Fornecedor Tier-1';
+        const histEl = document.getElementById('supplierDetailsHistory');
+        if (histEl) histEl.innerHTML = history;
+        const partEl = document.getElementById('supplierDetailsPartnership');
+        if (partEl) partEl.innerHTML = partnership;
+
+        modal.classList.add('open');
+        if (window.lucide) lucide.createIcons();
+    }
+    window.openSupplierDetailsModal = openSupplierDetailsModal;
 
     const infotainmentGridContainer = document.getElementById('infotainmentGridContainer');
     const btnOpenAddInfotainmentModal = document.getElementById('btnOpenAddInfotainmentModal');
@@ -4857,6 +4908,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoDetailsContent = document.getElementById('infoDetailsContent');
     const infoDetailsAppliedContainer = document.getElementById('infoDetailsAppliedContainer');
     const infoDetailsIconContainer = document.getElementById('infoDetailsIconContainer');
+
+    // Placeholder/fallback para a imagem no topo das cards de componente
+    const COMPONENT_PLACEHOLDER_IMG = 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600';
 
     window.renderInfotainment = function() {
         if (!infotainmentGridContainer) return;
@@ -4893,16 +4947,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 iconClass = 'cian';
             }
 
+            const compImg = item.imageUrl || COMPONENT_PLACEHOLDER_IMG;
             card.innerHTML = `
-                <div class="infotainment-card-icon ${iconClass}"><i data-lucide="${icon}"></i></div>
-                <div class="infotainment-card-content" style="width: 100%;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                        <span class="info-cat-badge">${getComponentCategoryLabel(item.category)}</span>
-                        <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">${getComponentSupplierLabel(item.supplier)}</span>
+                <div class="infotainment-image-container">
+                    <img src="${compImg}" alt="${item.title}" class="infotainment-image" onerror="this.src='${COMPONENT_PLACEHOLDER_IMG}'">
+                    <span class="infotainment-image-badge">${getComponentCategoryLabel(item.category)}</span>
+                </div>
+                <div class="infotainment-card-body">
+                    <div class="infotainment-card-icon ${iconClass}"><i data-lucide="${icon}"></i></div>
+                    <div class="infotainment-card-content" style="width: 100%;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span class="info-cat-badge">${getComponentCategoryLabel(item.category)}</span>
+                            <span style="font-size: 9px; color: var(--secondary); background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.2); padding: 2px 8px; border-radius: 4px; font-weight: 700; text-transform: uppercase;">${getComponentSupplierLabel(item.supplier)}</span>
+                        </div>
+                        <h4>${item.title}</h4>
+                        <p>${item.desc.substring(0, 140)}${item.desc.length > 140 ? '...' : ''}</p>
+                        <span class="info-applied">Disponível em: <strong>${item.applied}</strong></span>
                     </div>
-                    <h4>${item.title}</h4>
-                    <p>${item.desc.substring(0, 140)}${item.desc.length > 140 ? '...' : ''}</p>
-                    <span class="info-applied">Disponível em: <strong>${item.applied}</strong></span>
                 </div>
             `;
 
@@ -5164,14 +5225,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (btnOpenAddSupplierModal && addSupplierModal) {
         btnOpenAddSupplierModal.addEventListener('click', () => {
-            const n = document.getElementById('inputSupplierName');
-            const a = document.getElementById('inputSupplierArea');
-            const d = document.getElementById('textareaSupplierDesc');
-            const l = document.getElementById('inputSupplierLogo');
-            if (n) n.value = '';
-            if (a) a.value = '';
-            if (d) d.value = '';
-            if (l) l.value = '';
+            ['inputSupplierName','inputSupplierArea','textareaSupplierDesc','inputSupplierLogo','textareaSupplierHistory','textareaSupplierPartnership'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
             addSupplierModal.classList.add('open');
         });
     }
@@ -5188,12 +5245,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const area = (document.getElementById('inputSupplierArea').value || '').trim();
             const desc = (document.getElementById('textareaSupplierDesc').value || '').trim();
             const logo = (document.getElementById('inputSupplierLogo').value || '').trim();
+            const history = (document.getElementById('textareaSupplierHistory').value || '').trim();
+            const partnership = (document.getElementById('textareaSupplierPartnership').value || '').trim();
             if (!name) { alert('Informe o nome do fornecedor.'); return; }
-            const value = addComponentSupplier(name, { area, desc, logo });
+            const value = addComponentSupplier(name, { area, desc, logo, history, partnership });
             if (!value) { alert('Nome de fornecedor inválido.'); return; }
             closeAddSupplierModal();
             renderSuppliersShowcase();
             alert(`Fornecedor "${name}" adicionado ao catálogo!\nJá disponível também no cadastro de Componentes.`);
+        });
+    }
+
+    // Modal de detalhes do Fornecedor: fechar
+    const supplierDetailsModal = document.getElementById('supplierDetailsModal');
+    function closeSupplierDetailsModal() {
+        if (supplierDetailsModal) supplierDetailsModal.classList.remove('open');
+    }
+    const btnCloseSupplierDetailsModal = document.getElementById('btnCloseSupplierDetailsModal');
+    const btnCloseSupplierDetailsModalFooter = document.getElementById('btnCloseSupplierDetailsModalFooter');
+    if (btnCloseSupplierDetailsModal) btnCloseSupplierDetailsModal.addEventListener('click', closeSupplierDetailsModal);
+    if (btnCloseSupplierDetailsModalFooter) btnCloseSupplierDetailsModalFooter.addEventListener('click', closeSupplierDetailsModal);
+    if (supplierDetailsModal) {
+        supplierDetailsModal.addEventListener('click', (e) => {
+            if (e.target === supplierDetailsModal) closeSupplierDetailsModal();
         });
     }
 

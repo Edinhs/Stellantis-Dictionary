@@ -2301,13 +2301,52 @@
                     <textarea id="textareaSupplierDesc" rows="3" placeholder="Descreva de forma objetiva o que a empresa fornece ao setor automotivo..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 60px;"></textarea>
                 </div>
                 <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
-                    <label for="inputSupplierLogo" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">URL do Logo (opcional)</label>
-                    <input type="text" id="inputSupplierLogo" placeholder="Ex: https://.../logo.png (deixe vazio para usar inicial)" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                    <label for="inputSupplierLogo" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">URL da Imagem / Logo (usada na card)</label>
+                    <input type="text" id="inputSupplierLogo" placeholder="Ex: https://.../imagem.jpg (deixe vazio para usar placeholder)" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%;">
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaSupplierHistory" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">História da Empresa (breve)</label>
+                    <textarea id="textareaSupplierHistory" rows="2" placeholder="Ex: fundação, país de origem e área de atuação..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 50px;"></textarea>
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: column; gap: 6px;">
+                    <label for="textareaSupplierPartnership" style="font-size: 11px; text-transform: uppercase; color: var(--text-dark); font-weight: 700; letter-spacing: 0.5px;">Parceria com a Stellantis (breve)</label>
+                    <textarea id="textareaSupplierPartnership" rows="2" placeholder="Ex: fornece componentes para marcas do grupo Stellantis..." style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 12px 16px; border-radius: 10px; color: var(--text-main); font-size: 13px; width: 100%; resize: vertical; line-height: 1.6; min-height: 50px;"></textarea>
                 </div>
             </div>
             <div class="modal-footer" style="padding-top: 10px;">
                 <button class="btn-modal-action secondary" id="btnCancelAddSupplierModal">Cancelar</button>
                 <button class="btn-modal-action primary" id="btnSaveNewSupplier">Adicionar Fornecedor</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Fornecedor -->
+    <div class="modal-overlay" id="supplierDetailsModal">
+        <div class="modal-card" style="max-width: 580px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div>
+                        <h3 id="supplierDetailsTitle" style="margin: 0; font-size: 18px; font-weight: 700; color: var(--text-main); font-family: 'Inter', sans-serif;">Fornecedor</h3>
+                        <span id="supplierDetailsArea" style="font-size: 11px; text-transform: uppercase; color: var(--secondary); font-weight: 700;">Área</span>
+                    </div>
+                </div>
+                <button class="btn-close-modal" id="btnCloseSupplierDetailsModal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body" style="padding: 15px 0 20px 0;">
+                <div style="width: 100%; height: 200px; border-radius: 12px; overflow: hidden; margin-bottom: 18px; background: rgba(15,23,42,0.6);">
+                    <img id="supplierDetailsImg" src="" alt="" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1518770660439-4636190af475?w=600'">
+                </div>
+                <div style="margin-bottom: 16px;">
+                    <h4 style="margin: 0 0 6px 0; font-size: 13px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;"><i data-lucide="landmark" style="width:14px;height:14px;"></i> História</h4>
+                    <p id="supplierDetailsHistory" style="margin: 0; font-size: 13px; line-height: 1.7; color: var(--text-muted);"></p>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 13px; color: var(--secondary); text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px;"><i data-lucide="handshake" style="width:14px;height:14px;"></i> Parceria com a Stellantis</h4>
+                    <p id="supplierDetailsPartnership" style="margin: 0; font-size: 13px; line-height: 1.7; color: var(--text-muted);"></p>
+                </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 10px;">
+                <button class="btn-modal-action secondary" id="btnCloseSupplierDetailsModalFooter">Fechar</button>
             </div>
         </div>
     </div>
