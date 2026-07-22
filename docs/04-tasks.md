@@ -39,8 +39,9 @@ Marque `[x]` conforme formos concluindo.
   **sem** ligação por `term_slug` nem no hotspot — pendência [FUTURO] (RF-069).
 - [ ] T04d — Protótipo: aba "Comunidade" (Q&A). **NÃO no protótipo** — [FUTURO]
   (RF-067). Ref.: SPEC `11`.
-- [ ] T05 — Revisão/aprovação do protótipo com o CEO (aprovação formal do escopo dos
-  docs `20`/`21`/`22`/`15` antes do código real).
+- [x] T05 — Revisão/aprovação do protótipo com o CEO (aprovação formal do escopo dos
+  docs `20`/`21`/`22`/`15` antes do código real). **Aprovado em 2026-07-19** ("Vamos
+  avançar, o protótipo está bom por enquanto") — ver Gate 7 no log `27` §5.
 
 ## Fase 0.6 — Módulos do protótipo além do backlog original (a decidir escopo MVP)
 > O protótipo trouxe módulos ricos ainda não previstos em T01–T05. Aqui ficam

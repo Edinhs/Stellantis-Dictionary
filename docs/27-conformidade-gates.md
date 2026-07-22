@@ -1,7 +1,8 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-17 (7ª rodada — Gate 8 (Arquitetura) carimbado; aval oficial da Segurança APROVAR COM RESSALVA; nota R6 em `25` §8).
+> Última atualização: 2026-07-19 (8ª rodada — Gate 7 (Protótipo) carimbado; CEO aprovou o protótipo, T05 concluído; B3 resolvido).
+> 7ª rodada (2026-07-17) — Gate 8 (Arquitetura) carimbado; aval oficial da Segurança APROVAR COM RESSALVA; nota R6 em `25` §8.
 > 6ª rodada — Gate 5 (Casos de Uso) carimbado; doc `15` aprovado.
 > 5ª rodada — Gate 4 (Regras de Negócio) carimbado; doc `28` aprovado.
 > 4ª rodada — Gate 3 (Requisitos) carimbado; docs `21`/`22` aprovados.
@@ -67,7 +68,7 @@ pergunta em aberto (§7).
 | 4 | Regras de Negócio | `requirements-analyst` | **`28`** (RN-01..26) | **Sim** — regras explícitas gatilho→cond→efeito, ligadas a RF | **CONFORME** ✔ | QA (regras viram casos de teste) | `product-lead` | **Gate 4 carimbado** (§5): `product-lead` 2026-07-17; doc `28` aprovado. |
 | 5 | Casos de Uso | `requirements-analyst` | `15` (CU-01..21) | **Sim** — todo RF com ≥1 CU (exceção justificada RF-070) | **CONFORME** ✔ | QA verificou rastreabilidade RF→CU | `product-lead` | **Gate 5 carimbado** (§5): `product-lead` 2026-07-17. Detalhar CU-01..08 [FUTURO] quando priorizados. |
 | 6 | Modelagem | `eng-lead`/`backend-engineer` | `02` §3–4, `13` §2, `25` §3 | Base sim; módulos novos pendentes de escopo | **CONFORME** (com ressalva) | Segurança (S6 LGPD no modelo) | `eng-lead` | Detalhar entidades dos 7 módulos novos na Etapa 9. |
-| 7 | Protótipo UI/UX | `design-lead` | `prototypes/`, `20`, `23` | Artefatos prontos; **falta aprovação formal do CEO (`T05`)** | **BLOQUEADO** (decisão CEO) | QA (regressão telas T01–T04d) | CEO | **B3** — executar `T05` (ato de aprovação do CEO). Sem lacuna de execução. |
+| 7 | Protótipo UI/UX | `design-lead` | `prototypes/`, `20`, `23` | Sim — aprovado pelo CEO | **CONFORME** ✔ | QA (regressão telas T01–T04d) | CEO | **Gate 7 carimbado** (§5): CEO 2026-07-19; `T05` concluído (`04`). |
 | 8 | Arquitetura | `eng-lead` | `13`, `25` | Sim (estilo, fronteiras, `D5`/`D6` isolados, S1–S9) | **CONFORME** ✔ | QA + **Segurança APROVOU COM RESSALVA** (S1–S9 vs `24`) | `eng-lead` (→CEO p/ `Dxx`) | **Gate 8 carimbado** (§5): 2026-07-17. Ressalva R6 (assets/IP). Pré-cond. Etapa 9: B2/S6/S9. |
 | 9 | Banco de Dados | `backend-engineer` | design em `02`/`09`/`11`/`13`/`25` §3.1 | **Não** — sem migrações; depende de escopo/LGPD | **BLOQUEADO** (decisão CEO + gate 8) | QA + **Segurança** (LGPD) | `eng-lead` + Segurança | Depende de gate 8 + **B1** (MVP) + **B2** (LGPD). |
 | 10 | Planejamento | `product-lead` | `03`, `04` | Base sim; **fronteira MVP das 7 famílias em aberto** | **BLOQUEADO** (decisão CEO) | — | CEO | **B1** — decidir escopo MVP (Fase 0.6, `04` T05a–T05g). |
@@ -271,8 +272,13 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
   códigos/fornecedores/domínios nos `seeds/`). Carimbo aplicado pelo Agente Geral
   (aprovador nominal `eng-lead`, com o aval de Segurança que faltava).
 
+- **Gate 7 — Protótipo UI/UX — APROVADO pelo CEO em 2026-07-19** ("Vamos avançar, o
+  protótipo está bom por enquanto"). Executa o `T05` (backlog `04`, marcado `[x]`).
+  Aprova o escopo/UX consolidado nos docs `20`/`21`/`22`/`15` e o protótipo em
+  `prototypes/portal-spa/`. **B3 resolvido.**
+
 **Pendentes (não carimbar — bloqueio por decisão do CEO ou gate anterior):**
-- Gate 6 (base OK; ressalva de escopo), Gate 7 (aguarda `T05`/CEO — B3), Gates 9–14
+- Gate 6 (base OK; ressalva de escopo), Gates 9–14
   (BLOQUEADO — B1/B2/`D6` e cadeia sequencial), Gates 15–19 (N/A-futuro — B5).
 
 ---
@@ -280,12 +286,12 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 ## 6. Parecer consolidado (2ª rodada)
 
 **Recontagem por status (19 etapas):**
-- **CONFORME: 7** — Etapas **1, 2, 3, 4, 5, 6, 8** (2/6 com ressalva; 8 recomendado,
-  a carimbar após Segurança). **↑3 desde a 1ª rodada** (3, 4, 5 subiram).
+- **CONFORME: 8** — Etapas **1, 2, 3, 4, 5, 6, 7, 8** (2/6 com ressalva). **Gate 7
+  aprovado pelo CEO em 2026-07-19 (B3 resolvido).**
 - **LACUNA: 0** — **nenhuma lacuna de execução em aberto.**
-- **BLOQUEADO: 7** — Etapas **7, 9, 10, 11, 12, 13, 14** — **todas dependem de decisão
-  do CEO** (B1 MVP, B2 LGPD, B3 aprovar `T05`, B5 `D6`) **ou de gate anterior na
-  cadeia sequencial**, não de trabalho pendente dos setores.
+- **BLOQUEADO: 6** — Etapas **9, 10, 11, 12, 13, 14** — **todas dependem de decisão
+  do CEO** (B1 MVP, B2 LGPD, B5 `D6`) **ou de gate anterior na cadeia sequencial**,
+  não de trabalho pendente dos setores.
 - **N/A-futuro: 5** — Etapas **15–19** (execução bloqueada por `D6`/B5; gate de
   Segurança já as cobre por definição).
 
