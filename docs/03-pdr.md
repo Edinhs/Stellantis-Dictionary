@@ -22,6 +22,7 @@
 | D17 | **Aba "Comunidade" (Q&A)**: usuários fazem e respondem perguntas | Confirmado — PDR/SPEC dedicados (docs `10`/`11`, em elaboração) |
 | D18 | **Ciclo de vida de Engenharia de 19 etapas com gates sequenciais rígidos** como espinha dorsal governada (cada etapa = portão com dono, DoD e aprovador) | Confirmado — ver doc `14-ciclo-de-vida-engenharia.md`; docs de apoio `15`–`19` |
 | D19 | **Criação de 4 cargos**: Design Lead (UX/UI, 7º lead → Agente Geral), Analista de Requisitos (→ Produto Lead), Release/Deploy Engineer e SRE/Monitoramento (→ DevOps Lead) | Confirmado — ver roster `12` §4/§7 |
+| D20 | **Escopo do MVP (B1) após o protótipo:** núcleo (dicionário + RAG + cockpit 3D + auth/RBAC) **+ Componentes de Infotainment + Projetos**. Notebook, Gamificação, Canais/Kit, Automações e Organograma+mapa ficam **fora do MVP** (fases futuras) | Confirmado — CEO, 2026-07-19; ver backlog `04` Fase 0.6, log de gates `27` |
 
 ## 2. Riscos e mitigação
 | Risco | Impacto | Mitigação |

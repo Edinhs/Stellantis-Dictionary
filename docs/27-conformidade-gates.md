@@ -1,7 +1,8 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-19 (9ª rodada — B2/LGPD resolvido: CEO confirmou dados fictícios; doc `24` atualizado; só B1 e B5 restam pendentes).
+> Última atualização: 2026-07-19 (10ª rodada — B1/MVP resolvido: CEO define núcleo + Componentes + Projetos (D20, PDR `03`); Gates 9-10 desbloqueados; só B5 resta pendente).
+> 9ª rodada — B2/LGPD resolvido: CEO confirmou dados fictícios; doc `24` atualizado.
 > 8ª rodada (2026-07-19) — Gate 7 (Protótipo) carimbado; CEO aprovou o protótipo, T05 concluído; B3 resolvido.
 > 7ª rodada (2026-07-17) — Gate 8 (Arquitetura) carimbado; aval oficial da Segurança APROVAR COM RESSALVA; nota R6 em `25` §8.
 > 6ª rodada — Gate 5 (Casos de Uso) carimbado; doc `15` aprovado.
@@ -71,8 +72,8 @@ pergunta em aberto (§7).
 | 6 | Modelagem | `eng-lead`/`backend-engineer` | `02` §3–4, `13` §2, `25` §3 | Base sim; módulos novos pendentes de escopo | **CONFORME** (com ressalva) | Segurança (S6 LGPD no modelo) | `eng-lead` | Detalhar entidades dos 7 módulos novos na Etapa 9. |
 | 7 | Protótipo UI/UX | `design-lead` | `prototypes/`, `20`, `23` | Sim — aprovado pelo CEO | **CONFORME** ✔ | QA (regressão telas T01–T04d) | CEO | **Gate 7 carimbado** (§5): CEO 2026-07-19; `T05` concluído (`04`). |
 | 8 | Arquitetura | `eng-lead` | `13`, `25` | Sim (estilo, fronteiras, `D5`/`D6` isolados, S1–S9) | **CONFORME** ✔ | QA + **Segurança APROVOU COM RESSALVA** (S1–S9 vs `24`) | `eng-lead` (→CEO p/ `Dxx`) | **Gate 8 carimbado** (§5): 2026-07-17. Ressalva R6 (assets/IP). Pré-cond. Etapa 9: B2/S6/S9. |
-| 9 | Banco de Dados | `backend-engineer` | design em `02`/`09`/`11`/`13`/`25` §3.1 | **Não** — sem migrações; depende de escopo | **BLOQUEADO** (decisão CEO — só B1) | QA + **Segurança** (LGPD) | `eng-lead` + Segurança | Gate 8 ✔ + B2 ✔ resolvidos. Falta só **B1** (MVP) para abrir. |
-| 10 | Planejamento | `product-lead` | `03`, `04` | Base sim; **fronteira MVP das 7 famílias em aberto** | **BLOQUEADO** (decisão CEO) | — | CEO | **B1** — decidir escopo MVP (Fase 0.6, `04` T05a–T05g). |
+| 9 | Banco de Dados | `backend-engineer` | design em `02`/`09`/`11`/`13`/`25` §3.1 | Ainda não — sem migrações/código; **escopo agora definido** (D20) | **DESBLOQUEADO** — pronto para iniciar | QA + **Segurança** (LGPD/S6/S9) | `eng-lead` + Segurança | **B1 ✔ resolvido** (D20: núcleo + Componentes + Projetos). Abrir com `backend-engineer`. |
+| 10 | Planejamento | `product-lead` | `03`, `04` | Sim — fronteira MVP definida (D20) | **CONFORME** ✔ | — | CEO | **B1 ✔ resolvido** (CEO, 2026-07-19). Backlog `04` Fase 0.6 atualizado; carimbar gate 10. |
 | 11 | Desenvolvimento | `eng-lead` | nenhum código de produção (só protótipo grandfathered) | Não iniciado | **BLOQUEADO** (gates 8→10) | **QA + Segurança** (obrigatórios) | `eng-lead` + QA + Seg | Aguarda gates 8→10. |
 | 12 | Testes | `qa-lead` | `qa-checklist`, este `27` | Sem código a exercitar | **BLOQUEADO** (gate 11) | **É o gate de QA (§4)** | `qa-lead` | Aguarda entrega da Etapa 11. |
 | 13 | Homologação (UAT) | `qa-lead`+`sicky`+CEO | `16` (plano) | Plano pronto; sem build a homologar | **BLOQUEADO** (gate 12 + `D6`) | QA conduz; Seg em vazamento PII | CEO | Aguarda Etapa 12; ambiente depende de **B5** (`D6`). |
@@ -173,19 +174,21 @@ dependências, incl. 7 novos), §7 (`D5`/`D6` isolados, não-bloqueantes), §8 (
 doc `24`), §4 (invariante gamificação≠`can()`). doc `25` §10 = **recomendação do
 `eng-lead` de APROVAR**. Pende apenas OK cumulativo da Segurança (S1–S9 vs. `24`).
 
-### Etapa 9 — Banco de Dados · BLOQUEADO
+### Etapa 9 — Banco de Dados · DESBLOQUEADA (pronta para iniciar)
 DoD (`14` L124): schema **versionado** (`db/migrations`), índices, `pgvector`,
 validado. **Verificado:** schema **desenhado** (SPECs + doc `25` §3.1) mas **sem
-`db/migrations` nem código** — não verificável (regra de ouro `qa-checklist` §0).
-Depende de gate 8 (✔ carimbado) + **B1** (escopo MVP). **B2 (LGPD) resolvido** — CEO
-confirmou dados fictícios (doc `24` §1/§2). Gate exige **+ Segurança** (verificar S6/S9
-na implementação real).
+`db/migrations` nem código ainda** — a DoD só se completa com a execução real
+(regra de ouro `qa-checklist` §0), mas **nenhuma decisão do CEO falta mais**:
+gate 8 ✔ carimbado, **B1 ✔ resolvido** (D20: núcleo + Componentes + Projetos),
+**B2 ✔ resolvido** (dados fictícios, doc `24` §1/§2). Pronta para o `backend-engineer`
+iniciar, com **S6/S9** (seed fictício; domínios/códigos generalizados) verificados
+pela Segurança na implementação.
 
-### Etapa 10 — Planejamento · BLOQUEADO (parcial)
+### Etapa 10 — Planejamento · CONFORME
 DoD (`14` L132): tarefas pequenas priorizadas com critério de aceite; bloqueios
-explícitos. **Verificado:** backlog `04` cumpre a forma. **Fronteira MVP das 7
-famílias em aberto** (Fase 0.6 marca "MVP? — em aberto"). Base aprovada (PDR `03`);
-a extensão pós-protótipo é **BLOQUEADO por B1**.
+explícitos. **Verificado:** backlog `04` cumpre a forma; **fronteira MVP definida**
+(D20, PDR `03`) — Fase 0.6 atualizada com `[x]`/"Fora do MVP" por item. **B1 ✔
+resolvido.** Falta apenas o carimbo formal do `product-lead`/CEO (cerimônia).
 
 ### Etapas 11–14 — Dev / Testes / Homologação / Correções · BLOQUEADO
 DoD (`14` L142/L151/L159/L167) exigem **código exercitado**. **Verificado:** não
@@ -210,7 +213,7 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 
 | L# | Bloqueante | Etapa | Setor / dono | Referência |
 |---|---|---|---|---|
-| B1 | **Escopo MVP** das 7 famílias novas — destrava etapas 9 e 10 | 10, 9 | **CEO** (recomendação Produto/Eng) | `25` §11.1; `04` Fase 0.6 |
+| ~~B1~~ | ~~Escopo MVP das 7 famílias novas~~ — **RESOLVIDO (CEO, 2026-07-19): núcleo + Componentes + Projetos** (D20). | 10, 9 | ~~CEO~~ ✔ resolvido | PDR `03` D20; `04` Fase 0.6 |
 | ~~B2~~ | ~~LGPD: seed fictício × real~~ — **RESOLVIDO (CEO, 2026-07-19): fictício.** | 9 | ~~CEO~~ ✔ resolvido | `24` §1/§2 (atualizado) |
 | ~~B3~~ | ~~Aprovar protótipo (`T05`)~~ — **RESOLVIDO (CEO, 2026-07-19): aprovado.** Gate 7 carimbado. | 7 | ~~CEO~~ ✔ resolvido | `04` T05 `[x]`; `27` §5 |
 | B5 | **`D6` (hospedagem)** — bloqueia 15–19 e ambiente de UAT | 15–19, 13 | **CEO** (com `devops-lead`) | PDR `03` D6; `17` |
@@ -280,39 +283,46 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
   `prototypes/portal-spa/`. **B3 resolvido.**
 
 **Pendentes (não carimbar — bloqueio por decisão do CEO ou gate anterior):**
-- Gate 6 (base OK; ressalva de escopo), Gates 9–14
-  (BLOQUEADO — B1/B2/`D6` e cadeia sequencial), Gates 15–19 (N/A-futuro — B5).
+- Gate 6 (base OK; ressalva de escopo), Gates 11–14 (cadeia sequencial — aguardam
+  execução real da Etapa 9/11), Gates 15–19 (N/A-futuro — B5).
+- Gates 9 e 10: **desbloqueados** (B1 e B2 resolvidos); prontos para iniciar
+  execução real / carimbo cerimonial.
 
 ---
 
 ## 6. Parecer consolidado (2ª rodada)
 
 **Recontagem por status (19 etapas):**
-- **CONFORME: 8** — Etapas **1, 2, 3, 4, 5, 6, 7, 8** (2/6 com ressalva). **Gate 7
-  aprovado pelo CEO em 2026-07-19 (B3 resolvido).**
+- **CONFORME: 9** — Etapas **1, 2, 3, 4, 5, 6, 7, 8, 10** (2/6 com ressalva). **Gate 7
+  aprovado pelo CEO (B3); Gate 10 conforme (B1 resolvido — D20).**
 - **LACUNA: 0** — **nenhuma lacuna de execução em aberto.**
-- **BLOQUEADO: 6** — Etapas **9, 10, 11, 12, 13, 14** — **todas dependem de decisão
-  do CEO** (B1 MVP, B2 LGPD, B5 `D6`) **ou de gate anterior na cadeia sequencial**,
-  não de trabalho pendente dos setores.
+- **DESBLOQUEADA (pronta para iniciar): 1** — Etapa **9** (Banco de Dados): nenhuma
+  decisão do CEO falta; falta só a **execução real** (`backend-engineer`).
+- **BLOQUEADO: 4** — Etapas **11, 12, 13, 14** — dependem da **cadeia sequencial**
+  (aguardam a Etapa 9/11 acontecer), não de decisão do CEO.
 - **N/A-futuro: 5** — Etapas **15–19** (execução bloqueada por `D6`/B5; gate de
   Segurança já as cobre por definição).
 
 **Conclusão.** As três lacunas de execução apontadas na 1ª rodada (etapas 3, 4, 5)
 foram corrigidas e **re-verificadas de verdade contra a DoD do `14`** — passam a
-CONFORME. **Não resta nenhuma lacuna de execução.** Os **gates 1–8 estão carimbados**
-(§5): Gate 1 (CEO), gates 2–5 (`product-lead`), Gate 8 (Segurança/`eng-lead`), e
-**Gate 7 (CEO, 2026-07-19 — protótipo aprovado, B3 resolvido)**. **B2 (LGPD) também
-resolvido** (CEO confirmou dados fictícios) — ver `24` §1/§2/§4. O avanço do ciclo
-agora depende **exclusivamente de B1** (escopo MVP, abre etapas 9–10) **e B5** (`D6`,
-abre 15–19).
+CONFORME. **Não resta nenhuma lacuna de execução.** Os **gates 1–8 e 10 estão
+carimbados/conformes** (§5): Gate 1 (CEO), gates 2–5 (`product-lead`), Gate 8
+(Segurança/`eng-lead`), Gate 7 (CEO — protótipo aprovado, B3), e **Gate 10 conforme**
+(B1 resolvido, D20 no PDR `03`). **B2 (LGPD) também resolvido** (CEO confirmou dados
+fictícios) — ver `24` §1/§2/§4. **Todas as decisões do CEO no eixo de requisitos e
+planejamento estão fechadas** (B1, B2, B3). O avanço do ciclo agora depende de
+**iniciar a execução real da Etapa 9** (não é mais decisão, é trabalho de setor) e,
+para as etapas 15–19, de **B5** (`D6`, hospedagem).
 
 **Ações por setor (para o Agente Geral despachar):**
-- **CEO:** B1 (escopo MVP) e B5 (`D6`) — únicas decisões pendentes. A6 (`D5`, provedor
-  LLM) segue em aberto mas não bloqueia a Etapa 9.
-- **Produto Lead:** gates 2–5 **carimbados** ✔; sem pendência nas etapas 1–5.
-- **Segurança Lead:** Gate 8 carimbado; B2 fechado. Ao abrir a Etapa 9, verificar S6/S9
-  (seed fictício + domínios/códigos generalizados) na implementação real.
-- **`eng-lead`:** ao abrir a Etapa 9 (após B1), detalhar entidades novas com backend.
+- **CEO:** só resta **B5** (`D6`, hospedagem) para as etapas 15–19. A6 (`D5`,
+  provedor LLM) segue em aberto mas não bloqueia a Etapa 9 (isolado por port/adapter).
+- **Produto Lead:** gates 2–5, 10 **carimbados/conformes** ✔; sem pendência.
+- **Segurança Lead:** Gate 8 carimbado; B2 fechado. Ao acompanhar a Etapa 9, verificar
+  S6/S9 (seed fictício + domínios/códigos generalizados) na implementação real.
+- **`eng-lead` → `backend-engineer`:** **ABRIR a Etapa 9** — schema/migrações para
+  núcleo + Componentes + Projetos (D20), com `pgvector`, `metadata jsonb`, seeds
+  generalizados (S9) e sem PII real (S6).
 - **Design Lead:** A7 (WCAG-alvo) segue pendente; `T05` **concluído**.
 - **DevOps Lead:** manter etapas 15–19 documentais até `D6` (B5).
 
@@ -330,8 +340,8 @@ abre 15–19).
 1. **Registro de aprovação de gate (`14` §8 Q2)** — este doc `27` passa a ser o **log
    canônico de gates** (carimbos na §5)? *— proposta deste doc; aguardando
    confirmação.*
-2. **Escopo MVP das 7 famílias (B1)** — bloqueia etapas 9–10. *— decisão do CEO em
-   aberto.*
+2. ~~Escopo MVP das 7 famílias (B1)~~ — **RESOLVIDA (CEO, 2026-07-19):** núcleo +
+   Componentes + Projetos (D20, PDR `03`). Etapas 9–10 desbloqueadas.
 3. ~~LGPD: seed fictício × real (B2)~~ — **RESOLVIDA (CEO, 2026-07-19): fictícios.**
    Ver `24` §1/§2/§4.
 4. ~~Aprovação do protótipo `T05` (B3)~~ — **RESOLVIDA (CEO, 2026-07-19): aprovado.**

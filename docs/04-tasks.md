@@ -43,26 +43,34 @@ Marque `[x]` conforme formos concluindo.
   docs `20`/`21`/`22`/`15` antes do código real). **Aprovado em 2026-07-19** ("Vamos
   avançar, o protótipo está bom por enquanto") — ver Gate 7 no log `27` §5.
 
-## Fase 0.6 — Módulos do protótipo além do backlog original (a decidir escopo MVP)
-> O protótipo trouxe módulos ricos ainda não previstos em T01–T05. Aqui ficam
-> registrados como itens de escopo; **MVP vs. futuro é decisão do CEO** (perguntas
-> em aberto abaixo). Rastreabilidade: doc `21` (RF) e `22` (RNF).
+## Fase 0.6 — Módulos do protótipo além do backlog original (escopo MVP decidido)
+> O protótipo trouxe módulos ricos ainda não previstos em T01–T05.
+> **Decisão do CEO (2026-07-19, B1 — ver PDR `03` D20 e log `27`): MVP = núcleo
+> (dicionário + RAG + cockpit 3D + auth/RBAC) + Componentes de Infotainment +
+> Projetos.** Os demais módulos (Notebook, Gamificação, Canais/Kit, Automações,
+> Organograma+mapa) ficam para **fases futuras** (Fase 2+, fora do MVP). Rastreabilidade: doc `21` (RF) e `22` (RNF).
 - [ ] T05a — Notebook de Engenharia (split-screen, autosave debounce 1200ms,
-  ações IA Resumir/Melhorar/Extrair Siglas). RF-030..RF-034. **MVP?** — em aberto.
+  ações IA Resumir/Melhorar/Extrair Siglas). RF-030..RF-034. **Fora do MVP** —
+  fase futura (Fase 2+).
 - [ ] T05b — Treinamento/Gamificação: flashcards 3D + criação com autocomplete,
   cursos→XP/badge/level-up, +50 XP por cocriação, níveis 1–4, insígnias, timeline.
-  RF-035..RF-040, RF-055..RF-061. **MVP?** — em aberto (gamificação não está no
-  roadmap do PDR `03`; ver nota ao PDR).
+  RF-035..RF-040, RF-055..RF-061. **Fora do MVP** — fase futura (gamificação não
+  está no roadmap do PDR `03`; ver nota ao PDR D20).
 - [ ] T05c — Canais Oficiais (CRUD) e Kit Colaborador (links rápidos). RF-039/RF-040.
-  **MVP?** — em aberto.
-- [ ] T05d — Informações: Componentes Infotainment (filtro Tier-1), Projetos+versões,
-  Diretrizes FaSTLAne 2030, Timeline, Veículos. RF-042..RF-049. **MVP?** — em aberto.
-- [ ] T05e — Automações & IA (vitrine + ajuda no chat). RF-046/RF-046b. **MVP?** —
-  em aberto.
+  **Fora do MVP** — fase futura.
+- [x] T05d — Informações: **Componentes de Infotainment** (filtro Tier-1) e
+  **Projetos+versões**. RF-042..RF-046b. **NO MVP** (decisão D20). Diretrizes
+  FaSTLAne 2030/Timeline/Veículos (RF-047..RF-049) ficam fora do MVP por ora
+  (páginas institucionais de baixo risco; podem entrar sem custo extra de dados —
+  a confirmar no detalhamento da Etapa 9/10).
+- [ ] T05e — Automações & IA (vitrine + ajuda no chat). RF-046/RF-046b. **Fora do
+  MVP** — fase futura.
 - [ ] T05f — Organograma drill-down + modo gestão (CRUD) + mapa global. RF-044/RF-045.
-  **Alvo:** restringir gestão a `coordinator`/`admin` (RBAC) — ver nota ao PDR.
+  **Fora do MVP** — fase futura (envolve dados de pessoas/LGPD; tratar com cuidado
+  quando entrar — ver doc `24`).
 - [ ] T05g — Decisão de reaproveitamento do frontend: reusar `app.js`/CSS do
-  protótipo vs. reescrever modular na Fase 1d (doc `22` RNF-040/RNF-041). — em aberto.
+  protótipo vs. reescrever modular na Fase 1d (doc `22` RNF-040/RNF-041). — em aberto
+  (não bloqueia a Etapa 9; decidir na Etapa 10/11).
 
 ## Fase 1a — Fundação do backend
 > Depende de: decisão de hospedagem (D6) e provedor de LLM (D5) — podem ficar
