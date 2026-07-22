@@ -102,13 +102,22 @@ Status: **aprovado — gate 4 (Regras de Negócio), 2026-07-17** (Produto Lead; 
   - Qualquer outra transição é **inválida** (negada).
 - **RF:** RF-064. **Fonte:** SPEC `09` §4 (máquina de estados).
 
-### RN-08 — Revisor ≠ autor (anti-conflito) [ALVO]
+### RN-08 — Revisor ≠ autor (anti-conflito)
 - **Gatilho:** aprovação de uma proposta.
-- **Condição:** havendo ≥2 revisores disponíveis.
-- **Efeito:** o aprovador **deve** ser diferente do autor; auto-aprovação de `admin`
-  é permitida mas **registrada em `audit_log`**.
-- **RF:** RF-064. **Fonte:** SPEC `09` §4. *(Ver pergunta em aberto §9.2 — "sempre" ×
-  "só com ≥2 revisores".)*
+- **Decisão (CEO, 2026-07-19):** **não impor** a regra estritamente no MVP — a
+  equipe de `coordinator`/`admin` ainda é pequena e bloquear auto-aprovação
+  geraria atrito sem ganho real de segurança nesta fase. Auto-aprovação (por
+  `coordinator` ou `admin`) é **permitida**, mas **deve ser marcada em
+  `audit_log`** com um indicador explícito (`self_approved: true` ou
+  equivalente), preservando rastreabilidade e permitindo revisitar a regra
+  quando a equipe de revisores crescer (≥2 por área).
+- **Efeito:** `approve()` grava `audit_log` sempre; quando `reviewer_id ===
+  author_id`, o registro inclui a marcação de auto-aprovação. **Follow-up de
+  engenharia (não bloqueante):** implementar essa marcação em
+  `contributions.service.ts::approve()` (hoje grava `audit_log` mas sem o
+  indicador — ver teste `contributions.rbac-matrix.qa.test.ts`, describe
+  "observação RN-08").
+- **RF:** RF-064. **Fonte:** SPEC `09` §4.
 
 ### RN-09 — Exclusão é soft-delete; rollback preserva histórico [ALVO]
 - **Gatilho:** exclusão de conteúdo ou reversão de edição.
@@ -313,8 +322,9 @@ Herdadas das SPECs `09`/`11`, do doc `24` e do briefing `01`. Nada é decidido a
 
 1. **`coordinator` exclui (soft delete) ou só `admin`?** — RN-09 assume soft delete
    para `coordinator`; confirmar. *— ainda em aberto (SPEC `09` §10.1).*
-2. **Revisor ≠ autor: sempre ou só com ≥2 revisores?** — RN-08. *— ainda em aberto
-   (SPEC `09` §10.2).*
+2. ~~Revisor ≠ autor: sempre ou só com ≥2 revisores?~~ — **RESOLVIDA (CEO,
+   2026-07-19):** não impor no MVP; auto-aprovação permitida e marcada em
+   `audit_log`. Ver RN-08 (§ acima). Revisitar quando houver ≥2 revisores/área.
 3. **Workflows entram no RAG desde o MVP?** — afeta RN-23. *— ainda em aberto (SPEC
    `09` §10.3).*
 4. **Quando creditar XP de cocriação moderada** — na proposta ou só na aprovação

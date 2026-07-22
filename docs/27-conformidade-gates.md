@@ -78,7 +78,7 @@ pergunta em aberto (§7).
 | 9 | Banco de Dados | `backend-engineer` | `db/migrations/0001..0007`, `seeds/*` | **Sim** — schema versionado, índices, `pgvector`, `metadata jsonb`/timestamps | **CONFORME** ✔ | **QA APROVOU COM RESSALVA** (validado contra Postgres+pgvector real) + **Segurança APROVOU COM RESSALVA** (S6/S9 conformes) | `eng-lead` + Segurança | **Gate 9 carimbado** (§5): 2026-07-19. Ressalvas de acompanhamento F1/F2 (ver §5) para a Etapa 10/11. |
 | 10 | Planejamento | `product-lead` | `03`, `04` | Sim — fronteira MVP definida (D20) | **CONFORME** ✔ | — | CEO | **B1 ✔ resolvido** (CEO, 2026-07-19). Backlog `04` Fase 0.6 atualizado; carimbar gate 10. |
 | 11 | Desenvolvimento | `eng-lead` | `backend/src/**` (auth, authz, dictionary, contributions, components, projects, rag stub) | **Sim** — funcionalidade implementada, testes de unidade do autor passando (29/29), sem segredos hardcoded | **CONFORME** ✔ | **QA APROVOU** (reconfirmado após fix) + **Segurança APROVOU COM RESSALVA** | `eng-lead` + QA + Seg | **Gate 11 carimbado** (§5): 2026-07-19. 2 achados ALTA do QA corrigidos (RN-06/10; listPending). Ressalvas M1/M2/M3 (Seg) e transação atômica (QA) para antes de produção. |
-| 12 | Testes | `qa-lead` | `backend/src/**/*.test.ts` (99 testes, 10 arquivos) | **Sim** — critérios de aceite exercitados (caminho feliz/erro, RBAC sistemático, máquina de estados de moderação), regressão sem falha nova | **CONFORME** ✔ | **É o gate de QA (§4)** — auto-aprovado pelo `qa-lead` | `qa-lead` | **Gate 12 carimbado** (§5): 2026-07-19. Ressalva: RN-08 (revisor≠autor) em aberto — decisão de produto, não bug. |
+| 12 | Testes | `qa-lead` | `backend/src/**/*.test.ts` (99 testes, 10 arquivos) | **Sim** — critérios de aceite exercitados (caminho feliz/erro, RBAC sistemático, máquina de estados de moderação), regressão sem falha nova | **CONFORME** ✔ | **É o gate de QA (§4)** — auto-aprovado pelo `qa-lead` | `qa-lead` | **Gate 12 carimbado** (§5): 2026-07-19. RN-08 resolvida (CEO, 2026-07-19) — não bloqueante. |
 | 13 | Homologação (UAT) | `qa-lead`+`sicky`+CEO | `16` (plano) | Plano pronto; sem build a homologar | **BLOQUEADO** (gate 12 + `D6`) | QA conduz; Seg em vazamento PII | CEO | Aguarda Etapa 12; ambiente depende de **B5** (`D6`). |
 | 14 | Correções | `eng-lead` | — | Sem defeitos de produção | **BLOQUEADO** (gate 13) | QA (reverificação) + Segurança | `qa-lead` | Aguarda defeitos vindos da Etapa 13. |
 | 15 | Deploy | `release-engineer` | `17` (documental) | Documental pronto; **execução bloqueada por `D6`** | **N/A-futuro** | **Segurança** (segredos runtime) | `devops-lead` + Seg | **B5** — decidir `D6`. |
@@ -223,14 +223,15 @@ verdade:** plano formal do `qa-lead` além da verificação de unidade da Etapa 
 `contributions`: 3 cargos × 3 `target_types` × propose/approve/listPending) +
 transições inválidas da máquina de estados de moderação (RN-07). Suíte total
 **99/99**, `tsc`/`build` limpos, **nenhum defeito de comportamento encontrado**.
-Única ressalva: **RN-08** (revisor ≠ autor) segue **não implementada** — o
-próprio doc `28` §9.2 já marca essa regra como decisão de produto em aberto, não
-é um bug contra critério aprovado; documentada em teste próprio, não bloqueia.
+~~Única ressalva: RN-08 segue não implementada~~ — **RESOLVIDA (CEO, 2026-07-19):**
+não impor a regra no MVP (times pequenos); auto-aprovação permitida e marcada
+em `audit_log` (doc `28` RN-08, atualizado). Follow-up de engenharia não
+bloqueante: implementar a marcação `self_approved` em `contributions.service.ts`.
 
 ### Etapas 13–14 — Homologação / Correções · BLOQUEADO
 DoD (`14` L159/L167) exigem UAT conduzido com CEO/`sicky` sobre o código já
-testado. Gate **QA+Segurança** obrigatório. Pendência a resolver antes/durante:
-decisão do `product-lead`/CEO sobre RN-08 (§9.2, doc `28`).
+testado. Gate **QA+Segurança** obrigatório. Nenhuma decisão do CEO falta mais
+para abrir esta etapa (RN-08 resolvida) — depende só de conduzir o UAT.
 
 ### Etapas 15–19 — Deploy / Entrega / Manutenção / Monitoramento / Evolução · N/A-futuro
 DoD (`14` L176..L207) exigem ambiente-alvo publicado. **Verificado:** planejamento
@@ -340,28 +341,28 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 
 **Conclusão.** Os gates **1–12 estão todos carimbados/conformes**. Etapa 12
 (Testes) fechada pelo `qa-lead` com plano formal além da unidade da Etapa 11 —
-70 testes novos, 99/99 no total, nenhum defeito de comportamento. Única ressalva:
-**RN-08** (revisor ≠ autor, doc `28` §9.2) segue como decisão de produto em
-aberto, não bug — recomendo ao `product-lead`/CEO decidir antes/durante a Etapa
-13 (UAT). **Todas as decisões do CEO no eixo de requisitos/planejamento/dados/
-desenvolvimento/testes estão fechadas** (B1, B2, B3). O avanço do ciclo agora
-depende de **conduzir a Etapa 13 (Homologação/UAT com o CEO)** e, para as etapas
-15–19, de **B5** (`D6`, hospedagem — em avaliação, Cloudflare cogitado).
+70 testes novos, 99/99 no total, nenhum defeito de comportamento. **RN-08**
+(revisor ≠ autor) **resolvida pelo CEO** (não impor no MVP; auto-aprovação
+marcada em `audit_log`, doc `28` atualizado). **Todas as decisões do CEO no
+eixo de requisitos/planejamento/dados/desenvolvimento/testes/regras de negócio
+estão fechadas** (B1, B2, B3, RN-08). O avanço do ciclo agora depende de
+**conduzir a Etapa 13 (Homologação/UAT com o CEO)** e, para as etapas 15–19, de
+**B5** (`D6`, hospedagem — em avaliação, Cloudflare cogitado).
 
 **Ações por setor (para o Agente Geral despachar):**
-- **CEO:** decidir **RN-08** (revisor ≠ autor, opcional antes do UAT) e **B5**
-  (`D6`, hospedagem) para as etapas 15–19 — ainda em avaliação (Cloudflare). A6
-  (`D5`, provedor LLM) segue em aberto, isolado por port/adapter, não bloqueia.
-- **Produto Lead:** gates 2–5, 10 **carimbados/conformes** ✔. Pendência: decidir
-  RN-08 (doc `28` §9.2) antes da Etapa 13.
+- **CEO:** só resta **B5** (`D6`, hospedagem) para as etapas 15–19 — ainda em
+  avaliação (Cloudflare). A6 (`D5`, provedor LLM) segue em aberto, isolado por
+  port/adapter, não bloqueia. Participar da Etapa 13 (UAT).
+- **Produto Lead:** gates 2–5, 10 **carimbados/conformes** ✔; RN-08 registrada
+  no doc `28`. Sem pendência.
 - **Segurança Lead:** Gates 8, 9, 11 carimbados; B2 fechado. Cobrar antes de
   produção: rate limiting (M1), `argon2` (M2), CORS/`helmet` (M3), aplicar
   `db/hardening/audit-log-grants.sql` no ambiente real quando D6 fechar.
 - **`eng-lead` → `backend-engineer`:** Etapas 11–12 **concluídas**. Follow-up não
   bloqueante: transação atômica entre update/delete + `content_revisions` +
-  `audit_log`; implementar trava de RN-08 quando o Produto decidir.
-- **`qa-lead`:** Etapa 12 **concluída**. Próximo: apoiar a Etapa 13 (UAT) com
-  `sicky`/CEO.
+  `audit_log`; marcação `self_approved` em `contributions.service.ts` (RN-08).
+- **`qa-lead`:** Etapa 12 **concluída**. Próximo: conduzir a Etapa 13 (UAT
+  técnico dos endpoints, com o CEO).
 - **Design Lead:** A7 (WCAG-alvo) segue pendente; `T05` **concluído**.
 - **DevOps Lead:** manter etapas 15–19 documentais até `D6` (B5); runner de
   migração (achado médio do QA na Etapa 9) ainda pendente.
