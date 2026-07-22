@@ -21,7 +21,12 @@ Status: **rascunho**.
 - **Versionar o protótipo em repositório interno**: **aceitável, com ressalvas**
   (ver achados críticos/altos e a tabela de recomendações da §3).
 - **Publicar o protótipo externamente** (ex.: GitHub Pages, link público sugerido
-  no README original): **BLOQUEADO** até tratar os achados CRÍTICO e ALTO.
+  no README original): ~~BLOQUEADO até tratar os achados CRÍTICO e ALTO~~ —
+  **DESBLOQUEADO (CEO, 2026-07-19):** o achado CRÍTICO 2.1(1)/R1/R2 dependia da
+  natureza dos dados do organograma; o CEO confirmou que **são fictícios**, o que
+  remove a base do bloqueio (não há PII real a expor). O protótipo já foi publicado
+  via GitHub Pages. R4/R5 (domínios/códigos genéricos) seguem como melhoria
+  recomendada, não bloqueante.
 - **Migração para o produto real**: depende da implementação de **autenticação,
   RBAC e moderação** — respectivamente RF-062, RF-063 e RF-064 (doc `21`). Sem
   esses controles, os fluxos de cocriação não podem ir a um ambiente multiusuário.
@@ -38,10 +43,14 @@ Status: **rascunho**.
    Sob a **LGPD**, não há base legal identificada para esse tratamento e há
    violação do princípio da **minimização** — dados pessoais sensíveis ao contexto
    trabalhista foram incorporados a um artefato de demonstração sem necessidade.
-2. **Decisão do CEO pendente sobre o doc `22` §9.4.** A recomendação de **não usar
-   pessoas reais** até a migração segura (doc `22` §9.4 e pergunta em aberto §2 lá)
-   segue **em aberto**. Enquanto não decidida, o risco 2.1(1) permanece ativo e
-   bloqueia publicação.
+2. ~~Decisão do CEO pendente sobre dados reais vs. fictícios.~~ **RESOLVIDA
+   (CEO, 2026-07-19):** o CEO confirmou que os dados do organograma/especialistas
+   no protótipo **são fictícios** ("ainda não possui dados reais, portanto não tem
+   o que expor"). **B2 fechado.** O risco 2.1(1) deixa de ser um bloqueio de fato —
+   permanece como **diretriz de projeto**: ao popular o `directory` real (Etapa 9),
+   manter dados fictícios/anonimizados até uma migração segura com base legal e
+   RBAC (S6, doc `25` §8), e revalidar antes de qualquer publicação externa ou
+   ingestão de dados reais no futuro.
 
 ### 2.2 ALTO
 
@@ -88,8 +97,8 @@ Status: **rascunho**.
 
 | # | Ação | Severidade | Dono | Bloqueia publicação? |
 |---|---|---|---|---|
-| R1 | Anonimizar o organograma: substituir os ~205 nomes reais por **seed fictício** | CRÍTICO | Doc Lead / Eng | **Sim** |
-| R2 | Obter **decisão do CEO** sobre dados reais vs. fictícios (doc `22` §9.4) | CRÍTICO | Agente Geral → CEO | **Sim** |
+| R1 | ~~Anonimizar o organograma~~ — **CEO confirmou (2026-07-19) que os ~205 nomes já são fictícios/demonstração.** Manter fictício ao popular a Etapa 9. | ~~CRÍTICO~~ RESOLVIDO | Doc Lead / Eng | Não (já atendido) |
+| R2 | ~~Obter decisão do CEO sobre dados reais vs. fictícios~~ — **RESOLVIDA:** fictícios. | ~~CRÍTICO~~ RESOLVIDO | Agente Geral → CEO | Não (já atendido) |
 | R3 | Se houver publicação externa, **limpar o histórico git** (dados já commitados) | ALTO | DevOps | **Sim** (só se publicar) |
 | R4 | Substituir domínios internos por **placeholders** (`exemplo.interno`) | ALTO | Doc Lead / Eng | **Sim** |
 | R5 | **Generalizar** códigos de projeto e fornecedores Tier-1 nos mocks | ALTO | Eng | **Sim** |
@@ -106,12 +115,17 @@ Status: **rascunho**.
 
 ## 4. Perguntas em aberto
 
-1. **Dados reais vs. fictícios** — o CEO usará **pessoas reais** ou substituirá por
-   *seed* fictício no organograma/especialistas? Recomendação de Segurança:
-   **fictício** até a migração segura (doc `22` §9.4). *— decisão do CEO em aberto.*
-2. **Haverá publicação externa** do protótipo (GitHub Pages/link público)? Se sim,
-   R1–R5 e a limpeza de histórico (R3) tornam-se obrigatórias antes. *— ainda em
-   aberto.*
+1. ~~Dados reais vs. fictícios~~ — **RESOLVIDA (CEO, 2026-07-19): fictícios.**
+   Diretriz mantida: seguir fictício/anonimizado até uma migração segura com base
+   legal e RBAC.
+2. ~~Haverá publicação externa do protótipo?~~ — **RESOLVIDA: sim**, o protótipo já
+   está publicado via GitHub Pages (repositório público `Edinhs/Stellantis-Dictionary`,
+   `https://edinhs.github.io/Stellantis-Dictionary/`), autorizado pelo CEO com base
+   na confirmação do item 1 (dados fictícios). R4/R5 (domínios internos/códigos de
+   projeto) e R3 (histórico git) permanecem como itens de atenção — dados de
+   demonstração, sem PII real, mas ainda com nomes de domínio e códigos de projeto
+   que podem exigir generalização; não bloqueiam por não haver PII, porém seguem
+   como melhoria recomendada (doc `27` A-itens).
 3. **Nível WCAG-alvo** do produto (A / AA / AAA) — herdado da pergunta em aberto do
    doc `22` (RNF-014, §198). Impacta requisitos de acessibilidade da migração. *—
    ainda em aberto.*
