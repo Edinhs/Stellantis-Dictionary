@@ -11,5 +11,10 @@ são internos.
 - `auth.repository.ts` — camada REPOSITÓRIO: acesso a dados (SQL); sem HTTP.
 - `index.ts` — registra rotas e exporta o serviço público do módulo.
 
-Esta fase entrega apenas o esqueleto: os arquivos são placeholders, sem lógica
-de produção.
+## Status na Etapa 11 (Desenvolvimento)
+
+Implementado: cadastro (`role='user'` sempre, RN-01), login, refresh (cookie
+`httpOnly`/`sameSite=strict`), hash de senha via `bcryptjs` (decisão: pure-JS,
+sem binding nativo — ver comentário em `auth.service.ts`; revisitar `argon2`
+nativo quando o pipeline de build/Docker estiver validado). Testes de
+unidade em `auth.service.test.ts` (fake repository).

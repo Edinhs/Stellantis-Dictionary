@@ -1,0 +1,37 @@
+-- audit-log-grants.sql — SCRIPT DE REFERÊNCIA, não aplicado automaticamente.
+--
+-- Origem: pendência F2 apontada pela Segurança no encerramento da Etapa 9 e
+-- reforçada na Etapa 11 (docs 14 §2 etapa 9/11, 24/25 §8). A tabela
+-- `audit_log` é append-only por desenho (migração 0005-contributions-
+-- history-audit.sql, comentário "a aplicação NUNCA faz UPDATE/DELETE nesta
+-- tabela"). Este script fixa o GRANT/REVOKE que reforça essa regra também no
+-- nível do banco (defesa em profundidade), para além da disciplina de código
+-- (core/audit só expõe `recordAudit`, um INSERT — ver backend/src/core/audit).
+--
+-- POR QUE NÃO ENTRA EM db/migrations/: criar/alterar o ROLE de conexão da
+-- aplicação depende do usuário real de cada ambiente (dev local usa o mesmo
+-- usuário do POSTGRES_USER do .env; homologação/produção terão um usuário
+-- de aplicação dedicado, decisão que segue D6 — hospedagem, em aberto no PDR
+-- `03`). Migrações de schema não devem presumir nome/existência de role de
+-- ambiente; esta é uma tarefa de provisionamento (DevOps Lead), não de schema.
+--
+-- COMO APLICAR (a preencher pelo DevOps Lead ao provisionar cada ambiente):
+--   1. Substituir `:app_role` pelo nome real do usuário de banco da aplicação
+--      (ex.: `stellantis_app`, distinto do usuário de administração/migração).
+--   2. Rodar como superusuário/dono do banco, DEPOIS das migrações aplicadas
+--      (a role de migração continua podendo tudo; só a role de runtime da
+--      APP é restrita).
+--
+-- \set app_role 'stellantis_app'
+--
+-- REVOKE UPDATE, DELETE, TRUNCATE ON audit_log FROM :app_role;
+-- GRANT  SELECT, INSERT              ON audit_log TO   :app_role;
+--
+-- Verificação esperada após aplicar (deve retornar só 'SELECT' e 'INSERT'):
+--   SELECT privilege_type FROM information_schema.role_table_grants
+--    WHERE table_name = 'audit_log' AND grantee = 'stellantis_app';
+--
+-- Nota: o mesmo raciocínio (REVOKE UPDATE/DELETE, só SELECT/INSERT) vale para
+-- `content_revisions`, que também é um histórico append-only (SPEC 09 §6.3).
+-- Fica registrado aqui como extensão recomendada, mesmo não sendo o pedido
+-- original (F2 mirava especificamente `audit_log`).

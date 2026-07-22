@@ -11,5 +11,18 @@ são internos.
 - `rag.repository.ts` — camada REPOSITÓRIO: acesso a dados (SQL); sem HTTP.
 - `index.ts` — registra rotas e exporta o serviço público do módulo.
 
-Esta fase entrega apenas o esqueleto: os arquivos são placeholders, sem lógica
-de produção.
+## Status na Etapa 11 (Desenvolvimento) — MVP reduzido, documentado
+
+Implementado nesta rodada: port `LlmProvider` isolado (`llm-provider.port.ts`)
++ adapter stub `EchoLlmProvider` (`llm-provider.stub.ts`, usado sempre que
+`LLM_API_KEY` não está configurada/`D5` segue em aberto) e um endpoint de
+chat funcional (`POST /api/chat`) que busca termos publicados por texto
+simples e devolve uma resposta "eco" citando a fonte — nunca inventa; sem
+contexto, declara que não sabe (RN-22/RN-23).
+
+**Deliberadamente FORA desta rodada** (próximo passo, não bloqueia a
+entrega): geração real de embeddings, chunking de documentos, busca por
+similaridade vetorial em `document_chunks` (pgvector) e adapter real de LLM
+(Claude/OpenAI — depende de `D5`). O `rag-engineer` assume isso quando `D5`
+for decidido; a troca de adapter não deve tocar `rag.service` (port
+`LlmProvider`).

@@ -11,5 +11,14 @@ são internos.
 - `dictionary.repository.ts` — camada REPOSITÓRIO: acesso a dados (SQL); sem HTTP.
 - `index.ts` — registra rotas e exporta o serviço público do módulo.
 
-Esta fase entrega apenas o esqueleto: os arquivos são placeholders, sem lógica
-de produção.
+## Status na Etapa 11 (Desenvolvimento)
+
+Implementado: CRUD direto (`dictionary.edit`/`dictionary.delete`, só
+coordinator/admin) + `applier` (`TargetApplier`) consumido por
+`contributions` para aprovar propostas de `user` (`target_type='term'`).
+**Correção (achado QA ALTA, RN-06/RN-10):** `createDirect`/`updateDirect`/
+`deleteDirect` gravam `content_revisions` (versionada) e `audit_log` a cada
+operação — o serviço recebe `db` além de `repo`/`authz` (ver
+`core/history`/`core/audit`). Hard delete físico não implementado (fora de
+escopo desta rodada; ver `dictionary.service.ts`). Testes em
+`dictionary.service.test.ts` e `dictionary.rn06-audit-gap.qa.test.ts`.
