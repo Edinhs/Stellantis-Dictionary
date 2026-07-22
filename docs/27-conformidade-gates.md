@@ -1,7 +1,8 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-19 (10ª rodada — B1/MVP resolvido: CEO define núcleo + Componentes + Projetos (D20, PDR `03`); Gates 9-10 desbloqueados; só B5 resta pendente).
+> Última atualização: 2026-07-19 (11ª rodada — Gate 9 (Banco de Dados) carimbado: schema/migrações/seeds do MVP validados por QA e Segurança; 10 gates conformes; só B5 resta pendente para 15-19).
+> 10ª rodada — B1/MVP resolvido: CEO define núcleo + Componentes + Projetos (D20, PDR `03`).
 > 9ª rodada — B2/LGPD resolvido: CEO confirmou dados fictícios; doc `24` atualizado.
 > 8ª rodada (2026-07-19) — Gate 7 (Protótipo) carimbado; CEO aprovou o protótipo, T05 concluído; B3 resolvido.
 > 7ª rodada (2026-07-17) — Gate 8 (Arquitetura) carimbado; aval oficial da Segurança APROVAR COM RESSALVA; nota R6 em `25` §8.
@@ -72,7 +73,7 @@ pergunta em aberto (§7).
 | 6 | Modelagem | `eng-lead`/`backend-engineer` | `02` §3–4, `13` §2, `25` §3 | Base sim; módulos novos pendentes de escopo | **CONFORME** (com ressalva) | Segurança (S6 LGPD no modelo) | `eng-lead` | Detalhar entidades dos 7 módulos novos na Etapa 9. |
 | 7 | Protótipo UI/UX | `design-lead` | `prototypes/`, `20`, `23` | Sim — aprovado pelo CEO | **CONFORME** ✔ | QA (regressão telas T01–T04d) | CEO | **Gate 7 carimbado** (§5): CEO 2026-07-19; `T05` concluído (`04`). |
 | 8 | Arquitetura | `eng-lead` | `13`, `25` | Sim (estilo, fronteiras, `D5`/`D6` isolados, S1–S9) | **CONFORME** ✔ | QA + **Segurança APROVOU COM RESSALVA** (S1–S9 vs `24`) | `eng-lead` (→CEO p/ `Dxx`) | **Gate 8 carimbado** (§5): 2026-07-17. Ressalva R6 (assets/IP). Pré-cond. Etapa 9: B2/S6/S9. |
-| 9 | Banco de Dados | `backend-engineer` | design em `02`/`09`/`11`/`13`/`25` §3.1 | Ainda não — sem migrações/código; **escopo agora definido** (D20) | **DESBLOQUEADO** — pronto para iniciar | QA + **Segurança** (LGPD/S6/S9) | `eng-lead` + Segurança | **B1 ✔ resolvido** (D20: núcleo + Componentes + Projetos). Abrir com `backend-engineer`. |
+| 9 | Banco de Dados | `backend-engineer` | `db/migrations/0001..0007`, `seeds/*` | **Sim** — schema versionado, índices, `pgvector`, `metadata jsonb`/timestamps | **CONFORME** ✔ | **QA APROVOU COM RESSALVA** (validado contra Postgres+pgvector real) + **Segurança APROVOU COM RESSALVA** (S6/S9 conformes) | `eng-lead` + Segurança | **Gate 9 carimbado** (§5): 2026-07-19. Ressalvas de acompanhamento F1/F2 (ver §5) para a Etapa 10/11. |
 | 10 | Planejamento | `product-lead` | `03`, `04` | Sim — fronteira MVP definida (D20) | **CONFORME** ✔ | — | CEO | **B1 ✔ resolvido** (CEO, 2026-07-19). Backlog `04` Fase 0.6 atualizado; carimbar gate 10. |
 | 11 | Desenvolvimento | `eng-lead` | nenhum código de produção (só protótipo grandfathered) | Não iniciado | **BLOQUEADO** (gates 8→10) | **QA + Segurança** (obrigatórios) | `eng-lead` + QA + Seg | Aguarda gates 8→10. |
 | 12 | Testes | `qa-lead` | `qa-checklist`, este `27` | Sem código a exercitar | **BLOQUEADO** (gate 11) | **É o gate de QA (§4)** | `qa-lead` | Aguarda entrega da Etapa 11. |
@@ -174,15 +175,21 @@ dependências, incl. 7 novos), §7 (`D5`/`D6` isolados, não-bloqueantes), §8 (
 doc `24`), §4 (invariante gamificação≠`can()`). doc `25` §10 = **recomendação do
 `eng-lead` de APROVAR**. Pende apenas OK cumulativo da Segurança (S1–S9 vs. `24`).
 
-### Etapa 9 — Banco de Dados · DESBLOQUEADA (pronta para iniciar)
+### Etapa 9 — Banco de Dados · CONFORME ✔ (2026-07-19)
 DoD (`14` L124): schema **versionado** (`db/migrations`), índices, `pgvector`,
-validado. **Verificado:** schema **desenhado** (SPECs + doc `25` §3.1) mas **sem
-`db/migrations` nem código ainda** — a DoD só se completa com a execução real
-(regra de ouro `qa-checklist` §0), mas **nenhuma decisão do CEO falta mais**:
-gate 8 ✔ carimbado, **B1 ✔ resolvido** (D20: núcleo + Componentes + Projetos),
-**B2 ✔ resolvido** (dados fictícios, doc `24` §1/§2). Pronta para o `backend-engineer`
-iniciar, com **S6/S9** (seed fictício; domínios/códigos generalizados) verificados
-pela Segurança na implementação.
+validado. **Cumprida de verdade:** `db/migrations/0001-0007` (extensões,
+users/role_permissions, terms, RAG/chat + `pgvector` `hnsw`, contributions/
+content_revisions/audit_log, components, projects) + `seeds/*` genéricos.
+**QA validou aplicando migrações e seeds do zero contra Postgres 16 + pgvector
+real** (FKs, embeddings, casos de erro, idempotência) — **APROVAR COM RESSALVA**
+(sem bloqueador; item médio: falta runner/tabela de controle de migração, a
+resolver no bootstrap do backend). **Segurança APROVOU COM RESSALVA** — S6 (sem
+tabela de pessoas) e S9 (seeds fictícios, sem sobreposição com nomes reais do
+protótipo) confirmados; RBAC (D12/D13) e auditoria (D16) conformes. Ressalvas de
+acompanhamento (não bloqueiam este gate): **F1** — cobrir RN-04 (coordinator não
+promove a admin; ninguém muda o próprio cargo) com teste automatizado antes de
+fechar a etapa de serviço (10/11); **F2** — hardening de `audit_log` (permissão
+de banco append-only real) no backlog de Etapa 11/DevOps.
 
 ### Etapa 10 — Planejamento · CONFORME
 DoD (`14` L132): tarefas pequenas priorizadas com critério de aceite; bloqueios
@@ -293,38 +300,36 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 ## 6. Parecer consolidado (2ª rodada)
 
 **Recontagem por status (19 etapas):**
-- **CONFORME: 9** — Etapas **1, 2, 3, 4, 5, 6, 7, 8, 10** (2/6 com ressalva). **Gate 7
-  aprovado pelo CEO (B3); Gate 10 conforme (B1 resolvido — D20).**
+- **CONFORME: 10** — Etapas **1, 2, 3, 4, 5, 6, 7, 8, 9, 10** (2/6 com ressalva; 9/10
+  com ressalvas de acompanhamento, não bloqueantes). **Gate 9 carimbado em
+  2026-07-19 — schema/migrações/seeds validados por QA e Segurança.**
 - **LACUNA: 0** — **nenhuma lacuna de execução em aberto.**
-- **DESBLOQUEADA (pronta para iniciar): 1** — Etapa **9** (Banco de Dados): nenhuma
-  decisão do CEO falta; falta só a **execução real** (`backend-engineer`).
 - **BLOQUEADO: 4** — Etapas **11, 12, 13, 14** — dependem da **cadeia sequencial**
-  (aguardam a Etapa 9/11 acontecer), não de decisão do CEO.
+  (aguardam código de produto real, Etapa 11), não de decisão do CEO.
 - **N/A-futuro: 5** — Etapas **15–19** (execução bloqueada por `D6`/B5; gate de
   Segurança já as cobre por definição).
 
 **Conclusão.** As três lacunas de execução apontadas na 1ª rodada (etapas 3, 4, 5)
-foram corrigidas e **re-verificadas de verdade contra a DoD do `14`** — passam a
-CONFORME. **Não resta nenhuma lacuna de execução.** Os **gates 1–8 e 10 estão
-carimbados/conformes** (§5): Gate 1 (CEO), gates 2–5 (`product-lead`), Gate 8
-(Segurança/`eng-lead`), Gate 7 (CEO — protótipo aprovado, B3), e **Gate 10 conforme**
-(B1 resolvido, D20 no PDR `03`). **B2 (LGPD) também resolvido** (CEO confirmou dados
-fictícios) — ver `24` §1/§2/§4. **Todas as decisões do CEO no eixo de requisitos e
-planejamento estão fechadas** (B1, B2, B3). O avanço do ciclo agora depende de
-**iniciar a execução real da Etapa 9** (não é mais decisão, é trabalho de setor) e,
-para as etapas 15–19, de **B5** (`D6`, hospedagem).
+foram corrigidas; os gates **1–10 estão todos carimbados/conformes**. Gate 9
+(Banco de Dados) fechado com QA e Segurança aprovando com ressalva (sem
+bloqueador). **Todas as decisões do CEO no eixo de requisitos/planejamento/dados
+estão fechadas** (B1, B2, B3). O avanço do ciclo agora depende de **código real
+na Etapa 11** (implementar as rotas/serviços sobre o schema da Etapa 9 — inclui
+cobrir F1/RN-04 com teste de authz) e, para as etapas 15–19, de **B5** (`D6`,
+hospedagem).
 
 **Ações por setor (para o Agente Geral despachar):**
 - **CEO:** só resta **B5** (`D6`, hospedagem) para as etapas 15–19. A6 (`D5`,
-  provedor LLM) segue em aberto mas não bloqueia a Etapa 9 (isolado por port/adapter).
+  provedor LLM) segue em aberto mas não bloqueia a Etapa 11 (isolado por port/adapter).
 - **Produto Lead:** gates 2–5, 10 **carimbados/conformes** ✔; sem pendência.
-- **Segurança Lead:** Gate 8 carimbado; B2 fechado. Ao acompanhar a Etapa 9, verificar
-  S6/S9 (seed fictício + domínios/códigos generalizados) na implementação real.
-- **`eng-lead` → `backend-engineer`:** **ABRIR a Etapa 9** — schema/migrações para
-  núcleo + Componentes + Projetos (D20), com `pgvector`, `metadata jsonb`, seeds
-  generalizados (S9) e sem PII real (S6).
+- **Segurança Lead:** Gate 8 e 9 carimbados; B2 fechado. Na Etapa 11, cobrar o teste
+  de authz (F1/RN-04) e o hardening de `audit_log` (F2) como parte da DoD.
+- **`eng-lead` → `backend-engineer`:** Etapa 9 **concluída**. Próximo: **Etapa 11
+  (Desenvolvimento)** — implementar rotas/serviços sobre o schema criado, com
+  testes de unidade (incl. RN-04) antes do gate de QA/Segurança da Etapa 11.
 - **Design Lead:** A7 (WCAG-alvo) segue pendente; `T05` **concluído**.
-- **DevOps Lead:** manter etapas 15–19 documentais até `D6` (B5).
+- **DevOps Lead:** manter etapas 15–19 documentais até `D6` (B5); considerar runner
+  de migração (achado médio do QA) no bootstrap do backend (Etapa 11).
 
 **Correções de rastreabilidade aplicadas por esta auditoria (triviais e seguras):**
 1. (1ª rodada) doc `26` §3.d: `RF-006..RF-009` → **`RF-010..RF-015`** (RF reais do 3D).
