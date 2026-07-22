@@ -223,7 +223,7 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 | ~~B1~~ | ~~Escopo MVP das 7 famílias novas~~ — **RESOLVIDO (CEO, 2026-07-19): núcleo + Componentes + Projetos** (D20). | 10, 9 | ~~CEO~~ ✔ resolvido | PDR `03` D20; `04` Fase 0.6 |
 | ~~B2~~ | ~~LGPD: seed fictício × real~~ — **RESOLVIDO (CEO, 2026-07-19): fictício.** | 9 | ~~CEO~~ ✔ resolvido | `24` §1/§2 (atualizado) |
 | ~~B3~~ | ~~Aprovar protótipo (`T05`)~~ — **RESOLVIDO (CEO, 2026-07-19): aprovado.** Gate 7 carimbado. | 7 | ~~CEO~~ ✔ resolvido | `04` T05 `[x]`; `27` §5 |
-| B5 | **`D6` (hospedagem)** — bloqueia 15–19 e ambiente de UAT | 15–19, 13 | **CEO** (com `devops-lead`) | PDR `03` D6; `17` |
+| B5 | **`D6` (hospedagem)** — bloqueia 15–19 e ambiente de UAT. **Em avaliação (CEO, 2026-07-19): Cloudflare** (Pages/Workers + Postgres externo tipo Neon/Supabase); compatível com a arquitetura já aprovada, **não bloqueia a Etapa 11**. Ainda não é decisão final. | 15–19, 13 | **CEO** (com `devops-lead`) | PDR `03` D6; `17` |
 
 ### 4.2 Atenção — carimbos formais e itens menores (não bloqueiam)
 

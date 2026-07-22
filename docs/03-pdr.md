@@ -8,7 +8,7 @@
 | D3 | Segurança é requisito de primeira classe (dado ambiente empresarial) | Confirmado |
 | D4 | Stack: Node.js/TS + Postgres/pgvector + adapter de LLM | Recomendado — aguardando confirmação final |
 | D5 | Provedor de LLM (Claude vs. OpenAI) | Em aberto — abstraído via adapter para não bloquear o desenvolvimento |
-| D6 | Estratégia de hospedagem (on-prem vs. cloud privada vs. local via Docker) | Em aberto — impacta diretamente a arquitetura de segurança |
+| D6 | Estratégia de hospedagem (on-prem vs. cloud privada vs. local via Docker) | Em aberto — impacta diretamente a arquitetura de segurança. **Nota (CEO, 2026-07-19):** cogitando **Cloudflare** (Pages/Workers); ainda em avaliação, não é decisão final. Compatível com a arquitetura já aprovada (`13`/`25`) usando Postgres externo com `pgvector` (ex.: Neon/Supabase) atrás dos Workers — **não** conflita com o schema da Etapa 9. Não bloqueia a Etapa 11 (só as etapas 15–19, `B5`, exigem D6 fechado). |
 | D7 | Explorador 3D do cockpit na página principal, com hotspots ligados ao dicionário | Confirmado — MVP simplificado (modelo placeholder + poucos hotspots) |
 | D8 | Tecnologia 3D: `three.js` vs. `<model-viewer>` | Em aberto — decidir no protótipo (model-viewer para MVP rápido; three.js se precisar de mais controle) |
 | D9 | Origem do modelo 3D (placeholder livre no MVP; modelo oficial depois) | Confirmado — placeholder no MVP, sem depender de asset oficial |
