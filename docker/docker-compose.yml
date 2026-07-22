@@ -7,6 +7,11 @@
 #   - Hospedagem (D6) é configurável por env/override; nada de on-prem/VPS/cloud
 #     presumido neste arquivo.
 #   - TLS/HTTPS é obrigatório em deploy real; em localhost usamos HTTP.
+#   - Dados de seed (../seeds/*.json — dicionário/fornecedores/projetos de
+#     EXEMPLO, ver seeds/README.md) NUNCA são carregados automaticamente aqui
+#     nem em nenhum compose/override usado para deploy real. Carga de seed é
+#     ação manual e explícita de dev/CI, guardada por NODE_ENV!=production no
+#     próprio script de carga quando ele existir.
 #
 # Uso: a partir da pasta docker/  ->  docker compose up
 # (ver docker/README.md)

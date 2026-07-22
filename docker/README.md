@@ -71,3 +71,8 @@ docker compose down -v      # para e APAGA os dados do banco (volume pgdata)
   código da app. **TLS/HTTPS é obrigatório em qualquer deploy real** (aqui, em
   `localhost`, usamos HTTP).
 - Toda configuração sensível passa pela revisão do **Segurança Lead**.
+- **Seeds (`../seeds/*.json`) são dados de exemplo/dev**, não conteúdo real do
+  dicionário. Este compose **não** carrega seeds automaticamente. Quando um
+  script de carga for implementado (backend), ele deve recusar-se a rodar se
+  `NODE_ENV=production` (ver `seeds/README.md`). Nunca rodar carga de seed
+  contra um alvo de deploy real (D6).

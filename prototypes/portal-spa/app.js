@@ -514,11 +514,11 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         "nb-2": {
             title: "Projeto Jeep Commander",
-            content: "O Jeep Commander emprega a arquitetura eletrônica global Small Wide e incorpora sistemas avançados de assistência ao motorista (ADAS) nível 2. Principais componentes e fornecedores:\n- Radar frontal e câmera no para-brisa integrados fornecidos pela Aptiv e Bosch.\n- Controle de Cruzeiro Adaptativo (ACC) com função Stop & Go para tráfego pesado.\n- Frenagem Autônoma de Emergência (AEB) com detecção ativa de ciclistas e pedestres.\n- Assistente de Permanência e Centralização em Faixa (LKA/LFA) com correções de torque ativo na coluna de direção assistida eletricamente.\n- Central multimídia Uconnect de 10.1 polegadas baseada no sistema Android Automotive (IVI) com processador Harman."
+            content: "O Jeep Commander emprega a arquitetura eletrônica global Small Wide e incorpora sistemas avançados de assistência ao motorista (ADAS) nível 2. Principais componentes e fornecedores:\n- Radar frontal e câmera no para-brisa integrados fornecidos por fornecedores fictícios de exemplo (Alfa Eletrônica e Beta Sistemas Automotivos).\n- Controle de Cruzeiro Adaptativo (ACC) com função Stop & Go para tráfego pesado.\n- Frenagem Autônoma de Emergência (AEB) com detecção ativa de ciclistas e pedestres.\n- Assistente de Permanência e Centralização em Faixa (LKA/LFA) com correções de torque ativo na coluna de direção assistida eletricamente.\n- Central multimídia Uconnect de 10.1 polegadas baseada no sistema Android Automotive (IVI) com processador de um fornecedor fictício de exemplo (Gama Áudio)."
         },
         "nb-3": {
             title: "Diagnóstico ADAS Nível 2",
-            content: "Procedimentos de calibração e teste dinâmico para ADAS Nível 2 no Jeep Commander:\n- Calibração estática do Radar Frontal (Bosch LRR4): exige posicionamento do espelho refletor metálico a exatamente 1.5 metros do centro do para-choque, alinhamento a laser no eixo geométrico de empuxo e temperatura controlada na oficina.\n- Calibração estática da Câmera Multifunção (Aptiv MFC): exige painel de alvos contrastantes (tabuleiro xadrez oficial Stellantis) iluminado homogeneamente a 2.1 metros do para-brisa.\n- Teste de validação dinâmico em pista de testes a velocidades acima de 40 km/h para detecção ativa de faixas de tráfego, leitura de placas e teste dinâmico de frenagem ativa."
+            content: "Procedimentos de calibração e teste dinâmico para ADAS Nível 2 no Jeep Commander:\n- Calibração estática do Radar Frontal (Beta Sistemas Automotivos (fictício) LRR4): exige posicionamento do espelho refletor metálico a exatamente 1.5 metros do centro do para-choque, alinhamento a laser no eixo geométrico de empuxo e temperatura controlada na oficina.\n- Calibração estática da Câmera Multifunção (Alfa Eletrônica (fictício) MFC): exige painel de alvos contrastantes (tabuleiro xadrez oficial Stellantis) iluminado homogeneamente a 2.1 metros do para-brisa.\n- Teste de validação dinâmico em pista de testes a velocidades acima de 40 km/h para detecção ativa de faixas de tráfego, leitura de placas e teste dinâmico de frenagem ativa."
         }
     };
 
@@ -668,7 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 let loadResponse = `Carregando discussões anteriores do StellantisGPT sobre **${title}**...`;
                 if (title.includes('ADAS')) {
-                    loadResponse += "\n\nAs diretrizes de segurança do sistema ADAS Stellantis exigem auditorias de software Tier-1 da Aptiv trimestralmente.";
+                    loadResponse += "\n\nAs diretrizes de segurança do sistema ADAS Stellantis exigem auditorias de software Tier-1 da Alfa Eletrônica (fictício) trimestralmente.";
                 } else if (title.includes('Motores') || title.includes('Turbo')) {
                     loadResponse += "\n\nO cabeçote MultiAir III regula a abertura das válvulas de admissão de forma eletro-hidráulica em tempo real, maximizando o rendimento do motor T270 Turbo Flex.";
                 } else {
@@ -904,7 +904,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     reply = `Aqui está uma síntese dos pontos-chave presentes na sua nota:\n\n1. **Foco Principal**: ${notebookNoteTitle.value}\n2. **Tamanho das Notas**: Contém ${noteContent.split(' ').length} palavras.\n3. **Conteúdo**: Analisando os conceitos, o texto descreve componentes técnicos, processos e parâmetros operacionais.`;
                 } else if (q.includes('componente') || q.includes('peça') || q.includes('tecnologia')) {
                     if (noteContent.toLowerCase().includes('adas') || noteContent.toLowerCase().includes('commander')) {
-                        reply = "Com base nas suas anotações, as principais tecnologias e componentes citados para o Jeep Commander são: câmera de para-brisa, radar frontal da Bosch/Aptiv, ACC (Controle de Cruzeiro Adaptativo), AEB (Frenagem Autônoma de Emergência) e central Uconnect de 10.1\".";
+                        reply = "Com base nas suas anotações, as principais tecnologias e componentes citados para o Jeep Commander são: câmera de para-brisa, radar frontal da Beta Sistemas Automotivos (fictício)/Alfa Eletrônica (fictício), ACC (Controle de Cruzeiro Adaptativo), AEB (Frenagem Autônoma de Emergência) e central Uconnect de 10.1\".";
                     } else if (noteContent.toLowerCase().includes('hybrid')) {
                         reply = "Com base nas suas anotações, a plataforma Bio-Hybrid descreve três tecnologias principais: MHEV (Híbrido leve com gerador elétrico e baterias de 12V/48V), HEV (Híbrido convencional com motor no câmbio e-DCT) e PHEV (Híbrido plug-in recarregável com motor flex T270 dianteiro e motor elétrico traseiro).";
                     } else {
@@ -912,7 +912,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else if (q.includes('calibração') || q.includes('procedimento') || q.includes('teste')) {
                     if (noteContent.toLowerCase().includes('calibração') || noteContent.toLowerCase().includes('radar')) {
-                        reply = "De acordo com suas notas de calibração, o Radar Frontal (Bosch LRR4) requer um espelho refletor posicionado a 1.5 metros do centro e alinhamento geométrico. Já a câmera (Aptiv MFC) requer um tabuleiro xadrez a 2.1 metros do para-brisa.";
+                        reply = "De acordo com suas notas de calibração, o Radar Frontal (Beta Sistemas Automotivos (fictício) LRR4) requer um espelho refletor posicionado a 1.5 metros do centro e alinhamento geométrico. Já a câmera (Alfa Eletrônica (fictício) MFC) requer um tabuleiro xadrez a 2.1 metros do para-brisa.";
                     } else {
                         reply = "As calibrações e testes descritos no seu texto exigem padrões rígidos de controle, ferramentas especializadas Stellantis e condições controladas de oficina ou pista.";
                     }
@@ -2079,9 +2079,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 9. LÓGICA DO MODAL DE DETALHES DE VERSÕES DE PROJETOS
     // ========================================================
     const projectDetailsData = {
-        J3U: {
+        DEMO1: {
             title: "Gama de Modelos Jeep Compass",
-            subtitle: "Projeto J3U - SUV Médio Líder de Vendas",
+            subtitle: "Projeto DEMO1 - SUV Médio Líder de Vendas",
             versions: [
                 {
                     name: "Compass Sport T270",
@@ -2133,9 +2133,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             ]
         },
-        T90: {
+        DEMO2: {
             title: "Gama de Modelos Ram Rampage",
-            subtitle: "Projeto T90 - Picape Intermediária Premium",
+            subtitle: "Projeto DEMO2 - Picape Intermediária Premium",
             versions: [
                 {
                     name: "Rampage Rebel",
@@ -2163,9 +2163,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             ]
         },
-        J4U: {
+        DEMO3: {
             title: "Gama de Modelos Jeep Commander",
-            subtitle: "Projeto J4U - D-SUV de 7 Lugares Premium",
+            subtitle: "Projeto DEMO3 - D-SUV de 7 Lugares Premium",
             versions: [
                 {
                     name: "Commander Longitude T270",
@@ -2188,8 +2188,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     engine: "T270 Flex, TD380 Diesel ou Hurricane 4 Gasolina (272 cv)",
                     transmission: "Automático 6 marchas (Flex) ou 9 marchas (Diesel/Gasolina)",
                     traction: "4x2 (Flex) ou 4x4 (Diesel/Gasolina)",
-                    description: "O máximo do luxo da marca. Teto solar panorâmico, som Harman Kardon de altíssima fidelidade, interior marrom cooper e acabamentos sofisticados.",
-                    highlights: ["Som Harman Kardon", "Teto Solar Panorâmico", "Couro Cooper Premium"]
+                    description: "O máximo do luxo da marca. Teto solar panorâmico, som Gama Áudio (fictício) de altíssima fidelidade, interior marrom cooper e acabamentos sofisticados.",
+                    highlights: ["Som Gama Áudio (fictício)", "Teto Solar Panorâmico", "Couro Cooper Premium"]
                 },
                 {
                     name: "Commander Blackhawk Hurricane 4",
@@ -2309,7 +2309,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Arrays globais de filtros ativos (sincronizados com o estado inicial dos checkboxes no index.html)
     window.activeCategories = ['audio-tela', 'conectividade-auxilio'];
-    window.activeSuppliers = ['aptiv', 'marelli', 'harman', 'bosch'];
+    window.activeSuppliers = ['alfa', 'delta', 'gama', 'beta'];
 
     function toggleFilterDropdown(btn, menu) {
         if (!menu) return;
@@ -2544,7 +2544,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         location: "sa",
                                         avatar: "SS",
                                         reports: [
-                                            { id: "luiza_c", name: "Luiza CAMPOS", role: "SSTL J3U (Compass)", level: "N-6", location: "sa", avatar: "LC", reports: [] },
+                                            { id: "luiza_c", name: "Luiza CAMPOS", role: "SSTL DEMO1 (Compass)", level: "N-6", location: "sa", avatar: "LC", reports: [] },
                                             { id: "cecilia_e", name: "Cecilia EMANUELY", role: "SSTL 521 / J1U", level: "N-6", location: "sa", avatar: "CE", reports: [] },
                                             { id: "ronan_b", name: "Ronan BALBINO", role: "SSTL 551 / 598 / J4L", level: "N-6", location: "sa", avatar: "RB", reports: [] },
                                             { id: "lucas_m", name: "Lucas MARCATO", role: "SSTL 226 / 291 / F3P", level: "N-6", location: "sa", avatar: "LM", reports: [] },
@@ -3544,7 +3544,7 @@ document.addEventListener('DOMContentLoaded', () => {
             owner: "Breno Teixeira",
             ownerDept: "SA Project Execution",
             status: "Beta / Em Validação",
-            link: "https://testgen.betim.stellantis.com"
+            link: "https://testgen.betim.exemplo.interno"
         },
         cananalyzer: {
             title: "CAN-Analyzer AI",
@@ -3553,7 +3553,7 @@ document.addEventListener('DOMContentLoaded', () => {
             owner: "Dr. Enzo Nogueira",
             ownerDept: "Bio-Hybrid Flex",
             status: "Homologado / Em Operação",
-            link: "https://can-analyzer.stellantis.com"
+            link: "https://can-analyzer.exemplo.interno"
         },
         poweroptai: {
             title: "PowerOpt-AI",
@@ -3727,9 +3727,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-main);">Acesse rapidamente os portais e sistemas corporativos mais utilizados na engenharia e no RH da Stellantis:</p>
             `,
             links: [
-                { text: "People Portal (Portal do Colaborador & Benefícios)", url: "https://people.stellantis.com" },
-                { text: "Service Desk TI (Abertura de chamados e suporte)", url: "https://servicedesk.stellantis.com" },
-                { text: "GitLab Engenharia (Repositórios de Software de Infotainment)", url: "https://gitlab.stellantis.com" }
+                { text: "People Portal (Portal do Colaborador & Benefícios)", url: "https://people.exemplo.interno" },
+                { text: "Service Desk TI (Abertura de chamados e suporte)", url: "https://servicedesk.exemplo.interno" },
+                { text: "GitLab Engenharia (Repositórios de Software de Infotainment)", url: "https://gitlab.exemplo.interno" }
             ]
         },
         {
@@ -4040,7 +4040,7 @@ document.addEventListener('DOMContentLoaded', () => {
             borderColor: "rgba(6, 182, 212, 0.2)",
             desc: "Plataforma global de capacitação que oferece cursos sobre metodologia WCM, engenharia e qualidade.",
             content: "A Stellantis Academy é a universidade corporativa global do grupo. Nela, você terá acesso a centenas de cursos técnicos e de liderança, incluindo trilhas focadas em engenharia de produto, qualidade de software, calibração mecânica e gerenciamento de projetos ágeis corporativos.",
-            url: "https://academy.stellantis.com"
+            url: "https://academy.exemplo.interno"
         },
         {
             id: 'chan-2',
@@ -4073,7 +4073,7 @@ document.addEventListener('DOMContentLoaded', () => {
             borderColor: "rgba(245, 158, 11, 0.2)",
             desc: "Repositório de APIs, especificações de gateways e barramentos para conectividade e apps.",
             content: "O portal de desenvolvedores centraliza as documentações técnicas de APIs, gateways telemáticos da Stellantis (ex: conectividade veicular via eSIM), protocolos de barramento de dados CAN/Ethernet e ambientes de simulação de hardware para testes automatizados.",
-            url: "https://developer.stellantis.com"
+            url: "https://developer.exemplo.interno"
         }
     ];
 
@@ -4294,7 +4294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================
     // 19. CORPO TÉCNICO DE ESPECIALISTAS (DINÂMICO)
     // ========================================================
-    // Deriva um e-mail corporativo fictício (primeiro.ultimo@stellantis.com)
+    // Deriva um e-mail corporativo fictício (primeiro.ultimo@exemplo.interno)
     // a partir do nome, removendo acentos e títulos (Dr., Engª, etc.).
     function deriveSpecialistEmail(name) {
         const titles = ['dr.', 'dr', 'dra.', 'dra', 'engª', 'eng.', 'eng', 'sr.', 'sr', 'sra.', 'sra'];
@@ -4304,11 +4304,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .trim()
             .split(/\s+/)
             .filter(p => p && !titles.includes(p.toLowerCase()));
-        if (parts.length === 0) return 'especialista@stellantis.com';
+        if (parts.length === 0) return 'especialista@exemplo.interno';
         const first = parts[0].toLowerCase();
         const last = parts[parts.length - 1].toLowerCase();
         const local = parts.length >= 2 ? `${first}.${last}` : first;
-        return `${local}@stellantis.com`;
+        return `${local}@exemplo.interno`;
     }
 
     // Garante um e-mail para o link do Teams, derivando do nome quando ausente.
@@ -4343,7 +4343,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: "cpu",
             avatarColor: "blue",
             initials: "EN",
-            email: "enzo.nogueira@stellantis.com",
+            email: "enzo.nogueira@exemplo.interno",
             bio: "Especialista em calibração de motores flex associados a motores de assistência leve de 48V."
         },
         {
@@ -4354,7 +4354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: "eye",
             avatarColor: "cian",
             initials: "AM",
-            email: "ana.martins@stellantis.com",
+            email: "ana.martins@exemplo.interno",
             bio: "Responsável pela calibração de frenagem de emergência autônoma e fusão de dados radar/câmera."
         },
         {
@@ -4365,7 +4365,7 @@ document.addEventListener('DOMContentLoaded', () => {
             icon: "battery-charging",
             avatarColor: "green",
             initials: "CS",
-            email: "carlos.silva@stellantis.com",
+            email: "carlos.silva@exemplo.interno",
             bio: "Arquiteto estrutural das plataformas BEV STLA Medium e Large para o mercado latino-americano."
         }
     ];
@@ -4554,7 +4554,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'info-1',
             title: "Central Uconnect Touch 10.1\"",
             category: "audio-tela",
-            supplier: "aptiv",
+            supplier: "alfa",
             desc: "Tela de alta definição de 10.1 polegadas com personalização em estilo widget, espelhamento sem fio de celular e múltiplos perfis de usuário.",
             applied: "Compass, Commander, Rampage",
             imageUrl: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=600"
@@ -4563,16 +4563,16 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'info-2',
             title: "Full Digital Cluster 10.25\"",
             category: "audio-tela",
-            supplier: "marelli",
+            supplier: "delta",
             desc: "Painel de instrumentos de alta resolução com visualização configurável em 3D, integração de mapa de navegação nativo e leitura ADAS.",
             applied: "Compass, Commander, Rampage",
             imageUrl: "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600"
         },
         {
             id: 'info-3',
-            title: "Som Premium Harman Kardon",
+            title: "Som Premium Gama Áudio (fictício)",
             category: "audio-tela",
-            supplier: "harman",
+            supplier: "gama",
             desc: "Sistema de som premium de 9 alto-falantes com Subwoofer e amplificador de 360 Watts com tecnologia de áudio surround virtualizado.",
             applied: "Rampage, Commander",
             imageUrl: "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=600"
@@ -4581,7 +4581,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'info-4',
             title: "Adventure Intelligence",
             category: "conectividade-auxilio",
-            supplier: "aptiv",
+            supplier: "alfa",
             desc: "Plataforma conectada que possibilita controle remoto de portas, localização, alertas rápidos de pânico automáticos e Wi-Fi nativo a bordo.",
             applied: "Pulse, Fastback, Compass, Commander",
             imageUrl: "https://images.unsplash.com/photo-1563720223185-11003d516935?w=600"
@@ -4590,7 +4590,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'info-5',
             title: "Wireless Charger com Refrigeração",
             category: "conectividade-auxilio",
-            supplier: "marelli",
+            supplier: "delta",
             desc: "Carregador de celular sem fio com sistema de refrigeração de ar ativo para evitar o superaquecimento do smartphone durante a indução.",
             applied: "Rampage, Compass, Commander",
             imageUrl: "https://images.unsplash.com/photo-1584438784894-089d6a128f3e?w=600"
@@ -4599,7 +4599,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'info-6',
             title: "Câmeras Multivisão 360°",
             category: "conectividade-auxilio",
-            supplier: "bosch",
+            supplier: "beta",
             desc: "Fusão de imagem de quatro câmeras externas simulando uma visão aérea tridimensional para manobras seguras e detecção de obstáculos próximos.",
             applied: "Commander, Rampage (Overland/RT)",
             imageUrl: "https://images.unsplash.com/photo-1508974239320-0a029497e820?w=600"
@@ -4621,31 +4621,36 @@ document.addEventListener('DOMContentLoaded', () => {
         { value: 'audio-tela', label: 'Telas & Áudio' },
         { value: 'conectividade-auxilio', label: 'Conectividade & Auxílio' }
     ];
+    // Fornecedores Tier-1/Tier-2 — NOMES FICTÍCIOS por decisão de segurança
+    // (S9/R5, doc 24 §3 / doc 25 §8): nunca versionar/publicar identidade real
+    // de parceiros nem alegações de parceria real com a Stellantis neste
+    // protótipo público. Alinhado a `seeds/suppliers.json` (alfa/beta/gama);
+    // delta/epsilon/zeta/eta/theta são exclusivos deste mock de exemplo.
     const defaultComponentSuppliers = [
-        { value: 'aptiv', label: 'Aptiv', area: 'Conectividade & Elétrica', desc: 'Arquiteturas elétricas, conectividade e software para veículos definidos por software.',
-          history: 'A Aptiv surgiu em 2017 a partir da divisão da Delphi e tem sede na Irlanda. Atua globalmente em arquiteturas elétricas, sensores e software para veículos definidos por software.',
-          partnership: 'Fornece soluções de conectividade e arquitetura elétrica para diversas montadoras, incluindo marcas do grupo Stellantis.' },
-        { value: 'marelli', label: 'Magneti Marelli', area: 'Eletrônica & Iluminação', desc: 'Eletrônica veicular, sistemas de iluminação, painéis e módulos de infotainment.',
-          history: 'A Magneti Marelli foi fundada em 1919 na Itália e, após a fusão com a Calsonic Kansei em 2019, tornou-se parte da Marelli. É reconhecida por iluminação e eletrônica automotiva.',
-          partnership: 'Fornece módulos de iluminação, painéis e eletrônica para várias montadoras, incluindo marcas do grupo Stellantis.' },
-        { value: 'harman', label: 'Harman Kardon', area: 'Áudio & Infotainment', desc: 'Sistemas de áudio premium, infotainment e conectividade embarcada.',
-          history: 'A Harman, fundada nos Estados Unidos em 1980 e hoje subsidiária da Samsung, é referência em áudio premium e sistemas de infotainment conectados.',
-          partnership: 'Fornece sistemas de áudio e infotainment para múltiplas montadoras, incluindo marcas do grupo Stellantis.' },
-        { value: 'bosch', label: 'Bosch', area: 'Freios & Sensores', desc: 'Sistemas de freios, powertrain, sensores e eletrônica automotiva.',
-          history: 'A Bosch, fundada em 1886 na Alemanha, é uma das maiores fornecedoras de tecnologia automotiva do mundo, atuando em freios, sensores e powertrain.',
-          partnership: 'Fornece sistemas de freios, sensores e eletrônica para diversas montadoras, incluindo marcas do grupo Stellantis.' },
-        { value: 'continental', label: 'Continental', area: 'ADAS & Chassi', desc: 'Pneus, sistemas de freios, ADAS e soluções de conectividade e display.',
-          history: 'A Continental foi fundada em 1871 na Alemanha. Além de pneus, desenvolve sistemas de freios, ADAS e soluções de conectividade e display.',
-          partnership: 'Fornece componentes de chassi, ADAS e display para várias montadoras, incluindo marcas do grupo Stellantis.' },
-        { value: 'zf', label: 'ZF Friedrichshafen', area: 'Powertrain & Chassi', desc: 'Transmissões, sistemas de chassi, direção e tecnologias de segurança.',
-          history: 'A ZF Friedrichshafen foi fundada em 1915 na Alemanha e é uma das líderes globais em transmissões, sistemas de chassi e tecnologias de segurança.',
-          partnership: 'Fornece transmissões e sistemas de chassi para diversas montadoras, incluindo marcas do grupo Stellantis.' },
-        { value: 'valeo', label: 'Valeo', area: 'Térmico & ADAS', desc: 'Sistemas térmicos, iluminação, ADAS e eletrificação de powertrain.',
-          history: 'A Valeo, fundada em 1923 na França, é especializada em sistemas térmicos, iluminação, ADAS e eletrificação de powertrain.',
-          partnership: 'Fornece sistemas térmicos, iluminação e ADAS para várias montadoras, incluindo marcas do grupo Stellantis.' },
-        { value: 'forvia', label: 'Forvia (Faurecia)', area: 'Interiores & Cockpit', desc: 'Interiores, assentos, sistemas de escape e eletrônica de cockpit.',
-          history: 'A Forvia nasceu em 2022 da união entre a Faurecia (fundada em 1997, França) e a HELLA, atuando em interiores, assentos e eletrônica de cockpit.',
-          partnership: 'Fornece interiores, assentos e soluções de cockpit para diversas montadoras, incluindo marcas do grupo Stellantis.' }
+        { value: 'alfa', label: 'Alfa Eletrônica (fictício)', area: 'Conectividade & Elétrica', desc: 'Arquiteturas elétricas, conectividade e software para veículos definidos por software (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de conectividade e arquitetura elétrica, sem relação com empresas reais.' },
+        { value: 'delta', label: 'Delta Iluminação e Eletrônica (fictício)', area: 'Eletrônica & Iluminação', desc: 'Eletrônica veicular, sistemas de iluminação, painéis e módulos de infotainment (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de iluminação e eletrônica, sem relação com empresas reais.' },
+        { value: 'gama', label: 'Gama Áudio (fictício)', area: 'Áudio & Infotainment', desc: 'Sistemas de áudio premium, infotainment e conectividade embarcada (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de áudio e infotainment, sem relação com empresas reais.' },
+        { value: 'beta', label: 'Beta Sistemas Automotivos (fictício)', area: 'Freios & Sensores', desc: 'Sistemas de freios, powertrain, sensores e eletrônica automotiva (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de freios e sensores, sem relação com empresas reais.' },
+        { value: 'epsilon', label: 'Épsilon Chassi & ADAS (fictício)', area: 'ADAS & Chassi', desc: 'Sistemas de freios, ADAS e soluções de conectividade e display (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de chassi e ADAS, sem relação com empresas reais.' },
+        { value: 'zeta', label: 'Zeta Transmissões (fictício)', area: 'Powertrain & Chassi', desc: 'Transmissões, sistemas de chassi, direção e tecnologias de segurança (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de transmissões e chassi, sem relação com empresas reais.' },
+        { value: 'eta', label: 'Eta Térmica (fictício)', area: 'Térmico & ADAS', desc: 'Sistemas térmicos, iluminação, ADAS e eletrificação de powertrain (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de sistemas térmicos, sem relação com empresas reais.' },
+        { value: 'theta', label: 'Theta Interiores (fictício)', area: 'Interiores & Cockpit', desc: 'Interiores, assentos, sistemas de escape e eletrônica de cockpit (fornecedor fictício de exemplo).',
+          history: 'Fornecedor fictício de exemplo, usado apenas para demonstrar o módulo de Componentes de Infotainment do protótipo.',
+          partnership: 'Dado fictício de exemplo: representa um fornecedor genérico de interiores e cockpit, sem relação com empresas reais.' }
     ];
 
     function slugifyComponentTaxonomy(str) {
@@ -5557,7 +5562,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const defaultProjects = [
         {
             id: 'proj-1',
-            code: 'J3U',
+            code: 'DEMO1',
             name: "Jeep Compass 2026/2027",
             desc: "SUV líder de categoria, agora com propulsão híbrida flex Bio-Hybrid integrada.",
             platform: "Small Wide LWB",
@@ -5567,7 +5572,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 'proj-2',
-            code: 'T90',
+            code: 'DEMO2',
             name: "Ram Rampage 2026",
             desc: "Picape intermediária premium projetada e desenvolvida no Brasil.",
             platform: "Small Wide LWB",
@@ -5577,7 +5582,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 'proj-3',
-            code: 'J4U',
+            code: 'DEMO3',
             name: "Jeep Commander 2026",
             desc: "D-SUV de 7 lugares desenvolvido sob a arquitetura alongada LWB.",
             platform: "Small Wide LWB",

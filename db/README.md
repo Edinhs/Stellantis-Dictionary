@@ -21,3 +21,13 @@ ficam fora do MVP (doc `03` D20; nota em doc `25` §3.1). Detalhe de decisões d
 modelagem em comentário na própria migração (ex.: por que `terms.category` é
 `CHECK` fixo, por que `document_chunks` é polimórfico, por que `projects`
 mantém `platform`/`motorization` nulos).
+
+## Dados de seed vs. dados reais
+
+Migrações (`db/migrations/`) só criam **schema** (DDL) — nenhuma delas insere
+dado de exemplo/fictício. Dados de exemplo ficam isolados em `../seeds/*.json`
+e **não são aplicados** por nenhuma migração nem pelo `docker compose up`
+padrão. Isso é intencional: qualquer banco criado a partir das migrações nasce
+com as tabelas **vazias**, pronto para receber os dados reais do dicionário
+quando o CEO os enviar. Ver `seeds/README.md` para a regra de ambiente (seed
+só roda em dev/CI, nunca em produção).

@@ -25,8 +25,11 @@ Status: **rascunho**.
   **DESBLOQUEADO (CEO, 2026-07-19):** o achado CRÍTICO 2.1(1)/R1/R2 dependia da
   natureza dos dados do organograma; o CEO confirmou que **são fictícios**, o que
   remove a base do bloqueio (não há PII real a expor). O protótipo já foi publicado
-  via GitHub Pages. R4/R5 (domínios/códigos genéricos) seguem como melhoria
-  recomendada, não bloqueante.
+  via GitHub Pages. R4/R5 (domínios/códigos/fornecedores genéricos) foram
+  **implementados em 2026-07-22** (pedido do CEO de remover dados de teste/fake
+  do site antes da carga de dados reais) — ver §3. R3 (histórico git) segue
+  aberto: os valores reais anteriores permanecem em commits antigos; reescrita
+  de histórico é destrutiva e depende de decisão explícita do CEO/DevOps.
 - **Migração para o produto real**: depende da implementação de **autenticação,
   RBAC e moderação** — respectivamente RF-062, RF-063 e RF-064 (doc `21`). Sem
   esses controles, os fluxos de cocriação não podem ir a um ambiente multiusuário.
@@ -99,9 +102,9 @@ Status: **rascunho**.
 |---|---|---|---|---|
 | R1 | ~~Anonimizar o organograma~~ — **CEO confirmou (2026-07-19) que os ~205 nomes já são fictícios/demonstração.** Manter fictício ao popular a Etapa 9. | ~~CRÍTICO~~ RESOLVIDO | Doc Lead / Eng | Não (já atendido) |
 | R2 | ~~Obter decisão do CEO sobre dados reais vs. fictícios~~ — **RESOLVIDA:** fictícios. | ~~CRÍTICO~~ RESOLVIDO | Agente Geral → CEO | Não (já atendido) |
-| R3 | Se houver publicação externa, **limpar o histórico git** (dados já commitados) | ALTO | DevOps | **Sim** (só se publicar) |
-| R4 | Substituir domínios internos por **placeholders** (`exemplo.interno`) | ALTO | Doc Lead / Eng | **Sim** |
-| R5 | **Generalizar** códigos de projeto e fornecedores Tier-1 nos mocks | ALTO | Eng | **Sim** |
+| R3 | Se houver publicação externa, **limpar o histórico git** (dados já commitados) | ALTO | DevOps | **Sim** (só se publicar) — **AINDA ABERTO**: o conteúdo real (fornecedores/domínios/códigos) permanece em commits antigos até uma reescrita de histórico ser decidida com o CEO/DevOps. |
+| R4 | ~~Substituir domínios internos por placeholders~~ — **RESOLVIDO (2026-07-22):** todos os hosts `*.stellantis.com` em `prototypes/portal-spa/app.js`/`index.html` (incl. e-mails de especialistas fictícios) trocados por `*.exemplo.interno`, a pedido do CEO (limpeza de dados de teste/fake antes do deploy real). | ~~ALTO~~ RESOLVIDO | Eng Lead | Não (já atendido) |
+| R5 | ~~Generalizar códigos de projeto e fornecedores Tier-1 nos mocks~~ — **RESOLVIDO (2026-07-22):** fornecedores reais (Aptiv/Bosch/Magneti Marelli/Harman Kardon/Continental/ZF/Valeo/Forvia) substituídos por 8 fornecedores fictícios (`alfa`/`beta`/`gama`/`delta`/`epsilon`/`zeta`/`eta`/`theta`, rótulo "(fictício)"), sem alegação de parceria real com a Stellantis; códigos internos de projeto `J3U`/`T90`/`J4U` trocados por `DEMO1`/`DEMO2`/`DEMO3`. | ~~ALTO~~ RESOLVIDO | Eng Lead | Não (já atendido) |
 | R6 | Criar `assets/CREDITS.md` com proveniência/licença de logos e imagens | MÉDIO | Doc Lead | Não |
 | R7 | Requisitos de segurança na migração: **escape de saída + CSP + sanitização** | MÉDIO | Frontend / Eng | Não |
 | R8 | Validação de MIME/tamanho de upload **no backend** | BAIXO | Backend | Não |

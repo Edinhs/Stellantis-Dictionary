@@ -57,7 +57,7 @@ O protótipo é estruturado no modelo de **Single Page Application (SPA)** local
 *   **Projetos da Marca**: Grid de projetos veiculares contendo códigos internos (ex: *J3U*), status de produção (Conceito, Homologação, Produção), ficha técnica e persistência de novos cadastros comunitários.
 *   **Componentes de Infotainment**:
     *   Grid de peças contendo nome, descrição técnica e imagem do componente em alta resolução.
-    *   **Filtro Cruzado Múltiplo via Dropdowns**: Seleção múltipla por Categoria do Módulo e Fornecedor Tier-1 (*Aptiv*, *Bosch*, *Harman*, *Marelli*) com checkboxes dinâmicos.
+    *   **Filtro Cruzado Múltiplo via Dropdowns**: Seleção múltipla por Categoria do Módulo e Fornecedor Tier-1 (fornecedores fictícios de exemplo — ver `app.js`) com checkboxes dinâmicos.
     *   CRUD completo com URL da imagem para cadastro de novos componentes veiculares.
 *   **Árvore Organizacional Drill-down (Liderança)**:
     *   Visualização gráfica interativa da estrutura de líderes em formato hierárquico com breadcrumbs funcionais.

@@ -30,3 +30,26 @@ entram por carga operacional fora do controle de versão, nunca como seed.
 Sem dados pessoais reais até a estratégia de hospedagem/segurança estar
 definida (SPEC `08` §6) — e, para organograma/especialistas, até o MVP incluir
 esse módulo (fora de escopo em D20).
+
+## Regra de ambiente para carga de seeds (pedido do CEO, 2026-07-22)
+
+Estes arquivos são **dados de exemplo/desenvolvimento**, não conteúdo real do
+dicionário. Antes do deploy com dados reais, valem as regras abaixo:
+
+- **Nunca** rodar carga automática de `seeds/*.json` em `NODE_ENV=production`
+  nem em qualquer alvo de deploy real (D6). Qualquer script/loader de seed que
+  vier a ser implementado (backend ainda não tem um — Etapa 9 só criou os
+  arquivos) **deve** recusar-se a rodar se `NODE_ENV=production`, com um guard
+  explícito no início do script (ex.: `if (process.env.NODE_ENV === "production") { throw ... }`)
+  — nunca depender só de o operador "lembrar" de não rodar.
+- Carga de seeds só é apropriada em **dev local** (`docker compose up`, banco
+  vazio) e em **CI/testes** (`vitest`/pipeline), nunca contra o banco de
+  produção/piloto.
+- Quando os **dados reais do dicionário** chegarem (o CEO vai enviar), eles
+  entram por **carga operacional** (migração/endpoint administrativo com
+  auditoria), não como edição destes arquivos de seed nem como novo commit em
+  `seeds/`. Os arquivos aqui continuam existindo só para dev/teste.
+- Até lá, as tabelas do MVP devem subir **vazias** em qualquer ambiente que não
+  seja dev/teste — telas do produto real devem tratar "sem conteúdo ainda"
+  como estado normal (empty state), não usar estes dados de exemplo como
+  fallback visível ao usuário final.
