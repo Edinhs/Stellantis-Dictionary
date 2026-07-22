@@ -1,4 +1,29 @@
 {
-  "_comment": "placeholder — hotspots do Explorador 3D → term_slug (SPEC 02 §3.5).",
-  "hotspots": []
+  "_comment": "Hotspots do Explorador 3D → term_slug (SPEC 02 §3.5). Coordenadas de exemplo (não calibradas contra o .glb definitivo — o frontend/3D-engineer ajusta na integração real); term_slug validado contra terms.slug na carga.",
+  "hotspots": [
+    {
+      "model_id": "default",
+      "label": "Head-Up Display",
+      "term_slug": "hud-generico",
+      "position_x": 0.0,
+      "position_y": 1.1,
+      "position_z": 0.4
+    },
+    {
+      "model_id": "default",
+      "label": "Central multimídia",
+      "term_slug": "central-multimidia-generica",
+      "position_x": 0.0,
+      "position_y": 0.9,
+      "position_z": 0.35
+    },
+    {
+      "model_id": "default",
+      "label": "Sensores ADAS",
+      "term_slug": "adas-generico",
+      "position_x": 0.0,
+      "position_y": 1.0,
+      "position_z": 1.8
+    }
+  ]
 }

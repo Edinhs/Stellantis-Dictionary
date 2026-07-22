@@ -78,6 +78,20 @@ mantida: só o `index.ts` é importável de fora (doc `13` §3.1/§7).
 | Automações & IA | **`automations`** (novo) | Vitrine de conteúdo; atalho "perguntar ao chat" reusa `rag`. Cocriação → `contributions`. | RF-046, RF-046b | `automations` (`slug`, `links jsonb`) |
 | Notebook de Engenharia (nota + IA assistiva) | **`notebook`** (novo) | Conteúdo **privado por usuário**. Ações "Resumir/Melhorar/Extrair Siglas" chamam o LLM **via port `LlmProvider`** do `rag` (§7), nunca um provedor direto. | RF-030..RF-034 | `notebooks` (dono `user_id`) |
 
+> **Nota (Etapa 9 — Banco de Dados, backend-engineer):** o schema real do
+> escopo do MVP (D20 — núcleo + Componentes + Projetos) foi criado em
+> `db/migrations/0001..0007-*.sql`. `components` ganhou `component_categories`
+> e `suppliers` como lookups próprios (em vez de `supplier_tier1` texto livre),
+> para suportar cocriação de categoria/fornecedor sem migração (doc `29`). A
+> ligação a `component_specialists`/`directory` citada acima **não** foi
+> criada agora — pessoas/organograma ficam fora do MVP (S6, doc `24`/`25` §8).
+> `projects` manteve `platform`/`motorization` como colunas nuláveis (dado
+> preservado, não exibido — decisão do CEO, doc `29`); ver comentário na
+> migração `0007-projects.sql`. Demais linhas da tabela (`training`,
+> `resources`, `gamification`, `automations`, `notebook`, `directory`
+> estendido) seguem **fora desta etapa** (fora do MVP D20) e não têm tabelas
+> criadas ainda.
+
 ### 3.2 Notas de coesão e fronteira
 
 - **Flashcards 3D são frontend, não `threed`.** O flip é CSS 3D (doc `20` §3), sem

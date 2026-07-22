@@ -1,0 +1,9 @@
+{
+  "_comment": "Categorias de Componentes de Infotainment (RF-042). Lookup editável por cocriação (coordinator/admin), sem migração.",
+  "component_categories": [
+    { "slug": "display-e-cluster", "name": "Display e Cluster" },
+    { "slug": "conectividade", "name": "Conectividade" },
+    { "slug": "audio", "name": "Áudio" },
+    { "slug": "assistencia-ao-motorista", "name": "Assistência ao Motorista" }
+  ]
+}

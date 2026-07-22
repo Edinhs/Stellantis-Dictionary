@@ -1,0 +1,35 @@
+{
+  "_comment": "Fornecedores Tier-1/Tier-2 de exemplo. NOMES FICTÍCIOS por decisão de segurança (S9, doc 24/25 §8) — o protótipo cita fornecedores reais (Aptiv, Bosch, Harman, Marelli); este seed generaliza para não versionar/publicar identidades de parceiros reais.",
+  "suppliers": [
+    {
+      "slug": "fornecedor-alfa-eletronica",
+      "name": "Alfa Eletrônica (fictício)",
+      "tier": "tier1",
+      "description": "Fornecedor fictício de módulos eletrônicos de infotainment, usado como exemplo de dado semente.",
+      "history": "Texto de exemplo para o modal 'História' — substituir por conteúdo real na carga operacional.",
+      "partnership": "Texto de exemplo para o modal 'Parceria' — substituir por conteúdo real na carga operacional.",
+      "image_url": null,
+      "website": null
+    },
+    {
+      "slug": "fornecedor-beta-sistemas",
+      "name": "Beta Sistemas Automotivos (fictício)",
+      "tier": "tier1",
+      "description": "Fornecedor fictício de sistemas de assistência ao motorista (ADAS).",
+      "history": "Texto de exemplo — substituir na carga operacional.",
+      "partnership": "Texto de exemplo — substituir na carga operacional.",
+      "image_url": null,
+      "website": null
+    },
+    {
+      "slug": "fornecedor-gama-audio",
+      "name": "Gama Áudio (fictício)",
+      "tier": "tier2",
+      "description": "Fornecedor fictício de sistemas de áudio automotivo.",
+      "history": "Texto de exemplo — substituir na carga operacional.",
+      "partnership": "Texto de exemplo — substituir na carga operacional.",
+      "image_url": null,
+      "website": null
+    }
+  ]
+}

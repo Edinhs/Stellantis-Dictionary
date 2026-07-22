@@ -1,0 +1,43 @@
+{
+  "_comment": "Projetos veiculares (RF-043). Códigos e nomes FICTÍCIOS por decisão de segurança (S9, doc 24/25 §8) — nunca usar códigos internos reais (ex.: os citados no doc 26 R10) em seed versionado/publicável. platform/motorization ficam preenchidos apenas como exemplo de dado (a UI atual não os exibe — decisão do CEO registrada em db/migrations/0007-projects.sql).",
+  "projects": [
+    {
+      "slug": "projeto-aurora",
+      "code": "PRJ-AURORA-01",
+      "name": "Projeto Aurora (fictício)",
+      "description": "SUV compacto de exemplo, projeto fictício para fins de seed.",
+      "status": "producao",
+      "platform": "Plataforma modular genérica (fictícia)",
+      "motorization": "Híbrida genérica (fictícia)",
+      "tech_sheet": { "segmento": "SUV compacto", "carroceria": "5 portas" },
+      "versions": [
+        { "version": "1.0", "release_date": "2024-01-01", "highlights": "Lançamento inicial (fictício)" },
+        { "version": "1.1", "release_date": "2025-01-01", "highlights": "Facelift (fictício)" }
+      ]
+    },
+    {
+      "slug": "projeto-borealis",
+      "code": "PRJ-BOREALIS-02",
+      "name": "Projeto Borealis (fictício)",
+      "description": "Picape média de exemplo, projeto fictício para fins de seed.",
+      "status": "homologacao",
+      "platform": "Plataforma modular genérica (fictícia)",
+      "motorization": "Combustão genérica (fictícia)",
+      "tech_sheet": { "segmento": "Picape média", "carroceria": "cabine dupla" },
+      "versions": [
+        { "version": "0.9-homologacao", "release_date": "2026-06-01", "highlights": "Protótipo de homologação (fictício)" }
+      ]
+    },
+    {
+      "slug": "projeto-cassiopeia",
+      "code": "PRJ-CASSIOPEIA-03",
+      "name": "Projeto Cassiopeia (fictício)",
+      "description": "Hatch compacto elétrico de exemplo, projeto fictício em fase de conceito.",
+      "status": "conceito",
+      "platform": null,
+      "motorization": "Elétrica genérica (fictícia)",
+      "tech_sheet": {},
+      "versions": []
+    }
+  ]
+}

@@ -1,4 +1,39 @@
 {
-  "_comment": "placeholder — matriz cargo→permissão (SPEC 09 §6.1 / SPEC 11 §2). Preencher na implementação de users/authz.",
-  "role_permissions": []
+  "_comment": "Matriz cargo→permissão (SPEC 09 §3/§6.1; doc 25 §5). Permissão = '<area>.<acao>'. Quem-pode-atribuir-qual-cargo (RN-04, ex.: coordinator nunca promove a admin) é regra de negócio no serviço de authz, não um recorte extra de permissão aqui.",
+  "role_permissions": [
+    { "role": "user", "permission": "dictionary.propose" },
+    { "role": "user", "permission": "project.propose" },
+    { "role": "user", "permission": "component.propose" },
+
+    { "role": "coordinator", "permission": "dictionary.propose" },
+    { "role": "coordinator", "permission": "dictionary.edit" },
+    { "role": "coordinator", "permission": "dictionary.approve" },
+    { "role": "coordinator", "permission": "dictionary.delete" },
+    { "role": "coordinator", "permission": "project.propose" },
+    { "role": "coordinator", "permission": "project.edit" },
+    { "role": "coordinator", "permission": "project.approve" },
+    { "role": "coordinator", "permission": "project.delete" },
+    { "role": "coordinator", "permission": "component.propose" },
+    { "role": "coordinator", "permission": "component.edit" },
+    { "role": "coordinator", "permission": "component.approve" },
+    { "role": "coordinator", "permission": "component.delete" },
+    { "role": "coordinator", "permission": "role.assign" },
+
+    { "role": "admin", "permission": "dictionary.propose" },
+    { "role": "admin", "permission": "dictionary.edit" },
+    { "role": "admin", "permission": "dictionary.approve" },
+    { "role": "admin", "permission": "dictionary.delete" },
+    { "role": "admin", "permission": "dictionary.delete.hard" },
+    { "role": "admin", "permission": "project.propose" },
+    { "role": "admin", "permission": "project.edit" },
+    { "role": "admin", "permission": "project.approve" },
+    { "role": "admin", "permission": "project.delete" },
+    { "role": "admin", "permission": "project.delete.hard" },
+    { "role": "admin", "permission": "component.propose" },
+    { "role": "admin", "permission": "component.edit" },
+    { "role": "admin", "permission": "component.approve" },
+    { "role": "admin", "permission": "component.delete" },
+    { "role": "admin", "permission": "component.delete.hard" },
+    { "role": "admin", "permission": "role.assign" }
+  ]
 }

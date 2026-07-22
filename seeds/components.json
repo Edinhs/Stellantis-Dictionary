@@ -1,0 +1,45 @@
+{
+  "_comment": "Componentes de Infotainment (RF-042). category_slug/supplier_slug resolvidos contra component_categories.json/suppliers.json na carga; term_slug validado contra terms.slug (mesmo padrão de seeds/diretorio.json).",
+  "components": [
+    {
+      "slug": "hud-projetado-exemplo",
+      "name": "HUD projetado — exemplo",
+      "description": "Combinador de informações projetadas no para-brisa, exemplo de componente ligado ao verbete de HUD.",
+      "image_url": null,
+      "category_slug": "display-e-cluster",
+      "supplier_slug": "fornecedor-alfa-eletronica",
+      "term_slug": "hud-generico",
+      "status": "published"
+    },
+    {
+      "slug": "central-multimidia-10pol-exemplo",
+      "name": "Central multimídia 10\" — exemplo",
+      "description": "Tela central de 10 polegadas com CarPlay/Android Auto, exemplo de componente.",
+      "image_url": null,
+      "category_slug": "conectividade",
+      "supplier_slug": "fornecedor-alfa-eletronica",
+      "term_slug": "central-multimidia-generica",
+      "status": "published"
+    },
+    {
+      "slug": "modulo-adas-frontal-exemplo",
+      "name": "Módulo ADAS frontal — exemplo",
+      "description": "Câmera + radar frontal para frenagem automática de emergência, exemplo de componente.",
+      "image_url": null,
+      "category_slug": "assistencia-ao-motorista",
+      "supplier_slug": "fornecedor-beta-sistemas",
+      "term_slug": "adas-generico",
+      "status": "published"
+    },
+    {
+      "slug": "sistema-audio-premium-exemplo",
+      "name": "Sistema de áudio premium — exemplo",
+      "description": "Conjunto de alto-falantes e amplificador premium, exemplo de componente.",
+      "image_url": null,
+      "category_slug": "audio",
+      "supplier_slug": "fornecedor-gama-audio",
+      "term_slug": null,
+      "status": "published"
+    }
+  ]
+}

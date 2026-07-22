@@ -1,0 +1,50 @@
+{
+  "_comment": "Sementes do dicionário (SPEC 02 §3.2/§4). Conteúdo de exemplo genérico/fictício — não reflete siglas ou processos internos reais de nenhum fornecedor/OEM (S9, doc 24/25 §8). Serve para exercitar categoria, busca textual, embeddings (RAG) e os elos por term_slug usados por cockpit_hotspots/components/projects.",
+  "terms": [
+    {
+      "slug": "hud-generico",
+      "term": "HUD (Head-Up Display) — exemplo genérico",
+      "definition": "Projeção de informações de condução (velocidade, navegação, alertas) na linha de visão do motorista, refletida no para-brisa ou em um combinador dedicado.",
+      "category": "componentes",
+      "synonyms": ["head-up display", "display frontal"],
+      "source_type": "manual",
+      "status": "published"
+    },
+    {
+      "slug": "central-multimidia-generica",
+      "term": "Central multimídia — exemplo genérico",
+      "definition": "Sistema de infotainment central do veículo, responsável por navegação, conectividade (Bluetooth/CarPlay/Android Auto) e configurações do carro.",
+      "category": "componentes",
+      "synonyms": ["infotainment central", "tela central"],
+      "source_type": "manual",
+      "status": "published"
+    },
+    {
+      "slug": "motor-hibrido-generico",
+      "term": "Motorização híbrida — exemplo genérico",
+      "definition": "Powertrain que combina motor de combustão interna com motor(es) elétrico(s) para reduzir consumo/emissões, mantendo autonomia.",
+      "category": "motorizacao",
+      "synonyms": ["hibrido", "powertrain hibrido"],
+      "source_type": "manual",
+      "status": "published"
+    },
+    {
+      "slug": "plataforma-modular-generica",
+      "term": "Plataforma modular — exemplo genérico",
+      "definition": "Arquitetura veicular compartilhada entre múltiplos modelos/segmentos, permitindo reaproveitar componentes e reduzir custo de engenharia.",
+      "category": "plataformas",
+      "synonyms": ["plataforma veicular", "arquitetura modular"],
+      "source_type": "manual",
+      "status": "published"
+    },
+    {
+      "slug": "adas-generico",
+      "term": "ADAS (sistemas avançados de assistência ao motorista) — exemplo genérico",
+      "definition": "Conjunto de tecnologias (sensores, câmeras, radar) que auxiliam o motorista, incluindo frenagem automática de emergência e alerta de faixa.",
+      "category": "tecnologia",
+      "synonyms": ["assistência ao motorista", "sistemas de segurança ativa"],
+      "source_type": "manual",
+      "status": "published"
+    }
+  ]
+}
