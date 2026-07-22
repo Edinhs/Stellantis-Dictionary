@@ -81,4 +81,90 @@ describe("auth.service", () => {
     const { tokens } = await service.login({ email: "ana@example.com", password: "senha-forte-123" });
     expect(tokens.accessToken).toBeTruthy();
   });
+
+  // QA (gate 12) — caminho de erro faltante: usuário desativado (active=false)
+  // não deve conseguir logar mesmo com senha correta.
+  it("login falha para usuário desativado (active=false), mesmo com senha correta", async () => {
+    const repo = fakeRepo([
+      {
+        id: "user-inativo",
+        name: "Desligado",
+        email: "desligado@example.com",
+        passwordHash: await createAuthService(fakeRepo(), fakeConfig()).hashPassword("senha-forte-123"),
+        role: "user",
+        active: false,
+      },
+    ]);
+    const service = createAuthService(repo, fakeConfig());
+    await expect(
+      service.login({ email: "desligado@example.com", password: "senha-forte-123" })
+    ).rejects.toThrow();
+  });
+
+  // QA (gate 12) — `refresh()` não tinha NENHUM teste (só o roundtrip de
+  // emissão em "login com sucesso"). Cobre: token de refresh inválido,
+  // expirado, e o caminho feliz (reemite um novo par preservando o `role`
+  // atual do usuário, conforme comentário do próprio serviço).
+  describe("refresh()", () => {
+    it("refresh token inválido (assinatura errada) é rejeitado", async () => {
+      const repo = fakeRepo();
+      const service = createAuthService(repo, fakeConfig());
+      await expect(service.refresh("token-completamente-invalido")).rejects.toThrow();
+    });
+
+    it("refresh token expirado é rejeitado", async () => {
+      const repo = fakeRepo();
+      const service = createAuthService(repo, fakeConfig());
+      const { user } = await service.register({
+        name: "Ana",
+        email: "ana2@example.com",
+        password: "senha-forte-123",
+      });
+      const jwtLib = await import("jsonwebtoken");
+      const expiredRefresh = jwtLib.default.sign({ sub: user.id }, fakeConfig().jwt.refreshSecret, {
+        expiresIn: "-10s",
+      });
+      await expect(service.refresh(expiredRefresh)).rejects.toThrow();
+    });
+
+    it("refresh válido reemite novo par de tokens para um usuário ativo", async () => {
+      const repo = fakeRepo();
+      const service = createAuthService(repo, fakeConfig());
+      const { user, tokens } = await service.register({
+        name: "Ana",
+        email: "ana3@example.com",
+        password: "senha-forte-123",
+      });
+      expect(user).toBeTruthy();
+      const reissued = await service.refresh(tokens.refreshToken);
+      expect(reissued.accessToken).toBeTruthy();
+      expect(reissued.refreshToken).toBeTruthy();
+    });
+
+    it("refresh rejeita quando o usuário foi desativado após a emissão do token", async () => {
+      const repo = fakeRepo();
+      const service = createAuthService(repo, fakeConfig());
+      const { user, tokens } = await service.register({
+        name: "Ana",
+        email: "ana4@example.com",
+        password: "senha-forte-123",
+      });
+      // Simula desativação da conta entre a emissão do refresh token e seu uso.
+      const stored = await repo.findById(user.id);
+      if (stored) stored.active = false;
+      await expect(service.refresh(tokens.refreshToken)).rejects.toThrow();
+    });
+
+    it("refresh rejeita quando o usuário não existe mais (id inválido)", async () => {
+      const repo = fakeRepo();
+      const service = createAuthService(repo, fakeConfig());
+      const jwtLib = await import("jsonwebtoken");
+      const tokenParaUsuarioInexistente = jwtLib.default.sign(
+        { sub: "usuario-que-nao-existe" },
+        fakeConfig().jwt.refreshSecret,
+        { expiresIn: "7d" }
+      );
+      await expect(service.refresh(tokenParaUsuarioInexistente)).rejects.toThrow();
+    });
+  });
 });
