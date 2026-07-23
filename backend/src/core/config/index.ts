@@ -24,6 +24,24 @@ export interface AppConfig {
   };
 }
 
+const VALID_NODE_ENVS: readonly AppConfig["nodeEnv"][] = ["development", "test", "production"];
+
+// Fail-fast: NODE_ENV desconhecido (typo `PROD`, `Production`, `staging`, etc.)
+// NAO deve degradar silenciosamente para "development" — isso mascarava a trava
+// de producao dos loaders. Valor ausente assume "development" (default explicito
+// e documentado); qualquer valor presente porem invalido derruba o boot.
+function resolveNodeEnv(): AppConfig["nodeEnv"] {
+  const raw = process.env.NODE_ENV;
+  if (raw === undefined || raw === "") return "development";
+  if (!VALID_NODE_ENVS.includes(raw as AppConfig["nodeEnv"])) {
+    throw new Error(
+      `NODE_ENV invalido: ${JSON.stringify(raw)}. ` +
+        `Valores aceitos: ${VALID_NODE_ENVS.join(", ")} (ausente => development).`
+    );
+  }
+  return raw as AppConfig["nodeEnv"];
+}
+
 function required(name: string): string {
   const v = process.env[name];
   if (!v || v === "__CHANGE_ME__") {
@@ -46,7 +64,7 @@ let cached: AppConfig | undefined;
 export function loadConfig(): AppConfig {
   if (cached) return cached;
   cached = {
-    nodeEnv: (process.env.NODE_ENV as AppConfig["nodeEnv"]) || "development",
+    nodeEnv: resolveNodeEnv(),
     port: Number(process.env.APP_PORT || 3000),
     logLevel: process.env.LOG_LEVEL || "info",
     databaseUrl: required("DATABASE_URL"),

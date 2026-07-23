@@ -198,14 +198,28 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCategory = 'all';
     let searchQuery = '';
 
-    // Gate de permissão — espelha `can(user, 'dictionary.update')` (SPEC 09/11).
+    // Escapa texto vindo de dados (título, definição, categoria, autor, etc.)
+    // antes de interpolar em innerHTML. Defesa contra XSS (DOM/armazenado): o
+    // modal de "editar" persiste texto livre em localStorage que é re-renderizado
+    // nos cards; sem escape, um verbete com `<img onerror=...>` executaria script.
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    // Gate de permissão — espelha `can(user, 'dictionary.edit')` (SPEC 09/11).
     // No produto real, edição direta é de coordinator/admin; contribuidor comum
     // usa "propor" (contributions). Aqui, no protótipo (sem RBAC de verdade),
-    // este é o ÚNICO ponto de decisão: trocar por uma checagem real ao ligar na
-    // API. Ligado por padrão para o CEO completar os cards da 1a leva.
+    // este é o ÚNICO ponto de decisão: a visibilidade REAL virá do cargo
+    // informado pela API na integração. DENY-BY-DEFAULT: sem a flag explícita
+    // (null), assume-se SEM permissão de edição — nunca liga sozinho.
     function canEditDictionary() {
         const flag = localStorage.getItem('stellantis_can_edit_dictionary');
-        return flag === null ? true : flag === 'true';
+        return flag === 'true';
     }
 
     function renderTerms() {
@@ -237,21 +251,21 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'term-card';
             card.setAttribute('data-id', term.id);
             const editBtnHtml = showEdit
-                ? `<button type="button" class="term-card-edit-btn" data-edit-id="${term.id}" aria-label="Editar verbete ${term.title}" title="Editar verbete"><i data-lucide="pencil"></i></button>`
+                ? `<button type="button" class="term-card-edit-btn" data-edit-id="${escapeHtml(term.id)}" aria-label="Editar verbete ${escapeHtml(term.title)}" title="Editar verbete"><i data-lucide="pencil"></i></button>`
                 : '';
             card.innerHTML = `
                 <div class="term-header">
-                    <span class="term-badge">${term.category || 'a classificar'}</span>
+                    <span class="term-badge">${escapeHtml(term.category || 'a classificar')}</span>
                     <div class="term-header-actions">
                         <i data-lucide="book-open" style="width: 16px; height: 16px; color: var(--accent);" aria-hidden="true"></i>
                         ${editBtnHtml}
                     </div>
                 </div>
-                <h3 class="term-title">${term.title}</h3>
-                <p class="term-def">${term.def}</p>
+                <h3 class="term-title">${escapeHtml(term.title)}</h3>
+                <p class="term-def">${escapeHtml(term.def)}</p>
                 <div class="term-meta">
                     <i data-lucide="user" style="width: 10px; height: 10px;"></i>
-                    <span>Cadastrado por: ${term.author || 'Sistema'}</span>
+                    <span>Cadastrado por: ${escapeHtml(term.author || 'Sistema')}</span>
                 </div>
             `;
             card.addEventListener('click', () => {
@@ -407,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             termDetailsCategory.style.borderColor = border;
         }
         if (termDetailsAuthor) {
-            termDetailsAuthor.innerHTML = `<i data-lucide="user" style="width: 14px; height: 14px; color: var(--secondary); display: inline-block; vertical-align: middle; margin-right: 4px;"></i> ${term.author || 'Sistema'}`;
+            termDetailsAuthor.innerHTML = `<i data-lucide="user" style="width: 14px; height: 14px; color: var(--secondary); display: inline-block; vertical-align: middle; margin-right: 4px;"></i> ${escapeHtml(term.author || 'Sistema')}`;
         }
 
         modalTermDetails.classList.add('open');

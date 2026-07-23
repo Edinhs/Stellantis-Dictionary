@@ -1120,7 +1120,7 @@ body::before {
 }
 
 /* Botão minimalista de editar verbete (lápis). Discreto, alvo de toque
-   adequado (>=32px), foco visível — só aparece p/ quem tem dictionary.update
+   adequado (>=32px), foco visível — só aparece p/ quem tem dictionary.edit
    (coordinator/admin), gate em app.js. */
 .term-card-edit-btn {
     display: inline-flex;

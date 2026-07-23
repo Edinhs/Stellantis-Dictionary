@@ -112,7 +112,10 @@ export function createDictionaryService(repo: DictionaryRepository, authz: Authz
       });
       await recordAudit(db, {
         actorId: actor.id,
-        action: "dictionary.update",
+        // Nome alinhado à permissão real do backend (`dictionary.edit`), não ao
+        // verbo HTTP — o frontend/audit referenciavam um `dictionary.update`
+        // inexistente no vocabulário de permissões (permissions.ts).
+        action: "dictionary.edit",
         targetType: "term",
         targetId: id,
         before: toPayload(existing),
