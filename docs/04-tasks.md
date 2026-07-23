@@ -21,6 +21,15 @@ Marque `[x]` conforme formos concluindo.
 > como cobertas); o que o protótipo trouxe **a mais** virou o bloco novo "Fase 0.6".
 > Divergências que mudam decisão viram nota ao PDR `03` (ver §"Notas ao PDR").
 
+> **Reconciliação com o entregue (2026-07-23).** Backlog atualizado para refletir o
+> que já foi implementado e validado por gate desde a Fase 1a. Marcadas `[x]` as
+> tarefas entregues e carimbadas pelos **Gates 9/11/12** no log `27`: T06, T07
+> (migrações 0001–0004), T08 (com bcrypt, ver nota), T09, T10, T27, T28, T31, T32,
+> T33 (112 testes passando). Ficam como **parcial** (não concluídas): T11
+> (embeddings — só pgvector no schema) e T12/T13/T14 (chat RAG — só stub de
+> `LlmProvider`), todas **aguardando a decisão D5** (provedor de LLM). Frontend real
+> (T15–T17) segue **não iniciado** (`frontend/src` vazio).
+
 ## Fase 0.5 — Protótipo visual (superada pelo protótipo entregue)
 > Objetivo: validar telas e fluxo antes de escrever código "de verdade".
 - [x] T01 — Protótipo: ~~tela de login/cadastro~~ **NÃO no protótipo** (sem auth —
@@ -75,14 +84,19 @@ Marque `[x]` conforme formos concluindo.
 ## Fase 1a — Fundação do backend
 > Depende de: decisão de hospedagem (D6) e provedor de LLM (D5) — podem ficar
 > como "TBD configurável" para não travar o início.
-- [ ] T06 — Estrutura do projeto (pastas backend/frontend, Docker Compose local)
-- [ ] T07 — Banco de dados: schema inicial (users, terms) em Postgres + pgvector
-- [ ] T08 — Autenticação: cadastro + login com JWT (hash de senha com argon2)
-- [ ] T09 — Autorização: middleware de RBAC (papéis admin/user)
+- [x] T06 — Estrutura do projeto (pastas backend/frontend, Docker Compose local)
+- [x] T07 — Banco de dados: schema inicial (users, terms) em Postgres + pgvector
+  (migrações 0001–0004)
+- [x] T08 — Autenticação: cadastro + login com JWT. **Nota:** hash de senha
+  implementado com **bcrypt** (não argon2 como previa a tarefa) — divergência a
+  confirmar no PDR `03` se relevante.
+- [x] T09 — Autorização: middleware de RBAC (papéis admin/user) — resolvedor `can()`
 
 ## Fase 1b — Dicionário
-- [ ] T10 — API CRUD de termos (criar, listar, editar, remover) + campo `slug`
-- [ ] T11 — Geração de embeddings para os termos cadastrados (pgvector)
+- [x] T10 — API CRUD de termos (criar, listar, editar, remover) + campo `slug`
+- [ ] T11 — Geração de embeddings para os termos cadastrados (pgvector). **Parcial:**
+  só a coluna/extensão pgvector no schema; **sem geração real** de embeddings —
+  aguarda decisão D5 (provedor de LLM).
 
 ## Fase 1b2 — Explorador 3D (código real)
 > Depende de: T04b aprovado (protótipo) e T10 (termos com `slug`).
@@ -92,9 +106,12 @@ Marque `[x]` conforme formos concluindo.
 - [ ] T11d — Fallback sem WebGL (imagem clicável / image-map apontando aos mesmos termos)
 
 ## Fase 1c — Chat RAG
-- [ ] T12 — Adapter de LLM (`LlmProvider`) com implementação inicial (Claude ou OpenAI)
-- [ ] T13 — Endpoint de chat: pergunta → busca por similaridade → prompt com contexto → resposta citando fontes
-- [ ] T14 — Histórico de conversa por usuário (tabelas conversations/messages)
+- [ ] T12 — Adapter de LLM (`LlmProvider`) com implementação inicial (Claude ou OpenAI).
+  **Parcial:** só o **stub** de `LlmProvider` — aguarda decisão D5 (provedor de LLM).
+- [ ] T13 — Endpoint de chat: pergunta → busca por similaridade → prompt com contexto → resposta citando fontes.
+  **Parcial:** depende de T11/T12 — aguarda decisão D5.
+- [ ] T14 — Histórico de conversa por usuário (tabelas conversations/messages).
+  **Parcial:** aguarda decisão D5.
 
 ## Fase 1d — Frontend real (baseado no protótipo aprovado)
 - [ ] T15 — Telas de login/cadastro integradas à API
@@ -115,13 +132,13 @@ Marque `[x]` conforme formos concluindo.
 ## Fase 1g — Plataforma comunitária, cargos e contribuição
 > Deriva da SPEC `09-plataforma-comunitaria-cargos-spec.md`. Base de tudo que é
 > comunitário. Depende de: T08/T09 (auth + RBAC base).
-- [ ] T27 — Enum de cargos `user`/`coordinator`/`admin` em `users.role` + default `user` no cadastro
-- [ ] T28 — Tabela `role_permissions` + resolvedor central `can(user, permission)` (autorização por permissão nomeada)
+- [x] T27 — Enum de cargos `user`/`coordinator`/`admin` em `users.role` + default `user` no cadastro
+- [x] T28 — Tabela `role_permissions` + resolvedor central `can(user, permission)` (autorização por permissão nomeada)
 - [ ] T29 — Regras de atribuição de cargo: só `coordinator`/`admin`; coordenador não cria `admin`; ninguém muda o próprio cargo
 - [ ] T30 — Entidade `workflows` (fluxo de trabalho) espelhando `terms` (+ `slug`, `steps jsonb`, `related_terms[]`)
-- [ ] T31 — `contributions` (propor-e-aprovar) + fila de moderação (fluxo pending→approved/rejected/withdrawn)
-- [ ] T32 — `content_revisions` (snapshot + rollback) para `terms`/`workflows`
-- [ ] T33 — `audit_log` append-only (mudança de cargo, aprovação, exclusão) + soft delete em `terms`/`workflows`
+- [x] T31 — `contributions` (propor-e-aprovar) + fila de moderação (fluxo pending→approved/rejected/withdrawn)
+- [x] T32 — `content_revisions` (snapshot + rollback) para `terms`/`workflows`
+- [x] T33 — `audit_log` append-only (mudança de cargo, aprovação, exclusão) + soft delete em `terms`/`workflows`
 
 ## Fase 1h — Comunidade (Q&A)
 > Deriva da SPEC `11-comunidade-qa-spec.md`. Depende de: T27/T28 (cargos +
