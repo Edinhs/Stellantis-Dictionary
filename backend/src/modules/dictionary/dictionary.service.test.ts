@@ -50,7 +50,7 @@ function fakeRepo(): DictionaryRepository {
         slug: input.slug,
         term: input.term,
         definition: input.definition,
-        category: input.category,
+        category: input.category ?? null,
         synonyms: input.synonyms ?? [],
         status: input.status ?? "published",
         active: true,
@@ -99,6 +99,51 @@ describe("dictionary.service — CRUD (RF-002/RF-006)", () => {
         category: "tecnologia",
       })
     ).rejects.toThrow();
+  });
+
+  it("rascunho pode nascer SEM categoria (1a leva de siglas — migração 0008)", async () => {
+    const service = createDictionaryService(fakeRepo(), fakeAuthz(), fakeDb());
+    const term = await service.createDirect(coordinator, {
+      slug: "abs",
+      term: "ABS",
+      definition: "Antilock Break System",
+      status: "draft",
+    });
+    expect(term.status).toBe("draft");
+    expect(term.category).toBeNull();
+  });
+
+  it("publicar SEM categoria é rejeitado (terms_published_requires_category)", async () => {
+    const service = createDictionaryService(fakeRepo(), fakeAuthz(), fakeDb());
+    await expect(
+      service.createDirect(coordinator, {
+        slug: "abs",
+        term: "ABS",
+        definition: "Antilock Break System",
+        status: "published",
+      })
+    ).rejects.toThrow();
+  });
+
+  it("publicar um rascunho via update exige categoria efetiva", async () => {
+    const repo = fakeRepo();
+    const service = createDictionaryService(repo, fakeAuthz(), fakeDb());
+    const draft = await service.createDirect(coordinator, {
+      slug: "acc",
+      term: "ACC",
+      definition: "Adaptive Cruise Control",
+      status: "draft",
+    });
+    // sem categoria -> bloqueia
+    await expect(service.updateDirect(coordinator, draft.id, { status: "published" })).rejects.toThrow();
+    // com categoria + tradução -> publica
+    const published = await service.updateDirect(coordinator, draft.id, {
+      status: "published",
+      category: "tecnologia",
+      definition: "Controle de cruzeiro adaptativo",
+    });
+    expect(published.status).toBe("published");
+    expect(published.category).toBe("tecnologia");
   });
 
   it("busca por slug retorna o termo elo estável", async () => {

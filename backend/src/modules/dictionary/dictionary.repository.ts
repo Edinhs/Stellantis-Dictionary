@@ -6,7 +6,7 @@ interface TermRow {
   slug: string;
   term: string;
   definition: string;
-  category: TermCategory;
+  category: TermCategory | null;
   synonyms: string[];
   status: Term["status"];
   active: boolean;
@@ -72,7 +72,7 @@ export function createDictionaryRepository(db: Db): DictionaryRepository {
           input.slug,
           input.term,
           input.definition,
-          input.category,
+          input.category ?? null,
           input.synonyms ?? [],
           input.status ?? "published",
           createdBy,

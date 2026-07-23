@@ -198,6 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentCategory = 'all';
     let searchQuery = '';
 
+    // Gate de permissão — espelha `can(user, 'dictionary.update')` (SPEC 09/11).
+    // No produto real, edição direta é de coordinator/admin; contribuidor comum
+    // usa "propor" (contributions). Aqui, no protótipo (sem RBAC de verdade),
+    // este é o ÚNICO ponto de decisão: trocar por uma checagem real ao ligar na
+    // API. Ligado por padrão para o CEO completar os cards da 1a leva.
+    function canEditDictionary() {
+        const flag = localStorage.getItem('stellantis_can_edit_dictionary');
+        return flag === null ? true : flag === 'true';
+    }
+
     function renderTerms() {
         if (!termsGrid) return;
         termsGrid.innerHTML = '';
@@ -220,14 +230,22 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const showEdit = canEditDictionary();
+
         filtered.forEach(term => {
             const card = document.createElement('div');
             card.className = 'term-card';
             card.setAttribute('data-id', term.id);
+            const editBtnHtml = showEdit
+                ? `<button type="button" class="term-card-edit-btn" data-edit-id="${term.id}" aria-label="Editar verbete ${term.title}" title="Editar verbete"><i data-lucide="pencil"></i></button>`
+                : '';
             card.innerHTML = `
                 <div class="term-header">
-                    <span class="term-badge">${term.category}</span>
-                    <i data-lucide="book-open" style="width: 16px; height: 16px; color: var(--accent);"></i>
+                    <span class="term-badge">${term.category || 'a classificar'}</span>
+                    <div class="term-header-actions">
+                        <i data-lucide="book-open" style="width: 16px; height: 16px; color: var(--accent);" aria-hidden="true"></i>
+                        ${editBtnHtml}
+                    </div>
                 </div>
                 <h3 class="term-title">${term.title}</h3>
                 <p class="term-def">${term.def}</p>
@@ -239,6 +257,13 @@ document.addEventListener('DOMContentLoaded', () => {
             card.addEventListener('click', () => {
                 openTermDetailsModal(term);
             });
+            const editBtn = card.querySelector('.term-card-edit-btn');
+            if (editBtn) {
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // não abrir o modal de detalhes ao editar
+                    openEditTermModal(term);
+                });
+            }
             termsGrid.appendChild(card);
         });
 
@@ -461,6 +486,124 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, 800);
                 }
             });
+        });
+    }
+
+    // LÓGICA DO MODAL DE EDITAR VERBETE (completar tradução PT, categoria,
+    // sinônimos e publicar). Aberto pelo botão-lápis do card. Espelha a regra do
+    // backend (RN publish): não se PUBLICA sem categoria (migração 0008 /
+    // dictionary.service).
+    const modalEditTerm = document.getElementById('modalEditTerm');
+    const editTermTitle = document.getElementById('editTermTitle');
+    const editTermCategory = document.getElementById('editTermCategory');
+    const editTermDef = document.getElementById('editTermDef');
+    const editTermDefHint = document.getElementById('editTermDefHint');
+    const editTermSynonyms = document.getElementById('editTermSynonyms');
+    const editTermStatus = document.getElementById('editTermStatus');
+    const editTermStatusError = document.getElementById('editTermStatusError');
+    const btnCloseEditTermModal = document.getElementById('btnCloseEditTermModal');
+    const btnCancelEditTermModal = document.getElementById('btnCancelEditTermModal');
+    const btnSaveEditTerm = document.getElementById('btnSaveEditTerm');
+
+    let editingTermId = null;
+    let lastFocusedBeforeEdit = null;
+
+    function openEditTermModal(term) {
+        if (!modalEditTerm || !term || !canEditDictionary()) return;
+        editingTermId = term.id;
+        lastFocusedBeforeEdit = document.activeElement;
+
+        if (editTermTitle) editTermTitle.value = term.title || '';
+        if (editTermCategory) editTermCategory.value = term.category || '';
+        if (editTermDef) editTermDef.value = term.def || '';
+        if (editTermSynonyms) {
+            editTermSynonyms.value = Array.isArray(term.synonyms) ? term.synonyms.join(', ') : (term.synonyms || '');
+        }
+        if (editTermStatus) {
+            editTermStatus.value = term.status || (term.category ? 'published' : 'draft');
+        }
+        // Dica de tradução só quando a definição ainda está em inglês (1a leva).
+        if (editTermDefHint) {
+            const pendingEn = term.pending_translation === true ||
+                (term.metadata && term.metadata.pending_translation === true) ||
+                term.lang_definition === 'en';
+            editTermDefHint.style.display = pendingEn ? 'block' : 'none';
+        }
+        if (editTermStatusError) editTermStatusError.style.display = 'none';
+
+        modalEditTerm.classList.add('open');
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        if (editTermTitle) editTermTitle.focus();
+    }
+
+    function closeEditTermModal() {
+        if (!modalEditTerm) return;
+        modalEditTerm.classList.remove('open');
+        editingTermId = null;
+        if (lastFocusedBeforeEdit && typeof lastFocusedBeforeEdit.focus === 'function') {
+            lastFocusedBeforeEdit.focus();
+        }
+    }
+
+    if (btnCloseEditTermModal) btnCloseEditTermModal.addEventListener('click', closeEditTermModal);
+    if (btnCancelEditTermModal) btnCancelEditTermModal.addEventListener('click', closeEditTermModal);
+    if (modalEditTerm) {
+        modalEditTerm.addEventListener('click', (e) => {
+            if (e.target === modalEditTerm) closeEditTermModal();
+        });
+    }
+    // ESC fecha o modal (acessibilidade de teclado).
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalEditTerm && modalEditTerm.classList.contains('open')) {
+            closeEditTermModal();
+        }
+    });
+
+    if (btnSaveEditTerm) {
+        btnSaveEditTerm.addEventListener('click', () => {
+            if (editingTermId === null) return;
+            const idx = terms.findIndex(t => t.id === editingTermId);
+            if (idx === -1) return;
+
+            const title = (editTermTitle.value || '').trim();
+            const category = editTermCategory.value; // '' = a classificar
+            const def = (editTermDef.value || '').trim();
+            const status = editTermStatus.value;
+            const synonyms = (editTermSynonyms.value || '')
+                .split(',').map(s => s.trim()).filter(Boolean);
+
+            if (title === '' || def === '') {
+                alert('Preencha o termo e a definição.');
+                return;
+            }
+            // Regra de publicação: publicar exige categoria (espelha o backend).
+            if (status === 'published' && !category) {
+                if (editTermStatusError) editTermStatusError.style.display = 'block';
+                if (editTermCategory) editTermCategory.focus();
+                return;
+            }
+
+            const existing = terms[idx];
+            terms[idx] = Object.assign({}, existing, {
+                title: title,
+                category: category,
+                def: def,
+                synonyms: synonyms,
+                status: status,
+                // completou a tradução: some com as pendências da 1a leva
+                pending_translation: false,
+                lang_definition: 'pt',
+            });
+            if (terms[idx].metadata) {
+                terms[idx].metadata = Object.assign({}, terms[idx].metadata, {
+                    pending_translation: false,
+                    pending_category: !category,
+                });
+            }
+            localStorage.setItem('stellantis_terms', JSON.stringify(terms));
+
+            renderTerms();
+            closeEditTermModal();
         });
     }
 

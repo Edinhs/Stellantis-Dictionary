@@ -1112,6 +1112,48 @@ body::before {
     margin-top: auto;
 }
 
+/* Ações do canto superior do card (ícone decorativo + editar) */
+.term-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Botão minimalista de editar verbete (lápis). Discreto, alvo de toque
+   adequado (>=32px), foco visível — só aparece p/ quem tem dictionary.update
+   (coordinator/admin), gate em app.js. */
+.term-card-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.term-card-edit-btn:hover {
+    color: var(--secondary);
+    background: rgba(6, 182, 212, 0.08);
+    border-color: rgba(6, 182, 212, 0.3);
+}
+.term-card-edit-btn:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+    color: var(--secondary);
+}
+.term-card-edit-btn i {
+    width: 15px;
+    height: 15px;
+}
+@media (prefers-reduced-motion: reduce) {
+    .term-card-edit-btn { transition: none; }
+}
+
 /* ==========================================
    SEÇÃO EXPLORADOR 3D REAL
    ========================================== */

@@ -67,6 +67,11 @@ export function createDictionaryService(repo: DictionaryRepository, authz: Authz
       if (!authz.can(actor, "dictionary.edit")) {
         throw new ForbiddenError("Edição direta exige cargo coordinator/admin; use contributions.propose");
       }
+      // Publicar exige categoria canônica (CHECK terms_published_requires_category,
+      // migração 0008) — barra antes de tocar o banco.
+      if (input.status === "published" && !input.category) {
+        throw new ValidationError("Categoria é obrigatória para publicar o verbete");
+      }
       const term = await repo.create(input, actor.id);
       await recordRevision(db, {
         targetType: "term",
@@ -91,6 +96,12 @@ export function createDictionaryService(repo: DictionaryRepository, authz: Authz
       }
       const existing = await repo.findById(id);
       if (!existing) throw new NotFoundError("Termo não encontrado");
+      // Estado efetivo pós-merge: publicar (ou já publicado) exige categoria.
+      const effectiveStatus = input.status ?? existing.status;
+      const effectiveCategory = input.category !== undefined ? input.category : existing.category;
+      if (effectiveStatus === "published" && !effectiveCategory) {
+        throw new ValidationError("Categoria é obrigatória para publicar o verbete");
+      }
       const updated = await repo.update(id, input);
       await recordRevision(db, {
         targetType: "term",
