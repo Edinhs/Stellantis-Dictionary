@@ -30,15 +30,19 @@ Regras (aplicadas por `scripts/build-siglas-dataset.py`):
 - Normaliza espaços e non-breaking spaces (`\xa0`); faz trim; pula o cabeçalho.
 - **Descarta linhas-lixo**: sigla sem nenhum caractere alfanumérico (ex.: `[`,
   que era uma nota RACI) ou significado vazio (ex.: `NLC`).
-- **Deduplica** por sigla (case-insensitive): mantém **uma** entrada e **acumula**
-  os significados distintos em `metadata.source_meanings` (ordem de aparição). A
-  `definition` primária é o primeiro significado; `has_multiple_meanings` sinaliza
-  quando há mais de um (o CEO escolhe/mescla ao editar).
+- **Deduplica** por sigla (chave **normalizada**, case-insensitive): mantém
+  **uma** entrada e **acumula** os significados distintos em
+  `metadata.source_meanings` (ordem de aparição). A chave de dedup colapsa
+  espaços ao redor de `&` para unir grafias equivalentes da mesma sigla (ex.:
+  `DVP & R` e `DVP&R` viram um único verbete); o `term` exibido preserva a grafia
+  da **primeira aparição**. A `definition` primária é o primeiro significado;
+  `has_multiple_meanings` sinaliza quando há mais de um (o CEO escolhe/mescla ao
+  editar).
 - `slug` determinístico e único (kebab, sem acento); colisões recebem sufixo
   `-2`, `-3`... na ordem de aparição.
 
-Resultado da 1ª leva: **749 linhas → 683 siglas únicas importadas, 2 descartadas**
-(`[`, `NLC`), 64 linhas duplicadas mescladas (52 siglas com múltiplos
+Resultado da 1ª leva: **749 linhas → 682 siglas únicas importadas, 2 descartadas**
+(`[`, `NLC`), 65 linhas duplicadas mescladas (52 siglas com múltiplos
 significados acumulados).
 
 ### Como importar para o banco (idempotente, fora de produção)
@@ -49,8 +53,13 @@ NODE_ENV=development npm run import:siglas        # carga real
 NODE_ENV=development npm run import:siglas -- --dry # só relata
 ```
 
-- O loader `backend/src/scripts/import-siglas.ts` **recusa** rodar em
-  `NODE_ENV=production` (guard D6, `seeds/README.md`).
+- O loader `backend/src/scripts/import-siglas.ts` é **deny-by-default** (guard
+  D6, `seeds/README.md`): só roda quando `NODE_ENV ∈ {development, test}`. Em
+  qualquer outro ambiente (`production`, `staging`, `NODE_ENV` ausente ou com
+  typo) **aborta com exit 1**, a menos que haja opt-in explícito e consciente —
+  `npm run import:siglas -- --confirm` ou `ALLOW_REAL_IMPORT=1`. O `config`
+  também faz *fail-fast* se `NODE_ENV` tiver um valor desconhecido (não degrada
+  silenciosamente para `development`).
 - É **idempotente**: `ON CONFLICT (slug) DO NOTHING`. Rodar de novo nunca
   sobrescreve o que já existe — **nunca apaga a tradução/categoria que o CEO já
   preencheu** editando os cards. Só insere slugs ausentes.

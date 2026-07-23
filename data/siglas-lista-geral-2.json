@@ -3,7 +3,7 @@
   "source_batch": "siglas-lista-geral-2",
   "source_file": "Lista_Geral_de_Siglas_2.xlsx",
   "generated_from_rows": 749,
-  "imported": 683,
+  "imported": 682,
   "discarded": 2,
   "terms": [
     {
@@ -3422,25 +3422,6 @@
     {
       "slug": "dvp-r",
       "term": "DVP & R",
-      "definition": "Design Verification Plan & Report",
-      "category": null,
-      "synonyms": [],
-      "source_type": "manual",
-      "status": "draft",
-      "metadata": {
-        "pending_translation": true,
-        "pending_category": true,
-        "lang_definition": "en",
-        "source_batch": "siglas-lista-geral-2",
-        "has_multiple_meanings": false,
-        "source_meanings": [
-          "Design Verification Plan & Report"
-        ]
-      }
-    },
-    {
-      "slug": "dvp-r-2",
-      "term": "DVP&R",
       "definition": "Design Verification Plan & Report",
       "category": null,
       "synonyms": [],

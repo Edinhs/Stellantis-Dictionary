@@ -125,7 +125,15 @@ describe("dictionary.service — CRUD (RF-002/RF-006)", () => {
     ).rejects.toThrow();
   });
 
-  it("publicar um rascunho via update exige categoria efetiva", async () => {
+  // Contrato PATCH (fix QA S2): `{status:'published'}` isolado NÃO é mais
+  // barrado pelo zod (termUpdateSchema é parcial e não exige categoria no
+  // corpo). O guarda efetivo é o service, que calcula a categoria EFETIVA
+  // pós-merge com o registro existente (e o CHECK do banco como backstop). Este
+  // teste exercita justamente o service:
+  //  - rascunho SEM categoria + {status:'published'} -> service bloqueia;
+  //  - rascunho JÁ categorizado + {status:'published'} -> service publica
+  //    (deferindo à categoria do registro, sem exigir no corpo).
+  it("publicar via update: service usa a categoria EFETIVA pós-merge (não exige no corpo)", async () => {
     const repo = fakeRepo();
     const service = createDictionaryService(repo, fakeAuthz(), fakeDb());
     const draft = await service.createDirect(coordinator, {
@@ -134,14 +142,16 @@ describe("dictionary.service — CRUD (RF-002/RF-006)", () => {
       definition: "Adaptive Cruise Control",
       status: "draft",
     });
-    // sem categoria -> bloqueia
+    // rascunho sem categoria + só {status:'published'} -> service bloqueia
     await expect(service.updateDirect(coordinator, draft.id, { status: "published" })).rejects.toThrow();
-    // com categoria + tradução -> publica
-    const published = await service.updateDirect(coordinator, draft.id, {
-      status: "published",
+
+    // categoriza primeiro (ainda rascunho)
+    await service.updateDirect(coordinator, draft.id, {
       category: "tecnologia",
       definition: "Controle de cruzeiro adaptativo",
     });
+    // agora publica com APENAS {status:'published'} — categoria vem do merge
+    const published = await service.updateDirect(coordinator, draft.id, { status: "published" });
     expect(published.status).toBe("published");
     expect(published.category).toBe("tecnologia");
   });

@@ -11,9 +11,12 @@ Limpeza determinística (documentada no README de `data/`):
   - Normaliza espacos e non-breaking spaces (\xa0); faz trim.
   - DESCARTA linhas-lixo: sigla sem nenhum caractere alfanumerico (ex.: `[`),
     ou significado vazio (ex.: `NLC`).
-  - DEDUPLICA por sigla (case-insensitive): mantem UMA entrada e ACUMULA os
-    significados distintos em `metadata.source_meanings` (ordem de aparicao).
-    A `definition` primaria e o PRIMEIRO significado distinto.
+  - DEDUPLICA por sigla (chave NORMALIZADA, case-insensitive): mantem UMA
+    entrada e ACUMULA os significados distintos em `metadata.source_meanings`
+    (ordem de aparicao). A `definition` primaria e o PRIMEIRO significado
+    distinto. A chave de dedup colapsa espacos ao redor de `&` para que
+    variacoes tipograficas da MESMA sigla (ex.: `DVP & R` e `DVP&R`) virem um
+    unico verbete. O `term` exibido preserva a grafia da PRIMEIRA aparicao.
   - slug determinístico e unico; colisoes recebem sufixo -2, -3... na ordem de
     aparicao.
 
@@ -37,6 +40,14 @@ def clean(v):
     s = str(v).replace("\xa0", " ")
     s = re.sub(r"\s+", " ", s).strip()
     return s
+
+
+def dedup_key(sigla):
+    """Chave de comparacao para dedup. Colapsa espacos ao redor de `&` (case-
+    insensitive) para unir grafias equivalentes da MESMA sigla — ex.:
+    `DVP & R` e `DVP&R` -> `dvp&r`. NAO altera o `term` exibido (que preserva a
+    primeira aparicao), so a chave de agrupamento."""
+    return re.sub(r"\s*&\s*", "&", sigla.lower())
 
 
 def slugify(text):
@@ -72,7 +83,7 @@ def main():
         if not definition:
             discarded.append(("significado-vazio", sigla, definition))
             continue
-        key = sigla.lower()
+        key = dedup_key(sigla)
         if key not in groups:
             groups[key] = {"display": sigla, "meanings": []}
         # acumula significados distintos (case-insensitive), preservando ordem
