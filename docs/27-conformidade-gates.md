@@ -1,7 +1,8 @@
 # 27 — Conformidade dos Gates (Log de Gates do Ciclo de Vida)
 
 > Status: **rascunho para o Agente Geral despachar / carimbo do CEO**.
-> Última atualização: 2026-07-19 (13ª rodada — Gate 12 (Testes) carimbado: plano formal do qa-lead, 99/99 testes (70 novos), sem defeito; 12 gates conformes; RN-08 e B5 restam como pendências).
+> Última atualização: 2026-07-24 (14ª rodada — **Gate 13 (Homologação/UAT) carimbado PARCIALMENTE**: relatório formal `32`; backend homologado por suíte (112 testes) + protótipo por inspeção; sistema integrado fica ABERTO até deploy/`D6`; Etapa 14 sem defeitos. 13 gates conformes).
+> 13ª rodada (2026-07-19) — Gate 12 (Testes) carimbado: plano formal do qa-lead, 99/99 testes (70 novos), sem defeito; 12 gates conformes; RN-08 e B5 restam como pendências.
 > 12ª rodada — Gate 11 (Desenvolvimento) carimbado: backend real validado por QA e Segurança após correção de 2 achados ALTA.
 > 11ª rodada — Gate 9 (Banco de Dados) carimbado: schema/migrações/seeds do MVP validados por QA e Segurança.
 > 10ª rodada — B1/MVP resolvido: CEO define núcleo + Componentes + Projetos (D20, PDR `03`).
@@ -33,7 +34,14 @@
   passam a **CONFORME** (evidência na §3). Lacunas de execução: **zeradas**. Restam
   apenas etapas dependentes de **decisão do CEO** ou de gate anterior (BLOQUEADO) e
   as de operação (N/A-futuro).
-- **2026-07-17 (3ª rodada, esta):** revisão de conformidade das etapas **1 (Ideia)** e
+- **2026-07-24 (14ª rodada):** **Etapa 13 (Homologação/UAT) conduzida** pelo
+  `qa-lead` (relatório formal doc `32`). Suíte do backend re-executada: **112/112
+  testes verdes**, `tsc`/`build` limpos; protótipo verificado por inspeção de
+  código/DOM (sem `sicky` — dormente). **Gate 13 carimbado PARCIALMENTE** (§5):
+  backend-como-componente + protótipo aprovados; **sistema integrado fica ABERTO**
+  (sem SPA de produção, protótipo não fala com backend, sem banco vivo — depende de
+  `D6`). Sem defeitos → Etapa 14 sem trabalho. Aceite formal do CEO pendente (R9).
+- **2026-07-17 (3ª rodada):** revisão de conformidade das etapas **1 (Ideia)** e
   **2 (Pesquisa)** contra a DoD do `14` → ambas CONFORME. **Carimbos formais
   aplicados** (§5): Gate 1 re-aprovado pelo CEO para o briefing ampliado; Gate 2
   aprovado pelo `product-lead`. Ponteiro do ciclo pronto para focar a **Etapa 3
@@ -79,8 +87,8 @@ pergunta em aberto (§7).
 | 10 | Planejamento | `product-lead` | `03`, `04` | Sim — fronteira MVP definida (D20) | **CONFORME** ✔ | — | CEO | **B1 ✔ resolvido** (CEO, 2026-07-19). Backlog `04` Fase 0.6 atualizado; carimbar gate 10. |
 | 11 | Desenvolvimento | `eng-lead` | `backend/src/**` (auth, authz, dictionary, contributions, components, projects, rag stub) | **Sim** — funcionalidade implementada, testes de unidade do autor passando (29/29), sem segredos hardcoded | **CONFORME** ✔ | **QA APROVOU** (reconfirmado após fix) + **Segurança APROVOU COM RESSALVA** | `eng-lead` + QA + Seg | **Gate 11 carimbado** (§5): 2026-07-19. 2 achados ALTA do QA corrigidos (RN-06/10; listPending). Ressalvas M1/M2/M3 (Seg) e transação atômica (QA) para antes de produção. |
 | 12 | Testes | `qa-lead` | `backend/src/**/*.test.ts` (99 testes, 10 arquivos) | **Sim** — critérios de aceite exercitados (caminho feliz/erro, RBAC sistemático, máquina de estados de moderação), regressão sem falha nova | **CONFORME** ✔ | **É o gate de QA (§4)** — auto-aprovado pelo `qa-lead` | `qa-lead` | **Gate 12 carimbado** (§5): 2026-07-19. RN-08 resolvida (CEO, 2026-07-19) — não bloqueante. |
-| 13 | Homologação (UAT) | `qa-lead`+`sicky`+CEO | `16` (plano) | Plano pronto; sem build a homologar | **BLOQUEADO** (gate 12 + `D6`) | QA conduz; Seg em vazamento PII | CEO | Aguarda Etapa 12; ambiente depende de **B5** (`D6`). |
-| 14 | Correções | `eng-lead` | — | Sem defeitos de produção | **BLOQUEADO** (gate 13) | QA (reverificação) + Segurança | `qa-lead` | Aguarda defeitos vindos da Etapa 13. |
+| 13 | Homologação (UAT) | `qa-lead`+`sicky`+CEO | `16` (plano), **`32` (relatório)** | **Parcial:** backend (112 testes) e protótipo homologados; sistema integrado não | **CONFORME (parcial)** ✔ — carimbo parcial; integrado aberto | QA conduziu; Seg em PII quando integrar | CEO | **Gate 13 carimbado parcialmente** (§5): backend-como-componente + protótipo. Fecho integrado retorna à Etapa 13 pós-deploy (R1–R3/R5–R7 do `32`). Aceite formal do CEO (R9). |
+| 14 | Correções | `eng-lead` | — | Sem defeitos novos na homologação (Etapa 13) | **N/A (sem defeitos)** | QA (reverificação) + Segurança | `qa-lead` | Homologação `32` não achou defeito de comportamento; nada a corrigir. Reabre se surgir na re-homologação integrada. |
 | 15 | Deploy | `release-engineer` | `17` (documental) | Documental pronto; **execução bloqueada por `D6`** | **N/A-futuro** | **Segurança** (segredos runtime) | `devops-lead` + Seg | **B5** — decidir `D6`. |
 | 16 | Entrega | `release-engineer` | `17` (documental) | idem | **N/A-futuro** | **Segurança** (config produção) | CEO + Seg | Depende do gate 15. |
 | 17 | Manutenção | `devops-lead` | `18` (documental) | idem | **N/A-futuro** | **Segurança** (patches/segredos) | `devops-lead` + Seg | Depende da Entrega. |
@@ -300,6 +308,24 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
   ator; verificado por QA e reconfirmado pelo `product-lead`). Doc `15` saiu de
   "rascunho".
 
+- **Gate 13 — Homologação/UAT — CARIMBADO PARCIALMENTE pelo `qa-lead` em 2026-07-24**
+  (relatório formal doc `32`). QA conduziu a homologação do escopo **realmente
+  verificável hoje**: (a) **backend MVP** exercitado pela suíte — **112/112 testes**,
+  `tsc`/`build` limpos, critérios das SPECs `02`/`09` cobertos (auth/JWT, `can()`
+  central, CRUD+`slug`, gate de categoria draft↔published no serviço, moderação
+  `pending→approved|rejected|withdrawn` com `content_revisions`/`review_note`/
+  `audit_log`, matriz RBAC 3×3 e **anti-escalonamento RN-04**), **sem defeito de
+  comportamento novo**; (b) **protótipo** por inspeção de código/DOM (dicionário,
+  chat RAG rotulado **SIMULADO**, XSS via `escapeHtml`, 3D presente). **Homologado
+  como componente + protótipo, NÃO como sistema em produção.** **Fica ABERTO** (não
+  homologável agora, doc `32` §5): integração protótipo↔backend (R2), CHECK de banco
+  ao vivo/`pgvector` (R1 — sem Postgres nesta sessão), RAG real (R3), rate-limit
+  (R4), Q&A/diretório/workflows/3D backend fora do MVP (R5/R6), 682 siglas reais
+  (R7), E2E ao vivo com `sicky` (R8, dormente) e **aceite formal do CEO (R9)**. Esses
+  itens **retornam à Etapa 13** para re-homologação **após o Deploy (15–16)** quando
+  o ambiente `D6` (Cloudflare+Supabase) existir. **Etapa 14 (Correções): sem
+  defeitos a corrigir.**
+
 **Recomendados / prontos para carimbo:**
 - **Gate 8 — Arquitetura — APROVADO em 2026-07-17.** Recomendado por `eng-lead`
   (doc `25` §10) + verificado por QA + **aval oficial da Segurança: APROVAR COM
@@ -328,16 +354,21 @@ Segurança já as cobre por definição** (`14` §4) e será obrigatório quando
 
 ## 6. Parecer consolidado (2ª rodada)
 
-**Recontagem por status (19 etapas):**
-- **CONFORME: 12** — Etapas **1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12** (várias com
-  ressalvas de acompanhamento, não bloqueantes). **Gate 12 carimbado em
-  2026-07-19 — 99 testes (70 novos), regressão sem falha nova.**
+**Recontagem por status (19 etapas) — atualizada na 14ª rodada:**
+- **CONFORME: 13** — Etapas **1–12** + **13 (parcial)**. **Gate 13 carimbado
+  parcialmente em 2026-07-24** (doc `32`): backend homologado por suíte (112
+  testes) + protótipo por inspeção; **sistema integrado fica ABERTO** até deploy.
 - **LACUNA: 0** — **nenhuma lacuna de execução em aberto.**
-- **BLOQUEADO: 2** — Etapas **13, 14** — dependem da **cadeia sequencial** (UAT
-  com o CEO sobre o código já testado), não de decisão nova do CEO no sentido dos
-  bloqueantes B1-B5.
+- **N/A / sem trabalho: 1** — Etapa **14 (Correções)**: a homologação `32` não
+  encontrou defeito de comportamento; nada a corrigir (reabre se surgir na
+  re-homologação integrada pós-deploy).
 - **N/A-futuro: 5** — Etapas **15–19** (execução bloqueada por `D6`/B5; gate de
   Segurança já as cobre por definição).
+
+> **Pendente de fecho na Etapa 13:** a homologação de **sistema integrado**
+> (protótipo↔backend, RBAC ponta-a-ponta, RAG/dados reais, CHECK de banco ao vivo)
+> **não pôde ser feita** — não há ambiente integrado. Retorna à Etapa 13 pós-Deploy
+> (ver doc `32` §5, itens R1–R3/R5–R7).
 
 **Conclusão.** Os gates **1–12 estão todos carimbados/conformes**. Etapa 12
 (Testes) fechada pelo `qa-lead` com plano formal além da unidade da Etapa 11 —
