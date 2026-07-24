@@ -7,6 +7,15 @@
 > (`22-requisitos-nao-funcionais.md`), Deploy (`17-deploy-e-entrega.md`),
 > PDR (`03-pdr.md` — `D5`/`D6`), backlog (`04-tasks.md` — `T15–T17`).
 > **Não executa nada.** É o levantamento honesto para o CEO decidir `D6`/`D5`.
+>
+> **Atualização 2026-07-24 — `D6` RESOLVIDA:** o CEO fechou a hospedagem em
+> **Cloudflare (Pages + Workers) + Supabase (Postgres gerenciado com `pgvector`)** —
+> exatamente o caminho recomendado no §3 deste roteiro. Registro formal no PDR
+> `03-pdr.md` (`D6`). O corpo abaixo, que trata `D6` como decisão-nó pendente, fica
+> como **contexto histórico da análise**. Pendências **operacionais** que seguem
+> abertas: provisionamento ainda não executado e **connectors/MCP de Cloudflare e
+> Supabase ainda não conectados** ao ambiente (o CEO precisa conectá-los antes de
+> qualquer provisionamento automatizado). **`D5` (provedor de LLM) segue em aberto.**
 
 Pergunta do CEO: *"O que falta para que o site seja publicado COM as informações
 reais/internas do dicionário?"*

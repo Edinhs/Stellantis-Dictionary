@@ -8,7 +8,7 @@
 | D3 | Segurança é requisito de primeira classe (dado ambiente empresarial) | Confirmado |
 | D4 | Stack: Node.js/TS + Postgres/pgvector + adapter de LLM | Recomendado — aguardando confirmação final |
 | D5 | Provedor de LLM (Claude vs. OpenAI) | Em aberto — abstraído via adapter para não bloquear o desenvolvimento |
-| D6 | Estratégia de hospedagem (on-prem vs. cloud privada vs. local via Docker) | Em aberto — impacta diretamente a arquitetura de segurança. **Nota (CEO, 2026-07-19):** cogitando **Cloudflare** (Pages/Workers); ainda em avaliação, não é decisão final. Compatível com a arquitetura já aprovada (`13`/`25`) usando Postgres externo com `pgvector` (ex.: Neon/Supabase) atrás dos Workers — **não** conflita com o schema da Etapa 9. Não bloqueia a Etapa 11 (só as etapas 15–19, `B5`, exigem D6 fechado). |
+| D6 | Estratégia de hospedagem (on-prem vs. cloud privada vs. local via Docker) | **RESOLVIDA (CEO, 2026-07-24): Cloudflare + Supabase.** App em **Cloudflare** (Pages para o frontend + Workers para o backend) e **Supabase** (Postgres gerenciado com `pgvector`) como banco. É exatamente o caminho recomendado no roteiro `31-roteiro-publicacao-dados-reais.md` §3 e compatível com a arquitetura já aprovada (`13`/`25`) — **não** conflita com o schema da Etapa 9. Destrava o Bloco A do roteiro `31` e o deploy real (etapas 15–19). **Nota operacional:** arquitetura decidida, mas **provisionamento ainda não executado**; os **connectors/MCP de Cloudflare e Supabase ainda NÃO estão conectados** ao ambiente de trabalho — pendência de execução do CEO conectá-los antes de qualquer provisionamento automatizado (ver §2.1). *(Histórico: nota do CEO em 2026-07-19 cogitava Cloudflare em avaliação.)* |
 | D7 | Explorador 3D do cockpit na página principal, com hotspots ligados ao dicionário | Confirmado — MVP simplificado (modelo placeholder + poucos hotspots) |
 | D8 | Tecnologia 3D: `three.js` vs. `<model-viewer>` | Em aberto — decidir no protótipo (model-viewer para MVP rápido; three.js se precisar de mais controle) |
 | D9 | Origem do modelo 3D (placeholder livre no MVP; modelo oficial depois) | Confirmado — placeholder no MVP, sem depender de asset oficial |
@@ -33,6 +33,23 @@
 | Escopo crescer demais para "uso pessoal" | Médio | Fases bem definidas (MVP primeiro, ingestão de documentos depois) |
 | Explorador 3D pesar/atrasar o MVP ou não rodar em máquinas fracas | Médio | MVP com modelo leve/placeholder, compressão Draco, fallback em imagem clicável (image-map) sem WebGL |
 | Uso de asset 3D/imagem sem licença adequada | Médio | Usar modelo genérico de licença livre; imagem oficial só como referência interna, não redistribuída |
+
+### 2.1 Nota operacional — `D6` (hospedagem)
+A **arquitetura de hospedagem está decidida** (`D6` = Cloudflare + Supabase,
+2026-07-24), mas isso é **decisão de arquitetura, não de execução**. Pontos honestos
+em aberto no plano operacional:
+
+- **Provisionamento ainda NÃO foi executado.** Não existe projeto Cloudflare
+  (Pages/Workers) nem instância Supabase provisionada; nada roda em produção. O
+  backend real existe e passa nos testes, mas **nunca rodou hospedado** (ver roteiro
+  `31` §5).
+- **Connectors/MCP de Cloudflare e Supabase ainda NÃO estão conectados** ao ambiente
+  de trabalho. **Pendência operacional do CEO:** conectá-los **antes** de qualquer
+  provisionamento automatizado. Sem esses connectors, nenhum agente pode provisionar
+  infra de forma automatizada.
+- Isso é **pendência de execução, não altera a decisão de arquitetura.** A sequência
+  de destravamento continua sendo `D6 → repo privado + R3 → infra → SPA → gate de
+  segurança → carga de dados → go-live restrito` (roteiro `31` §3).
 
 ## 3. Roadmap por fases
 - **Fase 0 — Documentação (atual)**: Briefing, SPEC, PDR, definição de agentes/skills.
@@ -116,9 +133,11 @@ Hierarquia proposta para quando formos implementar (nada será criado ainda):
   pelo Segurança Agent.
 
 ## 6. Perguntas em aberto antes de avançar para a Fase 1
-1. ~~Onde o sistema será hospedado~~ — **Decisão adiada**: definir hospedagem
-   (Docker local, VPS próprio ou cloud privada) apenas no início da Fase 1,
-   quando houver mais clareza sobre quem vai acessar o sistema e de onde.
+1. ~~Onde o sistema será hospedado~~ — **RESOLVIDA (CEO, 2026-07-24, `D6`):**
+   **Cloudflare** (Pages + Workers) + **Supabase** (Postgres gerenciado com
+   `pgvector`). Ver `D6` na tabela §1 e roteiro `31` §3. Pendência apenas
+   operacional: provisionamento ainda não executado e connectors/MCP de
+   Cloudflare/Supabase ainda não conectados ao ambiente.
 2. Qual provedor de LLM usar primeiro (Claude ou OpenAI), mesmo que a
    arquitetura suporte trocar depois? — **ainda em aberto**.
 3. ~~Existe algum documento real do setor~~ — **Decidido**: iniciar com dados
