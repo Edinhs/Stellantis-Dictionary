@@ -7,7 +7,7 @@
 | D2 | Fonte do dicionário = cadastro manual + ingestão de documentos (híbrido) | Confirmado |
 | D3 | Segurança é requisito de primeira classe (dado ambiente empresarial) | Confirmado |
 | D4 | Stack: Node.js/TS + Postgres/pgvector + adapter de LLM | Recomendado — aguardando confirmação final |
-| D5 | Provedor de LLM (Claude vs. OpenAI) | Em aberto — abstraído via adapter para não bloquear o desenvolvimento |
+| D5 | Provedor de LLM inicial | **RESOLVIDA (CEO, 2026-07-24): Google Gemini** (modelo indicado pelo CEO como **"3.1"**) como provedor de LLM inicial, **via API Key**. Escolha **PROVISÓRIA** ("por enquanto"), com intenção de atualizar/trocar depois. O adapter multi-provedor (`rag/LlmProvider`, doc `13` §1.1) **permanece abstrato** — a troca futura de provedor não deve exigir reescrita do pipeline RAG. Ver nota operacional §2.2. **Segurança:** a API Key é SEGREDO e nunca entra no repositório (público) — ver §2.2. |
 | D6 | Estratégia de hospedagem (on-prem vs. cloud privada vs. local via Docker) | **RESOLVIDA (CEO, 2026-07-24): Cloudflare + Supabase.** App em **Cloudflare** (Pages para o frontend + Workers para o backend) e **Supabase** (Postgres gerenciado com `pgvector`) como banco. É exatamente o caminho recomendado no roteiro `31-roteiro-publicacao-dados-reais.md` §3 e compatível com a arquitetura já aprovada (`13`/`25`) — **não** conflita com o schema da Etapa 9. Destrava o Bloco A do roteiro `31` e o deploy real (etapas 15–19). **Nota operacional:** arquitetura decidida, mas **provisionamento ainda não executado**; os **connectors/MCP de Cloudflare e Supabase ainda NÃO estão conectados** ao ambiente de trabalho — pendência de execução do CEO conectá-los antes de qualquer provisionamento automatizado (ver §2.1). *(Histórico: nota do CEO em 2026-07-19 cogitava Cloudflare em avaliação.)* |
 | D7 | Explorador 3D do cockpit na página principal, com hotspots ligados ao dicionário | Confirmado — MVP simplificado (modelo placeholder + poucos hotspots) |
 | D8 | Tecnologia 3D: `three.js` vs. `<model-viewer>` | Em aberto — decidir no protótipo (model-viewer para MVP rápido; three.js se precisar de mais controle) |
@@ -50,6 +50,30 @@ em aberto no plano operacional:
 - Isso é **pendência de execução, não altera a decisão de arquitetura.** A sequência
   de destravamento continua sendo `D6 → repo privado + R3 → infra → SPA → gate de
   segurança → carga de dados → go-live restrito` (roteiro `31` §3).
+
+### 2.2 Nota operacional e de segurança — `D5` (provedor de LLM)
+A escolha do provedor inicial está **decidida** (`D5` = Google Gemini "3.1" via API
+Key, 2026-07-24), mas há pontos operacionais e de segurança que precisam ficar
+explícitos e honestos:
+
+- **Escolha provisória.** O CEO definiu Gemini "por enquanto", com intenção de
+  atualizar/trocar depois. Por isso o **adapter multi-provedor (`rag/LlmProvider`)
+  deve permanecer abstrato** — trocar de provedor (Gemini → outro) é substituir o
+  adapter/variáveis de ambiente, **sem reescrever o pipeline RAG** (`rag.service`).
+  A arquitetura de portas & adaptadores já prevê isso (doc `13` §1.1; port em
+  `backend/src/modules/rag/llm-provider.port.ts`).
+- **A API Key do Gemini é um SEGREDO.** O repositório é **PÚBLICO** — a chave
+  **NUNCA** pode ser commitada (nem em `.env`, código, testes, histórico de git ou
+  documentação). Vazar a chave permite uso indevido e custo em nome do projeto.
+- **Como a chave entra:** exclusivamente via **variável de ambiente / gestor de
+  segredos** do ambiente de hospedagem (**Cloudflare**, quando provisionado — ver
+  `D6`/§2.1), e localmente via `.env` (que **não** é versionado). O `.env.example`
+  carrega apenas o **placeholder** `GEMINI_API_KEY=__CHANGE_ME__`, nunca o valor
+  real.
+- **Estado atual:** o CEO **ainda NÃO enviou a chave**. Enquanto isso, o pipeline
+  opera com o adapter stub (`llm-provider.stub.ts`). A implementação do **adapter
+  Gemini é um passo de engenharia separado e futuro** — esta decisão registra
+  apenas a escolha do provedor, não altera código do adapter agora.
 
 ## 3. Roadmap por fases
 - **Fase 0 — Documentação (atual)**: Briefing, SPEC, PDR, definição de agentes/skills.
@@ -138,8 +162,12 @@ Hierarquia proposta para quando formos implementar (nada será criado ainda):
    `pgvector`). Ver `D6` na tabela §1 e roteiro `31` §3. Pendência apenas
    operacional: provisionamento ainda não executado e connectors/MCP de
    Cloudflare/Supabase ainda não conectados ao ambiente.
-2. Qual provedor de LLM usar primeiro (Claude ou OpenAI), mesmo que a
-   arquitetura suporte trocar depois? — **ainda em aberto**.
+2. ~~Qual provedor de LLM usar primeiro~~ — **RESOLVIDA (CEO, 2026-07-24, `D5`):**
+   **Google Gemini** (modelo "3.1") via API Key, como escolha **provisória**; o
+   adapter multi-provedor segue abstrato para trocar depois. Ver `D5` na tabela §1
+   e nota operacional/segurança §2.2. Pendência: o CEO ainda não enviou a API Key
+   (segredo — nunca no repositório público) e o adapter Gemini ainda não foi
+   implementado.
 3. ~~Existe algum documento real do setor~~ — **Decidido**: iniciar com dados
    fictícios/de teste no dicionário para validar o fluxo (nenhum dado
    confidencial real será usado até que a estratégia de hospedagem/segurança
