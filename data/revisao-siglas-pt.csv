@@ -1,0 +1,683 @@
+﻿sigla,significado_EN,traducao_PT_sugerida,categoria_sugerida,cabe_na_taxonomia,confianca,nota,bucket_sugerido
+(D)FMEA,(Design) Failure Mode and Effects Analysis,Análise de Modo e Efeitos de Falha (de Projeto),,nao,alta,,processos-qualidade
+“AS IS” Process,An “AS IS” process represents the current situation of a specific process.,Um processo «AS IS» representa a situação atual de um processo específico.,,nao,alta,,processos-qualidade
+“TO BE” Process,A “TO BE” process represents the future situation foreseen for the process.,Um processo «TO BE» representa a situação futura prevista para o processo.,,nao,alta,,processos-qualidade
+ABC,Automated Build Code,Código de Construção Automatizado,,nao,media,Sigla ambígua; provável termo de sistema/build.,ti-sistemas
+ABPMP,Association of Business Process Management Professionals,Associação de Profissionais de Gerenciamento de Processos de Negócio,,nao,alta,,organizacao-gestao
+ABS,Antilock Break System,Sistema de Freios Antitravamento (ABS),tecnologia,sim,media,Fonte grafa «Break»; correto é «Brake».,
+ACC,Adaptive Cruise Control,Controle de Cruzeiro Adaptativo,tecnologia,sim,alta,,
+ACE,Alzacristallo Elettrico,Levantador de Vidro Elétrico (vidro elétrico),componentes,sim,media,Termo em italiano (Alzacristallo Elettrico).,
+ACN,Automatic Crash Notification,Notificação Automática de Colisão,tecnologia,sim,alta,,
+AD&P,Advanced Design & Packaging,Design e Packaging Avançado,,nao,media,Área/atividade de engenharia.,organizacao-gestao
+ADA,Automotive Data Aggregation process,Processo de Agregação de Dados Automotivos,,nao,media,,ti-sistemas
+ADC,"Adjacent Component -> Something other than that part caused our part to fail (such as a broken clip, or broken housing, etc).","Componente Adjacente — algo diferente da peça em análise que causou a falha da nossa peça (ex.: clipe quebrado, carcaça quebrada, etc.).",,nao,alta,,processos-qualidade
+AEB,Autonomous Emergency Break,Frenagem Autônoma de Emergência,tecnologia,sim,alta,Fonte grafa «Break»; correto é «Brake».,
+AFP,"Allestimento Finale Prodotto,- ""Staging Final Product"" - each ""AFP"" is a buildable configuration",Configuração Final do Produto — cada «AFP» é uma configuração produzível.,,nao,media,Termo em italiano (Allestimento Finale Prodotto).,processos-qualidade
+AFP (Allestimento Finale Prodotto),código de identificação do modelo no CoDeP,Código de identificação do modelo no CoDeP.,,nao,alta,,ti-sistemas
+AGSM,Automatic Gearbox Shifter Module,Módulo de Câmbio de Transmissão Automática,componentes,sim,media,,
+AHB,Auto High Beam,Farol Alto Automático,tecnologia,sim,alta,,
+AL,Architecture Leader,Líder de Arquitetura,,nao,alta,,organizacao-gestao
+Allestimento,Modelo / versão,Modelo / versão (configuração/acabamento),,nao,alta,Termo em italiano.,glossario-generico
+ALSE,Absorber Lined Shielded Enclosure,Câmara Blindada Revestida com Absorvedores (ensaio EMC),,nao,media,,processos-qualidade
+ALT,Alternator,Alternador,componentes,sim,media,Poderia caber em motorizacao (elétrica do motor).,
+AM,Amplitude Modulation,Modulação em Amplitude (AM),tecnologia,sim,alta,,
+AME,Advanced Manufacturing Engineering,Engenharia de Manufatura Avançada,,nao,alta,,organizacao-gestao
+AMP,Amplificador,Amplificador,componentes,sim,alta,,
+Anomaly,A detectable change in DUT performance due to an applied stimulus,Anomalia — mudança detectável no desempenho do DUT (dispositivo sob teste) devida a um estímulo aplicado.,,nao,alta,,processos-qualidade
+APAC,Asia Pacific Region,Região Ásia-Pacífico,,nao,alta,,geografia
+APQP,Advanced Product Quality Planning,Planejamento Avançado da Qualidade do Produto,,nao,alta,,processos-qualidade
+AQR,Additional Quality Requirements,Requisitos Adicionais de Qualidade,,nao,alta,,processos-qualidade
+Artificial Network (AN),A device used to present a known impedance to the power line of the DUT,Rede Artificial (AN) — dispositivo usado para apresentar uma impedância conhecida à linha de alimentação do DUT (EMC).,,nao,alta,,processos-qualidade
+ASIC,Application-Specific Integrated Circuit,Circuito Integrado de Aplicação Específica,componentes,sim,alta,,
+ASIL,Automotive Safety Integrity Level,Nível de Integridade de Segurança Automotiva (ISO 26262),,nao,alta,,normas-especificacoes
+ASU,Alarm Siren Unit,Unidade de Sirene de Alarme,componentes,sim,alta,,
+ATB,Air Temperature To Boil,Temperatura do Ar para Ebulição,,nao,baixa,Termo obscuro; significado incerto no contexto.,normas-especificacoes
+ATSM,AntiTilt Sensor Module,Módulo Sensor Anti-inclinação,componentes,sim,alta,,
+Attrezzamento,"equipamentos,dispositivos,ferramentais e prensas","Equipamentos, dispositivos, ferramentais e prensas (ferramental)",,nao,alta,Termo em italiano.,processos-qualidade
+AUTOSAR,Automotive software standard,Padrão de software automotivo (AUTOSAR),,nao,media,É um padrão de arquitetura de software; poderia tocar tecnologia.,normas-especificacoes
+AV,Advanced Vehicle,Veículo Avançado,,nao,media,Termo genérico/vago.,glossario-generico
+AV (detector),Average detector according to CISPR 25,Detector de valor médio (AV) conforme CISPR 25 (EMC),,nao,alta,,processos-qualidade
+BATTERY,Battery,Bateria,componentes,sim,alta,,
+BC,Business center,Centro de Negócios,,nao,alta,,organizacao-gestao
+BCI,Bulk Current Injection test,Ensaio de Injeção de Corrente em Bloco (BCI) — teste de EMC,,nao,media,Múltiplos significados (tb. Body and Cabin Integration).,processos-qualidade
+BCM,Body Computer Module,Módulo Computador de Carroceria (BCM),componentes,sim,alta,,
+Benchmarking,Comparação de produtos/processos/serviços/modelos e outros,Comparação de produtos/processos/serviços/modelos e outros (benchmarking),,nao,alta,,processos-qualidade
+Benestare,"Compara se teve alguma mudança física no componente. Ex: teve atualização apenas de software de um rádio, teve que mudar o PN, daí a área de benestare faz a conferência do rádio se houve apenas modificação do software. Confere dimensional e etiqueta.","Verificação/aprovação que confere se houve mudança física em um componente (dimensional e etiqueta); ex.: se um rádio teve apenas atualização de software, o benestare confere se mudou o PN.",,nao,alta,Termo em italiano.,processos-qualidade
+Benestariadas,aprovadas,Aprovadas (benestariadas),,nao,alta,,processos-qualidade
+BICEE,"Body, Interior, Chassis, Electrical/Electronics, Engine Systems","Carroceria, Interior, Chassi, Elétrica/Eletrônica e Sistemas de Motor (BICEE)",,nao,media,Agrupamento de domínios de engenharia.,organizacao-gestao
+BICEEP,"Body, Interiors, Chassis, Electro Electronic and Powertrain","Carroceria, Interiores, Chassi, Eletroeletrônica e Powertrain (BICEEP)",,nao,media,Agrupamento de domínios de engenharia.,organizacao-gestao
+BIST,Built In Self Test,Autoteste Embarcado (BIST),tecnologia,sim,alta,,
+BO,Build Objectives,Objetivos de Construção/Build,,nao,media,,processos-qualidade
+BOM,Electronic Bill of Material,Lista de Materiais (BOM),,nao,alta,,ti-sistemas
+BOM (Bill Of Material),lista básica de materiais,Lista básica de materiais (BOM),,nao,alta,,ti-sistemas
+BPM,Business Process Management,Gerenciamento de Processos de Negócio,,nao,alta,,processos-qualidade
+BPMN,Business Process Management Notation (flowchart notation),Notação de Gerenciamento de Processos de Negócio (notação de fluxograma),,nao,alta,,processos-qualidade
+BPMS,Business Process Management Suite (Software for process management),Suíte de Gerenciamento de Processos de Negócio (software),,nao,alta,,ti-sistemas
+Bricolar,"Adaptar, fazer uma atualização, retrofitting","Adaptar, fazer uma atualização, retrofit",,nao,alta,,glossario-generico
+Briefing,Descrição preliminar,Descrição preliminar (briefing),,nao,alta,,glossario-generico
+Briefing de produto,Descrição preliminar do produto,Descrição preliminar do produto,,nao,alta,,glossario-generico
+BSD,Blind Spot Detection,Detecção de Ponto Cego,tecnologia,sim,alta,,
+BSM,Brake System Module,Módulo do Sistema de Freios,componentes,sim,alta,,
+BT,Bluetooth,Bluetooth,tecnologia,sim,alta,,
+Burn Down,Curve that shows the amount of work that still needs to be done in a sprint,Gráfico Burn Down — curva que mostra a quantidade de trabalho ainda a ser feita em um sprint (ágil),,nao,alta,,processos-qualidade
+Business case,Plano de Negocio,Plano de negócio (business case),,nao,alta,,organizacao-gestao
+BUX,Built up export,Exportação de veículo montado (Built Up eXport),,nao,media,,comercial-mercado
+BW,Bandwidth,Largura de banda,tecnologia,sim,alta,,
+C&I,Concepts & Innovation,Conceitos e Inovação,,nao,alta,,organizacao-gestao
+C.C.P.,Customer Care Profile,Perfil de Atendimento ao Cliente,,nao,media,,comercial-mercado
+C.C.Q,Qualification Concession Certificate,Certificado de Concessão de Qualificação,,nao,media,,processos-qualidade
+C.Q.C.,Quality and compliance certificate,Certificado de Qualidade e Conformidade,,nao,alta,,processos-qualidade
+C/O,Carry Over,Carry Over (item/componente reaproveitado de projeto anterior),,nao,media,,glossario-generico
+C3,Cost Regional Capacity Control,Controle Regional de Capacidade de Custo,,nao,baixa,Sigla obscura; expansão incerta.,organizacao-gestao
+CAB,Centralina Air Bag,Central de Airbag,componentes,sim,alta,Termo em italiano (Centralina Air Bag).,
+CAD (Computer Aided Design),software para elaboração das matemáticas de Engenharia,Software para elaboração das matemáticas de Engenharia (CAD),,nao,alta,,ti-sistemas
+CAE,Computer Aided Engineering,Engenharia Assistida por Computador (CAE),,nao,alta,,ti-sistemas
+CAN,Controller Area Network,Rede CAN (Controller Area Network) — barramento de comunicação veicular,tecnologia,sim,alta,,
+Capitolato,Norma que define requisitos e parâmetros que o produto deve atingir,Norma que define requisitos e parâmetros que o produto deve atingir (especificação),,nao,alta,Termo em italiano.,normas-especificacoes
+Cartelino,Mechanical assembly issue (in a One Page Report format),Registro de problema de montagem mecânica (formato One Page Report),,nao,alta,,processos-qualidade
+CAS,Computer Aided Style. Software para elaboração das matemáticas de Estilo,Software para elaboração das matemáticas de Estilo (CAS),,nao,alta,,ti-sistemas
+CBA,Centralina Bateria,Central de Bateria,componentes,sim,alta,Termo em italiano (Centralina Bateria).,
+CBOK,Common Book of Knowledge (ABPMP Process Guide),Corpo Comum de Conhecimento (guia de processos ABPMP),,nao,alta,,processos-qualidade
+CC,Commercial Committee,Comitê Comercial,,nao,alta,,organizacao-gestao
+CCB,Configuration Control Board,Comitê de Controle de Configuração,,nao,alta,,processos-qualidade
+CCC,Capacitive Coupling Clamp,Garra de Acoplamento Capacitivo (EMC),,nao,alta,,processos-qualidade
+CCD,Common Change Document,Documento Comum de Mudança,,nao,alta,,processos-qualidade
+CCP,Costumer Car Profile,Perfil do Carro do Cliente,,nao,media,Fonte grafa «Costumer»; correto é «Customer».,comercial-mercado
+CCP (Customer Car Profile),perfil do cliente potencial,Perfil do cliente potencial,,nao,media,,comercial-mercado
+CDC,Co_Driver Door Commands,Comandos da Porta do Passageiro (Co-Driver),componentes,sim,alta,,
+CDD,Candela Diagnostic Data,Dados de Diagnóstico Candela (arquivo de diagnóstico),,nao,media,,ti-sistemas
+CDM,Compact Disc Module,Módulo de CD (Compact Disc),componentes,sim,alta,,
+CFO,Costumer Functional Objectives,Objetivos Funcionais do Cliente,,nao,media,Fonte grafa «Costumer».,processos-qualidade
+CFTS,Component Functional Technical Specification,Especificação Técnica Funcional de Componente,,nao,alta,,normas-especificacoes
+CG,Chrysler Group,Chrysler Group (grupo Chrysler),,nao,alta,,organizacao-gestao
+CGBP,Chrysler Group Business Process Database,Banco de Dados de Processos de Negócio do Chrysler Group,,nao,alta,,ti-sistemas
+CISPR,An acronym for “Comité International Spécial des Perturbations Radioelectriques” (Special International Committee on Radio Interference),Comité International Spécial des Perturbations Radioélectriques (Comitê Internacional Especial sobre Interferência Radioelétrica),,nao,alta,,normas-especificacoes
+Clay,Tipo de argila para modelar,"Tipo de argila para modelagem (clay, usada em modelos de estilo)",,nao,alta,,glossario-generico
+Clinic Test,teste clínico utilizado para coleta de opiniões do consumidor sobre um produto a ser desenvolvido,Teste clínico usado para coletar opiniões do consumidor sobre um produto em desenvolvimento,,nao,alta,,comercial-mercado
+CM,Configuration Management,Gerenciamento de Configuração,,nao,alta,,processos-qualidade
+CMII,Change Management,Gerenciamento de Mudanças (CMII),,nao,alta,,processos-qualidade
+CMM,Coordinate Measuring Machine,Máquina de Medição por Coordenadas (CMM),,nao,alta,,processos-qualidade
+CMU,(Costo Medio Unitario) Custo Médio Unitário,Custo Médio Unitário,,nao,alta,Termo em italiano (Costo Medio Unitario).,comercial-mercado
+CN,Change Notice (Change management process document),Notificação de Mudança (documento do processo de gestão de mudanças),,nao,alta,,processos-qualidade
+CoC,Core of Competence,Núcleo de Competência,,nao,alta,,organizacao-gestao
+CoDeP,Product Descriptor Configurator,Configurador e Descritor do Produto (software de gestão de dados do produto),,nao,alta,,ti-sistemas
+Co-design,desenhar/projetar em conjunto com o fornecedor,Desenhar/projetar em conjunto com o fornecedor (co-design),,nao,alta,,processos-qualidade
+COE,Central order edit,Edição Central de Pedidos,,nao,media,,ti-sistemas
+COM,Compass Module,Módulo de Bússola,componentes,sim,alta,,
+Comitato Direttivo,Comissão de diretores,Comissão de diretores (comitê diretivo),,nao,alta,Termo em italiano.,organizacao-gestao
+Comitato Lancio,Comissão de lançamento,Comissão de lançamento,,nao,alta,Termo em italiano.,organizacao-gestao
+Component,"is any electrical or electronic assembly used in the vehicle, such as engine control module, instrument cluster, junction block, sensor, switch, etc","Componente — qualquer conjunto elétrico ou eletrônico usado no veículo (ex.: módulo de controle do motor, painel de instrumentos, caixa de junção, sensor, interruptor).",componentes,sim,media,Definição genérica do termo «componente».,
+COPS,Capacity and Options Planning,Planejamento de Capacidade e Opcionais,,nao,media,,comercial-mercado
+Cp,Indicador da capabilidade do processo,Índice de capabilidade do processo (Cp),,nao,alta,,processos-qualidade
+CPA,Customer Perception Avaliation,Avaliação da Percepção do Cliente,,nao,media,Fonte grafa «Avaliation».,comercial-mercado
+CPF,Car Profile Function (document that shows the status of a vehicle when released by Prototype Center),Função Perfil do Carro (documento que mostra o status de um veículo quando liberado pelo Centro de Protótipos),,nao,alta,,processos-qualidade
+Cpk,Indicador da capabilidade do processo,Índice de capabilidade do processo (Cpk),,nao,alta,,processos-qualidade
+CR,Change Request,Solicitação de Mudança,,nao,alta,,processos-qualidade
+CR/DTCR,Change Request,Solicitação de Mudança (CR/DTCR),,nao,media,,processos-qualidade
+Crash Assicuratori (CESVI),prova de crash para companhias de segurança,Prova de crash para companhias de seguros (CESVI),,nao,alta,,processos-qualidade
+CRF,Centro Ricerche Fiat – Department responsible for Lab analysis on body and used product,Centro de Pesquisas Fiat — departamento responsável por análises de laboratório em carroceria e produto usado,,nao,alta,Termo em italiano (Centro Ricerche Fiat).,organizacao-gestao
+CRM,L3C (LCCC),CRM — L3C (LCCC),,nao,baixa,Sem definição clara na fonte.,ti-sistemas
+CRT,Cost Reduction Team,Time de Redução de Custos,,nao,alta,,organizacao-gestao
+CS,Costruzioni Sperimentali (Experimental Constructions),Construções Experimentais (protótipos),,nao,media,Múltiplos significados (tb. Change Specialist).,organizacao-gestao
+CS.nnnnn,Component Specification for a component or a class of components,Especificação de Componente para um componente ou classe de componentes (CS.nnnnn),,nao,alta,,normas-especificacoes
+CSDS,Common Shipping and Delivery System,Sistema Comum de Expedição e Entrega,,nao,alta,,ti-sistemas
+CSM,Column Switch Module,Módulo de Interruptores da Coluna de direção,componentes,sim,alta,,
+CSPS,Common Spare Parts System,Sistema Comum de Peças de Reposição,,nao,alta,,ti-sistemas
+CST,Customer Satisfaction Team,Time de Satisfação do Cliente,,nao,alta,,organizacao-gestao
+CSWC,Cruise Switch Control,Controle do Interruptor de Piloto Automático,componentes,sim,alta,,
+CSWM,Comfort Seat Wheel Module,Módulo de Conforto do Banco/Volante,componentes,sim,media,,
+CTAG,Centro Técnico de Análise de Garantia,Centro Técnico de Análise de Garantia,,nao,alta,,processos-qualidade
+CTDF,Change Technical Description Form,Formulário de Descrição Técnica de Mudança,,nao,alta,,processos-qualidade
+CTS,Component Technical Specification,Especificação Técnica de Componente,,nao,alta,,normas-especificacoes
+CVM,Centralina Vano Motore,Central do Vão do Motor (compartimento do motor),componentes,sim,alta,Termo em italiano (Centralina Vano Motore).,
+CVPAM,Central Vision Park Assist Module,Módulo Central de Assistência de Estacionamento por Visão,componentes,sim,alta,,
+CVVR,Component Version Verification Report,Relatório de Verificação de Versão de Componente,,nao,alta,,processos-qualidade
+CW,Continuous Wave (unmodulated),Onda Contínua (não modulada),tecnologia,sim,alta,,
+D.a.P.,Production approval,Aprovação de Produção (Delibera ad Produrre),,nao,alta,,processos-qualidade
+DAB,Digital Audio Broadcasting,Radiodifusão de Áudio Digital (DAB),tecnologia,sim,alta,,
+DAD,Diagnostic Analysis Document,Documento de Análise de Diagnóstico,,nao,alta,,processos-qualidade
+Damage,A DUT is considered damaged when it no longer performs as specified in the DUT product standard or shows visual evidence (such as discoloration) of electrical or electronic components that have exceeded their ratings,Dano — um DUT é considerado danificado quando deixa de desempenhar conforme especificado no seu padrão de produto ou apresenta evidência visual (ex.: descoloração) de componentes eletroeletrônicos que excederam seus limites.,,nao,alta,,processos-qualidade
+DAP,Design Assurance Plan,Plano de Garantia de Projeto,,nao,alta,,processos-qualidade
+DAS,Dealer allocation system,Sistema de Alocação de Concessionárias,,nao,alta,,ti-sistemas
+DBC,Database CAN,Banco de Dados CAN (arquivo de definição da rede CAN),,nao,media,,ti-sistemas
+DCC,Direct Capacitive Coupling,Acoplamento Capacitivo Direto (EMC),,nao,media,,processos-qualidade
+DCR,Design Change Request,Solicitação de Mudança de Projeto,,nao,alta,,processos-qualidade
+DCSD,Tela desassociada da silver box,Tela desassociada da silver box,,nao,baixa,Termo obscuro; sem expansão clara.,glossario-generico
+DCSM,Dual Clutch Shifter Module,Módulo de Câmbio de Dupla Embreagem,componentes,sim,media,,
+DCTM,Dual Clutch Transmission Module,Módulo de Transmissão de Dupla Embreagem,componentes,sim,media,Poderia tocar motorizacao (transmissão).,
+DDC,Driver Door Commands,Comandos da Porta do Motorista,componentes,sim,alta,,
+DDI,Dealer Diagnosis Issue -> Dealer replaced a part when in reality they probably could have fixed the part (such as misalignment),Problema de Diagnóstico da Concessionária — a concessionária trocou uma peça quando provavelmente poderia tê-la reparado (ex.: desalinhamento),,nao,alta,,processos-qualidade
+DE&MS,Dimensional Engineering & Measurement Systems,Engenharia Dimensional e Sistemas de Medição,,nao,alta,,organizacao-gestao
+Delibera ad assegnare,Autorização para entrega de veículos na rede de concessionárias,Autorização para entrega de veículos na rede de concessionárias,,nao,alta,Termo em italiano.,processos-qualidade
+Delibera prestazionale,Delibera de performance,Deliberação/aprovação de performance,,nao,alta,Termo em italiano.,processos-qualidade
+Demeriti,demeritos,Deméritos (pontos negativos de avaliação),,nao,alta,Termo em italiano.,processos-qualidade
+DFMEA,Design Failure Mode & Affects Analysis,Análise de Modo e Efeitos de Falha de Projeto (DFMEA),,nao,alta,Fonte grafa «Affects»; correto é «Effects».,processos-qualidade
+DI,Design Integrity,Integridade de Projeto,,nao,alta,,processos-qualidade
+DIAG_TEST,Diagnostic Tester,Testador de Diagnóstico,,nao,media,,ti-sistemas
+DIN,Deutsches Institut für Normung e. V,Instituto Alemão de Normalização (DIN),,nao,alta,,normas-especificacoes
+DINAMITE,simulador de testes,Simulador de testes (DINAMITE),,nao,media,,ti-sistemas
+DIR,Design Integrity Responsible,Responsável pela Integridade de Projeto,,nao,alta,,organizacao-gestao
+Distinta Base,lista básica de materiais,Lista básica de materiais (distinta base),,nao,alta,Termo em italiano.,ti-sistemas
+Disturbance,Any electrical transient or electromagnetic phenomenon that may affect the proper operation of an electrical or electronic device,Distúrbio — qualquer transitório elétrico ou fenômeno eletromagnético que possa afetar a operação adequada de um dispositivo eletroeletrônico.,,nao,alta,,processos-qualidade
+DL,Development Lead,Líder de Desenvolvimento,,nao,alta,,organizacao-gestao
+DLC,Diagnostic Link Connector,Conector de Diagnóstico (DLC),componentes,sim,alta,,
+DMA,Digital Model Assembly,Montagem de Modelo Digital,,nao,media,,ti-sistemas
+DMC,Delta Medium Coast,Delta Medium Coast,,nao,baixa,Sigla obscura; significado incerto.,glossario-generico
+DMU (Digital MockUp),verificação virtual do veículo,Verificação virtual do veículo (mock-up digital),,nao,alta,,ti-sistemas
+DOM,District order manager,Gerente de Pedidos Distrital,,nao,media,,comercial-mercado
+Donor Manual,Manual from which the new manual will derivate,"Manual de origem, do qual o novo manual será derivado",,nao,alta,,ti-sistemas
+DR,Design Responsible,Responsável de Projeto,,nao,media,Múltiplos significados (tb. Dead Reckoning = navegação estimada).,organizacao-gestao
+DRE,Design Release Engineer,Engenheiro de Liberação de Projeto,,nao,alta,,organizacao-gestao
+DSC,Driver Seat Command,Comando do Banco do Motorista,componentes,sim,alta,,
+DSHS,Driver Seat Heater System,Sistema de Aquecimento do Banco do Motorista,componentes,sim,alta,,
+DSM,Driver Seat Module,Módulo do Banco do Motorista,componentes,sim,alta,,
+DSP,Digital Signal Process,Processamento Digital de Sinais (DSP),tecnologia,sim,alta,,
+DT,Descrição Técnica / Technical Description / Descrizione Tecnica,Descrição Técnica,,nao,alta,,normas-especificacoes
+DTC,Diagnostic Trouble Code / código de erro da central,Código de Falha de Diagnóstico (código de erro da central),tecnologia,sim,alta,,
+DTCM,Drive Train Control Module,Módulo de Controle da Transmissão/Trem de Força,componentes,sim,media,,
+DTV,Digital Television,Televisão Digital,tecnologia,sim,alta,,
+DUT,Device Under Test,Dispositivo sob Teste (DUT),,nao,alta,,processos-qualidade
+DV,Design Verification,Verificação de Projeto (Design Verification),,nao,media,"Múltiplos significados (Delibera Virtual, Design Validation).",processos-qualidade
+DVP & R,Design Verification Plan & Report,Plano e Relatório de Verificação de Projeto,,nao,alta,,processos-qualidade
+E&D,Engineering & Design,Engenharia e Design,,nao,alta,,organizacao-gestao
+E/E,Electrical and/or Electronic,Elétrico e/ou Eletrônico (E/E),tecnologia,sim,media,Descritor de domínio eletroeletrônico.,
+E3,E-Cube - Wire Harness Development Software,E-Cube — software de desenvolvimento de chicotes elétricos,,nao,alta,,ti-sistemas
+E3 Zuchen,Software de desenvolvimento de chicotes,Software de desenvolvimento de chicotes,,nao,alta,,ti-sistemas
+EAI,Electrical Architecture Integration,Integração de Arquitetura Elétrica,,nao,media,Atividade/processo de arquitetura elétrica.,organizacao-gestao
+EBOM,Electronic Bill of Material,Lista de Materiais Eletrônica (EBOM),,nao,alta,,ti-sistemas
+ECA,"Engineering Change Authority (CN, PRD, DEV+, OdM)","Autoridade de Mudança de Engenharia (CN, PRD, DEV+, OdM)",,nao,alta,,processos-qualidade
+ECC,Electronic Climate Control,Controle Eletrônico de Climatização,tecnologia,sim,media,Poderia tocar componentes (módulo HVAC).,
+e-cims,List of issues found by Reliability during vehicle validation tests,Lista de problemas encontrados pela área de Confiabilidade durante os testes de validação do veículo (e-cims),,nao,alta,,processos-qualidade
+ECM,Engine Control Module,Módulo de Controle do Motor (ECM),componentes,sim,media,Múltiplos significados (tb. Engineering Change Management).,
+ECMU,Electro Chromic Mirror Module,Módulo do Espelho Eletrocrômico,componentes,sim,alta,,
+ECSB,Emergency Call Switch Bank,Painel de Interruptores de Chamada de Emergência,componentes,sim,alta,,
+ECU,Electronic Control Unit,Unidade de Controle Eletrônico (ECU),componentes,sim,alta,,
+ED&D,Engineering Design & Development,Design e Desenvolvimento de Engenharia,,nao,alta,,organizacao-gestao
+EE,Electro Electronic,Eletroeletrônico (EE),tecnologia,sim,media,Descritor de domínio.,
+EE (E),Electro Electronic (Engineering),Engenharia Eletroeletrônica,,nao,media,,organizacao-gestao
+EEA,Electro-Electronic Architecture,Arquitetura Eletroeletrônica,plataformas,sim,media,Arquitetura eletroeletrônica do veículo.,
+EEC,Electrical Electronic Components,Componentes Eletroeletrônicos,componentes,sim,alta,,
+EEDP,Electro Electronic Development Process – It is a process inside Electro Electronic Engineering to develop its components and systems.,Processo de Desenvolvimento Eletroeletrônico,,nao,alta,,processos-qualidade
+EEE,Electro Electronic Engineering,Engenharia Eletroeletrônica,,nao,alta,,organizacao-gestao
+EEV,Electrical Electronic Validation,Validação Eletroeletrônica,,nao,alta,,processos-qualidade
+Effect,A detectable change in DUT performance due to an applied stimulus,Efeito — mudança detectável no desempenho do DUT devida a um estímulo aplicado.,,nao,alta,,processos-qualidade
+eGRIP,Graphic Interactive Programming Systems,Sistema de Programação Gráfica Interativa (eGRIP),,nao,media,,ti-sistemas
+EKF,Engineering Knowledge Framework,Framework de Conhecimento de Engenharia,,nao,alta,,ti-sistemas
+ELK,Emergency Lane Keeping,Manutenção de Faixa de Emergência,tecnologia,sim,alta,,
+ELSM,Embedded Software Lifecycle Management,Gestão do Ciclo de Vida de Software Embarcado,,nao,alta,,processos-qualidade
+EMC,Electrical and Electromagnetic Compatibility,Compatibilidade Elétrica e Eletromagnética (EMC),,nao,media,Disciplina de ensaio/conformidade.,processos-qualidade
+EMEA,"Europe, Middle East, Africa Region","Região Europa, Oriente Médio e África",,nao,alta,,geografia
+EOL,End of Line (Acceptance tests in vehicle assembly line),Fim de Linha — testes de aceitação na linha de montagem do veículo (End of Line),,nao,alta,,processos-qualidade
+EPB,Electric Parking Brake,Freio de Estacionamento Elétrico,componentes,sim,media,,
+EPM,Early Product Management,Gestão Antecipada de Produto,,nao,alta,,organizacao-gestao
+Epowood,Material utilizado pra realização master de estilo,Material usado para confecção do master de estilo (Epowood),,nao,alta,,glossario-generico
+EPS,Electric Power Steering,Direção Elétrica Assistida (EPS),componentes,sim,media,,
+EQF,Engenheiro de Qualificação de Fornecedor,Engenheiro de Qualificação de Fornecedor,,nao,alta,,organizacao-gestao
+ER&D,Engineering Research & Development,Pesquisa e Desenvolvimento de Engenharia,,nao,alta,,organizacao-gestao
+ESC,Electronic Stability Control,Controle Eletrônico de Estabilidade (ESC),tecnologia,sim,alta,,
+ESD,Electrostatic Discharge,Descarga Eletrostática (ESD),tecnologia,sim,media,Fenômeno; frequentemente termo de ensaio EMC.,
+ESL,Electric Steering Lock,Trava de Direção Elétrica,componentes,sim,alta,,
+ESLM,Electronic Spatial Light Modulator,Modulador Espacial de Luz Eletrônico,componentes,sim,media,Múltiplos significados (tb. Embedded Software Lifecycle Management).,
+ESVU,Electric Sun Visor Unit,Unidade de Para-sol Elétrico,componentes,sim,alta,,
+ETM,Entertainment Telematic Module,Módulo Telemático de Entretenimento,componentes,sim,alta,,
+ETS,Electrical Technical Specification,Especificação Técnica Elétrica,,nao,alta,,normas-especificacoes
+EU-NCAP,European New Car Assessment Programme,Programa Europeu de Avaliação de Carros Novos (EU-NCAP),,nao,alta,,normas-especificacoes
+Fabisogno,elenco de necessidade,Relação de necessidades (fabbisogno),,nao,alta,Termo em italiano.,processos-qualidade
+Face Lifting,"modificações do exterior do carro (pesado quando inclui as laterais do carro, as portas e os para-lamas do mesmo)","Modificações do exterior do carro (pesado quando inclui as laterais, portas e para-lamas)",,nao,alta,,glossario-generico
+FAST,Vehicle Disgnostic Team / Test Engineering team that is responsible for car issues diagnosis,Time de Engenharia de Testes responsável pelo diagnóstico de problemas do carro (FAST),,nao,alta,,organizacao-gestao
+Fast track,Processo de desenvolvimento de veículos com conteúdos para respostas rápidas a mudanças de cenário,Processo de desenvolvimento de veículos com conteúdos para respostas rápidas a mudanças de cenário,,nao,alta,,processos-qualidade
+FCA,Fiat Chrysler Automobiles,Fiat Chrysler Automobiles (FCA),,nao,alta,,organizacao-gestao
+FCLU,Front Ceiling Light Unit,Unidade de Luz de Teto Dianteira,componentes,sim,alta,,
+FCT,Total Order End,Total Order End / Teste Customizado Fiat (software),,nao,baixa,Múltiplos significados; expansão incerta.,ti-sistemas
+FDR,Final Design Release,Liberação Final de Projeto,,nao,alta,,processos-qualidade
+FDU,Front Distribution Unit,Unidade de Distribuição Dianteira (elétrica),componentes,sim,alta,,
+FDV,Functional Development Vehicle (mule vehicle),Veículo de Desenvolvimento Funcional (veículo mula),,nao,alta,,processos-qualidade
+FEW,Field Early Warning – List of issues found in the first months of production.,Alerta Antecipado de Campo — lista de problemas encontrados nos primeiros meses de produção,,nao,alta,,processos-qualidade
+FFT,Fast Fourier Transform,Transformada Rápida de Fourier (FFT),tecnologia,sim,media,Conceito matemático geral aplicado a sinais.,
+FGA,Fiat Group - Automotive,Fiat Group Automotive (FGA),,nao,alta,,organizacao-gestao
+FGPS Portal,IT system for use by suppliers to view information concerning their relationship with FCA,Sistema de TI para uso por fornecedores para visualizar informações sobre seu relacionamento com a FCA (Portal FGPS),,nao,alta,,ti-sistemas
+FIn,Function Immunity Classification,Classificação de Imunidade de Função (EMC),,nao,media,,processos-qualidade
+FIS (FPS),Fuel Interrupt System (Fire Prevention System),Sistema de Interrupção de Combustível (Sistema de Prevenção de Incêndio),componentes,sim,media,,
+FLRP,Feature Long Range Plan,Plano de Longo Prazo de Features,,nao,alta,,comercial-mercado
+FM,Frequancy Modulation,Modulação em Frequência (FM),tecnologia,sim,alta,Fonte grafa «Frequancy».,
+FMCW,Frequency Modulated Continuous Wave,"Onda Contínua Modulada em Frequência (FMCW, radar)",tecnologia,sim,alta,,
+FMEA,Failure Mode & Effects Analysis,Análise de Modo e Efeitos de Falha (FMEA),,nao,alta,,processos-qualidade
+FMV,Fast Moving Car,Carro de Giro Rápido (alta rotatividade de vendas),,nao,media,,comercial-mercado
+FOBIK,Fobik (key fob),Chave/controle remoto do veículo (key fob),componentes,sim,alta,,
+Follow-up,monitoramento,Monitoramento/acompanhamento (follow-up),,nao,alta,,glossario-generico
+FOV,Field of View,Campo de Visão (FOV),tecnologia,sim,alta,,
+FPC,Fiat Product Configurator,Configurador de Produto Fiat,,nao,alta,,ti-sistemas
+FPSC,Functional Performance Status Classification,Classificação de Status de Desempenho Funcional,,nao,media,,processos-qualidade
+FRF,Fault Report Form,Formulário de Relato de Falha,,nao,alta,,processos-qualidade
+FRS,Folha de Registro de Serviço,Folha de Registro de Serviço,,nao,alta,,processos-qualidade
+FSO,Free Standing Options,Opcionais Avulsos (opcionais que não dependem de pacote),,nao,media,,comercial-mercado
+FTQ (First Time Quality),qualidade a primeira tentativa,Qualidade na Primeira Tentativa (First Time Quality),,nao,alta,,processos-qualidade
+FUS,Functional Safety,Segurança Funcional (Functional Safety),,nao,alta,,processos-qualidade
+Garantia R/100,número de anomalias cada 100 carros produzidos,Número de anomalias a cada 100 carros produzidos (índice de garantia R/100),,nao,alta,,processos-qualidade
+GAS,Google Automotive Services,Google Automotive Services (serviços automotivos do Google),tecnologia,sim,alta,,
+Gauss,Electro electronic technical documentation server,Servidor de documentação técnica eletroeletrônica (Gauss),,nao,alta,,ti-sistemas
+GCS,Global Cost System,Sistema Global de Custos,,nao,alta,,ti-sistemas
+GD&T,Geometry Dimensions & Tolerances (norma mundial para propagação de tolerâncias de medição),Dimensões e Tolerâncias Geométricas (norma mundial para propagação de tolerâncias de medição),,nao,alta,,normas-especificacoes
+GIM,Global Issue Management,Gestão Global de Problemas,,nao,alta,,processos-qualidade
+GML,Group Materials Labs,Laboratórios de Materiais do Grupo,,nao,alta,,organizacao-gestao
+GOP,Gateline Optimization Process,Processo de Otimização de Gateline (sequenciamento de linha),,nao,media,,processos-qualidade
+GPCU,Glow Plug Control Unit,"Unidade de Controle das Velas de Aquecimento (glow plug, diesel)",componentes,sim,media,Poderia tocar motorizacao.,
+GPS,Global Positioning System,Sistema de Posicionamento Global (GPS),tecnologia,sim,alta,,
+Griglia accessori,grade de acessórios,Grade de acessórios,,nao,alta,Termo em italiano.,comercial-mercado
+Griglia prodotto,grade de produto,Grade de produto,,nao,alta,Termo em italiano.,comercial-mercado
+GSDP,Global Service Delivery Platform,Plataforma Global de Entrega de Serviços,,nao,alta,,ti-sistemas
+GSM,Global System for Mobile Communications,Sistema Global para Comunicações Móveis (GSM),tecnologia,sim,alta,,
+GSP,Global Supplier Portal,Portal Global de Fornecedores,,nao,alta,,ti-sistemas
+GST,Global Sourcing Tool,Ferramenta Global de Sourcing (compras),,nao,alta,,ti-sistemas
+GVD,Global Vehicle Development – It is the process of FCA Group to develop new vehicles.,Desenvolvimento Global de Veículos — processo do Grupo FCA para desenvolver novos veículos,,nao,alta,,processos-qualidade
+HALF,HAptic Lane Feedback (Camera Frontal),Feedback Háptico de Faixa (câmera frontal),tecnologia,sim,alta,,
+HCP,Horizontal Coupling Plane,Plano de Acoplamento Horizontal (EMC),,nao,alta,,processos-qualidade
+HLR,High Level Requirements,Requisitos de Alto Nível,,nao,alta,,normas-especificacoes
+HLS,Headlamp Switchpanel,Painel de Interruptores dos Faróis,componentes,sim,alta,,
+HMI,Human-Machine Interface,Interface Homem-Máquina (HMI),tecnologia,sim,alta,,
+HoQ,House of Quality,Casa da Qualidade (matriz do QFD),,nao,alta,,processos-qualidade
+HOTTS,Hot Ticket Tracking System,Sistema de Rastreamento de Tickets Prioritários,,nao,alta,,ti-sistemas
+HR,Human Resources,Recursos Humanos,,nao,alta,,rh
+HSW,Heated Steering Wheel,Volante Aquecido,componentes,sim,alta,,
+HU,Head Unit,Central Multimídia (Head Unit),componentes,sim,alta,,
+HUM,Humidity Sensor,Sensor de Umidade,componentes,sim,alta,,
+HW,Hardware,Hardware,tecnologia,sim,alta,,
+HWI,Hardware Interface,Interface de Hardware,tecnologia,sim,alta,,
+I,"Informed: the one who must be updated on the progress of activities, often at the completion of the objectives, decisions, or milestones, and with whom there is a one-way communication.","Informado — aquele que deve ser mantido atualizado sobre o progresso das atividades, com comunicação unidirecional (papel RASI/RACI)",,nao,alta,,processos-qualidade
+I.R.P.,Indice Raggiungimento Performance = Reached Performance Index,Índice de Alcance de Performance,,nao,alta,Termo em italiano (Indice Raggiungimento Performance).,processos-qualidade
+I.T.P.M.,Integrated Testing Plan Manager,Gerenciador Integrado de Planos de Teste,,nao,alta,,ti-sistemas
+I/O,Input and output,Entrada e saída (I/O),tecnologia,sim,alta,,
+IAA,Interim Approval Authorization (formerly IRW),Autorização de Aprovação Provisória (antiga IRW),,nao,alta,,processos-qualidade
+IAM,Intelligent Alternator Module,Módulo de Alternador Inteligente,componentes,sim,alta,,
+IBS,Intelligent Battery Sensor,Sensor Inteligente de Bateria,componentes,sim,alta,,
+IC,Industrial Committee,Comitê Industrial,,nao,alta,,organizacao-gestao
+ICCN,Issue Containment Change Notice,Notificação de Mudança para Contenção de Problema,,nao,alta,,processos-qualidade
+ICP (Initial customer Perception),Percepção inicial do cliente,Percepção inicial do cliente,,nao,alta,,comercial-mercado
+ICS,Integrated Center Stack,Console Central Integrado,componentes,sim,alta,,
+ICT,Information Communication Technology – Department responsible for informatics system,Tecnologia da Informação e Comunicação — departamento responsável pelos sistemas de informática,,nao,alta,,ti-sistemas
+IE,Industrial Engineering,Engenharia Industrial,,nao,alta,,organizacao-gestao
+IH,Industrial Heads,Chefias Industriais,,nao,media,,organizacao-gestao
+Informative,Additional (not normative) information intended to assist the understanding or use of the standard,Informativo — informação adicional (não normativa) destinada a auxiliar a compreensão ou o uso da norma,,nao,alta,,normas-especificacoes
+IOD,Ignition Off Current Draw,Consumo de Corrente com Ignição Desligada (IOD),tecnologia,sim,media,Medição elétrica de corrente de repouso.,
+IP,International Protection,Proteção Internacional (grau de proteção IP),,nao,media,,normas-especificacoes
+IPC,Quadro de Instrumentos,Quadro/Painel de Instrumentos,componentes,sim,media,Múltiplos significados (tb. Integration PC).,
+I-PC,Integration PC,PC de Integração (Project Chief de Integração),,nao,baixa,Sigla obscura.,organizacao-gestao
+IRCM,Integrated Radar Camera Module,Módulo Integrado de Radar e Câmera,componentes,sim,alta,,
+IRP,Indice di Raggiungibilità di Progetto (Project Reachability Index) (Índice de Alcance das Performances),Índice de Alcance das Performances do Projeto,,nao,alta,Termo em italiano.,processos-qualidade
+IRP(Índice Raggiungimento Performance),Índice de Alcance das Performances,Índice de Alcance das Performances,,nao,alta,Termo em italiano.,processos-qualidade
+ISO,International Organization for Standardization,Organização Internacional de Normalização (ISO),,nao,alta,,normas-especificacoes
+ISP,Integrated Sales Planning,Planejamento Integrado de Vendas,,nao,alta,,comercial-mercado
+i-SPEED,Integrated System Process Electrical Engineering Design,Processo Integrado de Sistema para Projeto de Engenharia Elétrica (i-SPEED),,nao,media,,processos-qualidade
+ITA,International Type Approval,Homologação Internacional de Tipo,,nao,alta,,normas-especificacoes
+ITPM,Integrated Testing Plan Manager,Gerenciador Integrado de Planos de Teste,,nao,alta,,ti-sistemas
+ITS,Integration Technical Specification,Especificação Técnica de Integração,,nao,alta,,normas-especificacoes
+ITU-T,The ITU Telecommunication Standardization Sector (ITU-T) is one of the three sectors (divisions or units) of the International Telecommunication Union (ITU); it coordinates standards for telecommunications.,Setor de Normalização das Telecomunicações da UIT (ITU-T) — coordena padrões para telecomunicações,,nao,alta,,normas-especificacoes
+J1,Job One,Job One (primeiro veículo de produção em série),,nao,alta,,processos-qualidade
+K stock,K stock includes those vehicles which is shipped from the plant,Estoque K — inclui os veículos expedidos da fábrica,,nao,alta,,comercial-mercado
+Kalman Filter or linear quadratic estimation (LQE),"Otimiza a localização do veículo,estimando a posição quando o sinal do GPS não é satisfatório. No veículo utiliza os dados do (IMU) acelerômetro, o odometro e o sinal do GPS em conjunto para estimar a localização. Reduz os ruídos.","Filtro de Kalman (estimativa linear quadrática) — otimiza a localização do veículo, estimando a posição quando o sinal de GPS não é satisfatório; combina dados do acelerômetro (IMU), odômetro e GPS, reduzindo ruídos",tecnologia,sim,alta,,
+KD,Knock down (kits),Knock Down (kits para montagem local),,nao,alta,,comercial-mercado
+kick-off,partida oficial do projeto,Partida oficial do projeto (kick-off),,nao,alta,,processos-qualidade
+KINM,Keyless Ignition Node Module,Módulo Nó de Ignição sem Chave,componentes,sim,alta,,
+KPI,"Key Performance Indicator – It is the way a certain process (area, business or others) is measured.","Indicador-Chave de Desempenho — forma como um processo (área, negócio) é medido",,nao,alta,,processos-qualidade
+LAHM,Left Auto Headlamp Module,Módulo do Farol Automático Esquerdo,componentes,sim,alta,,
+LAN,Local Area Network,Rede Local (LAN),tecnologia,sim,alta,,
+LATAM,Latin America Region,Região América Latina,,nao,alta,,geografia
+LBSS,Left Blind Spot Sensor,Sensor de Ponto Cego Esquerdo,componentes,sim,alta,,
+LDF,LIN Data File,Arquivo de Dados LIN (definição da rede LIN),,nao,media,,ti-sistemas
+LED,Light Emitting Diode,Diodo Emissor de Luz (LED),componentes,sim,media,,
+LF,Low frequency,Baixa Frequência (LF),tecnologia,sim,alta,,
+LFSDH,Left Front Smart Door Handle,Maçaneta Inteligente Dianteira Esquerda,componentes,sim,alta,,
+LHDU,Left Headlamp Discharge Unit,Unidade de Descarga do Farol Esquerdo (xenônio),componentes,sim,alta,,
+LIN,Local Interconnect Network,Rede LIN (Local Interconnect Network) — barramento veicular,tecnologia,sim,alta,,
+LKA,Lane Keep Assistance,Assistente de Manutenção de Faixa,tecnologia,sim,alta,,
+LL,Lesson(s) Learned,Lições Aprendidas,,nao,alta,,processos-qualidade
+LOD,List of Deliverables,Lista de Entregáveis,,nao,alta,,processos-qualidade
+LOG,Abbreviation for base 10 logarithm function,Abreviação da função logaritmo de base 10,,nao,alta,,glossario-generico
+Loops,ciclos,Ciclos (loops),,nao,alta,,glossario-generico
+LRCLU,Left Rear Ceiling Light Unit,Unidade de Luz de Teto Traseira Esquerda,componentes,sim,alta,,
+LRP,Long Range Plan,Plano de Longo Prazo,,nao,alta,,processos-qualidade
+LTM,B7 = High Radio,Módulo Telemático de Baixo Nível,componentes,sim,media,Múltiplos significados (tb. B7 = High Radio).,
+LUA,Lista Única de Anomalias,Lista Única de Anomalias,,nao,alta,,processos-qualidade
+M.D.S.,Material Data Sheet,Ficha de Dados de Material (MDS),,nao,alta,,normas-especificacoes
+M.R.,Model Responsible,Responsável de Modelo,,nao,alta,,organizacao-gestao
+Make or buy,fazer ou comprar,Fazer ou comprar (make or buy),,nao,alta,,processos-qualidade
+Manufacturig,área Industrial,Manufatura (área Industrial),,nao,alta,Fonte grafa «Manufacturig».,organizacao-gestao
+MAP(Messa a punto),ajuste,Ajuste/acerto (messa a punto),,nao,alta,Termo em italiano.,processos-qualidade
+MaPS,Material Processing Solution,Solução de Processamento de Materiais,,nao,media,,ti-sistemas
+MAT,Material Available Timing,Cronograma de Disponibilidade de Material,,nao,media,,processos-qualidade
+MAY,"This word, or the adjective “OPTIONAL,” mean that an item is truly discretionary","MAY — esta palavra, ou o adjetivo «OPTIONAL», significa que um item é verdadeiramente discricionário (terminologia de especificação, RFC 2119)",,nao,alta,,normas-especificacoes
+MCA,Middle Cycle Action,Ação de Meio de Ciclo (reestilização de meia-vida do modelo),,nao,media,,comercial-mercado
+MCE,Model Chief Engineer,Engenheiro-Chefe do Modelo,,nao,alta,,organizacao-gestao
+MCS,Mopar Connected Service,Serviço Conectado Mopar,tecnologia,sim,media,,
+MCU,Media Connectivity Unit,Unidade de Conectividade de Mídia,componentes,sim,alta,,
+MDP,Market Drive Production,Produção Orientada ao Mercado,,nao,media,,comercial-mercado
+MDT,Macro Descrição técnica (Macro Technical Description),Macro Descrição Técnica,,nao,alta,,normas-especificacoes
+MG,Model group,Grupo de Modelo,,nao,media,,comercial-mercado
+MH,Media Hub,Hub de Mídia (central de conexões multimídia),componentes,sim,alta,,
+Milestone,"marco, entrega. 7P.S.C.",Marco/entrega (milestone),,nao,alta,,processos-qualidade
+MIM,Model Integration Manager (Powertrain),Gerente de Integração de Modelo (Powertrain),,nao,alta,,organizacao-gestao
+MIS,Month in Service,Meses em Serviço (tempo de uso do veículo em campo),,nao,alta,,processos-qualidade
+MISP,Micro Standard de Projeto,Micro Padrão de Projeto,,nao,alta,,normas-especificacoes
+MLS,Manufacturing Logistics System – Department responsible for Logistics,Sistema de Logística de Manufatura — departamento responsável pela Logística,,nao,alta,,ti-sistemas
+MM,Message Map,Mapa de Mensagens (rede),,nao,media,,ti-sistemas
+MMIC,Monolithic Microwave Integrated Circuit,Circuito Integrado Monolítico de Micro-ondas (MMIC),componentes,sim,alta,,
+MP,Model Planner,Planejador de Modelo,,nao,alta,,organizacao-gestao
+MQE,Manufacturing Quality Engineering = Qualidade Manufatura,Engenharia de Qualidade de Manufatura,,nao,alta,,organizacao-gestao
+MQS,Manufacturing Quality System,Sistema de Qualidade de Manufatura,,nao,alta,,processos-qualidade
+MR,Model Responsable,Responsável de Modelo,,nao,alta,,organizacao-gestao
+MRD,Material Ready Date,Data de Disponibilidade de Material,,nao,media,Múltiplos significados (Required/Request Date).,processos-qualidade
+MRRevo14F,Mid Range Radar evolution 2014 Front,Radar de Médio Alcance evolução 2014 Frontal,componentes,sim,alta,,
+Muletti,"mulas, ou seja, veículos de produção modificados e caracterizados sobre os quais são montados componentes mecânicos de novos modelos para teste",Mulas — veículos de produção modificados e caracterizados sobre os quais são montados componentes mecânicos de novos modelos para teste,,nao,alta,Termo em italiano.,processos-qualidade
+MW,Medium wave,"Onda Média (MW, rádio)",tecnologia,sim,alta,,
+MY,Model Year,Ano-Modelo (Model Year),,nao,alta,,comercial-mercado
+N/A,Não aplicável,Não aplicável (N/A),,nao,alta,,glossario-generico
+N/O/M/E,novo;origem;modificado;eliminado,Novo; Origem; Modificado; Eliminado (classificação de itens),,nao,alta,,processos-qualidade
+NA,Non Applicable,Não aplicável (NA),,nao,alta,,glossario-generico
+NAFTA,North America Free Trade Agreement Region,"Região do Tratado Norte-Americano de Livre Comércio (América do Norte, México e Canadá)",,nao,alta,,geografia
+NC,Non conformity,Não conformidade,,nao,alta,,processos-qualidade
+ncap,Testes e diretrizes de segurança veicular,Testes e diretrizes de segurança veicular (NCAP),,nao,alta,,normas-especificacoes
+NCBS (New Car Buyer Survey),pesquisa com novos compradores de veículos,Pesquisa com novos compradores de veículos,,nao,alta,,comercial-mercado
+NCM (ECU),Nodo Controllo Motore (Engine Control Unit),Nó de Controle do Motor (Engine Control Unit),componentes,sim,media,Termo em italiano (Nodo Controllo Motore).,
+NFR,Nodo Frenante,Nó de Freio (módulo de freios),componentes,sim,alta,Termo em italiano (Nodo Frenante).,
+NIK,Non-Interchangeability Key,Chave de Não Intercambialidade (codificação para evitar troca indevida),componentes,sim,media,,
+Normative,Provisions that are necessary to meet requirements,Normativo — disposições necessárias para atender aos requisitos (terminologia de norma),,nao,alta,,normas-especificacoes
+NOS,Network Operational Specification,Especificação Operacional de Rede,,nao,alta,,normas-especificacoes
+NPL,Nodo Plancia,Nó do Painel (módulo do painel),componentes,sim,media,Múltiplos significados (tb. New Plant Landscape).,
+NQS: (NBC),Nodo Quadro Strumento (Nodo Body Computer),Nó do Quadro de Instrumentos (Nó Body Computer),componentes,sim,alta,Termo em italiano.,
+NRR,Nodo Radio Ricevitores,Nó Receptor de Rádio,componentes,sim,alta,Termo em italiano.,
+NVH (Noise vibration & Harshness),ruídos e vibrações,Ruídos e vibrações (NVH),,nao,media,"Atributo de engenharia (Noise, Vibration and Harshness).",processos-qualidade
+NVPM,Night Vision Processing Module,Módulo de Processamento de Visão Noturna,componentes,sim,alta,,
+NX,Software de desenvolvimento de matemáticas 3D e 2D,Software de desenvolvimento de matemáticas 3D e 2D (NX),,nao,alta,,ti-sistemas
+OCM,Occupant Classification Module,Módulo de Classificação de Ocupante,componentes,sim,alta,,
+OdM,Order of Change - Ordine di modificazione (Italian),Ordem de Modificação (Ordine di Modificazione),,nao,alta,Termo em italiano.,processos-qualidade
+OEM,Original Equipment Manufacturer,Fabricante de Equipamento Original (OEM),,nao,alta,,comercial-mercado
+OIM,Original Equipment Manufecture (equipamento original de fábrica),Equipamento original de fábrica (OEM),,nao,media,Fonte grafa «Manufecture».,comercial-mercado
+OMS,Order Management Systems,Sistemas de Gestão de Pedidos,,nao,alta,,ti-sistemas
+OPL,Open Points List – List of issues found by Test Engineering during Design Validation and Process Validation,Lista de Pontos em Aberto — problemas encontrados pela Engenharia de Testes durante a Validação de Projeto e de Processo,,nao,alta,,processos-qualidade
+OPR,One Page Report,Relatório de Uma Página (One Page Report),,nao,alta,,processos-qualidade
+ORC,Occupant Restraint Control,Controle de Retenção do Ocupante (airbag/cintos),componentes,sim,alta,,
+OS,Service Order / Ordem de Serviço,Ordem de Serviço,,nao,alta,,processos-qualidade
+OT,Off Tool (part made with definitive equipment),Off Tool — peça feita com ferramental definitivo,,nao,alta,,processos-qualidade
+OTOP,Off Tool Off Process (part made with definitive equipment and process),Off Tool Off Process — peça feita com ferramental e processo definitivos,,nao,alta,,processos-qualidade
+P&S,Parts & Services,Peças e Serviços,,nao,alta,,organizacao-gestao
+P.E.,Plant Evaluation – “Benestare”,Avaliação de Planta («Benestare»),,nao,alta,,processos-qualidade
+P.I.,Integrative Tests,Testes Integrativos,,nao,alta,,processos-qualidade
+P.P.&C.,Production Planning & Controlling,Planejamento e Controle da Produção,,nao,alta,,processos-qualidade
+P.S.I (Plano Sviluppo e Integrato),Plano de Desenvolviemntro Integrado,Plano de Desenvolvimento Integrado,,nao,alta,Termo em italiano.,processos-qualidade
+P.S.P.,Product Development Plan,Plano de Desenvolvimento do Produto,,nao,alta,,processos-qualidade
+P/N,Part Number,Número de Peça (Part Number),,nao,alta,,glossario-generico
+P/T,Powertrain,Trem de Força (Powertrain),motorizacao,sim,alta,,
+PA,Process Audit,Auditoria de Processo,,nao,alta,,processos-qualidade
+PAB,Pay As Built,Pagamento conforme Construído (Pay As Built),,nao,media,,comercial-mercado
+Packaging,Neste caso é um termo técnico para indicar o conjunto correspondente,"Termo técnico para o arranjo/integração de conjuntos no veículo; verificação da montagem da peça com o resto do carro (se monta, interferências com outros componentes)",,nao,media,,processos-qualidade
+PAD,Proprietary Architecture Definition,Definição de Arquitetura Proprietária,plataformas,sim,media,Arquitetura proprietária do veículo.,
+PAM,Park Assistance Module,Módulo de Assistência de Estacionamento,componentes,sim,alta,,
+PAP,Program Assurance Process or Planning,Processo/Planejamento de Garantia do Programa,,nao,alta,,processos-qualidade
+PASD,Power and Signal Distribution,Distribuição de Energia e Sinal,componentes,sim,media,,
+PBD,Price Break Down,Detalhamento de Preço (composição de custo),,nao,alta,,comercial-mercado
+PC,Project Chief,Chefe de Projeto,,nao,media,Múltiplos significados (tb. Product Committee).,organizacao-gestao
+PCB,Printed Circuit Board,Placa de Circuito Impresso (PCB),componentes,sim,alta,,
+PCC,Performance Competence Center,Centro de Competência de Performance,,nao,alta,,organizacao-gestao
+PCL,Part Change Level,Nível de Alteração da Peça,,nao,alta,,processos-qualidade
+PCR,Process Change Request,Solicitação de Mudança de Processo,,nao,alta,,processos-qualidade
+PD,Product Development – New Model Development Department,Desenvolvimento de Produto — departamento de desenvolvimento de novos modelos,,nao,alta,,organizacao-gestao
+PDC,Passenger Door Commands,Comandos da Porta do Passageiro,componentes,sim,media,Múltiplos significados (tb. Power Distribution Center).,
+PDM,Product Data Management (EBoM Analyst),Gestão de Dados de Produto (analista EBoM),,nao,alta,,ti-sistemas
+PDO,Product Design Office,Escritório de Design de Produto,,nao,alta,,organizacao-gestao
+PDP,Part Development Plan (database),Plano de Desenvolvimento de Peça (banco de dados),,nao,alta,,processos-qualidade
+PDR,Production Demonstration Run,Corrida de Demonstração de Produção (lote piloto),,nao,alta,,processos-qualidade
+PDU,Power Distribution Unit,Unidade de Distribuição de Energia (elétrica),componentes,sim,alta,,
+PE,Performance Engineer,Engenheiro de Performance,,nao,alta,,organizacao-gestao
+PER,Plant Evaluation Run,Corrida de Avaliação de Planta,,nao,media,Múltiplos significados (Production Evaluation Request).,processos-qualidade
+PF.nnnnn,Performance Specification for a component or a class of components,Especificação de Performance para um componente ou classe de componentes,,nao,alta,,normas-especificacoes
+PFMEA,Process Failure Mode and Effect Analysis,Análise de Modo e Efeitos de Falha de Processo (PFMEA),,nao,alta,,processos-qualidade
+PFP,Production Programs and Factors,Programas e Fatores de Produção,,nao,media,,processos-qualidade
+PH,Pre-History,"Pré-História (fase inicial do projeto, anterior ao início formal)",,nao,media,,processos-qualidade
+Pianale,"estrutura (em chapa) inferior do carro (assoalho, pavimento)",Estrutura (em chapa) inferior do carro (assoalho/plataforma),plataformas,sim,alta,Termo em italiano (Pianale).,
+Piano Sviluppo Componenti,Plano Desenvolvimento Componentes,Plano de Desenvolvimento de Componentes,,nao,alta,Termo em italiano.,processos-qualidade
+PIM,Cartelinos de verifica virtual,Registros de verificação virtual (Packaging Issue Management),,nao,media,Múltiplos significados.,processos-qualidade
+PK (detector),Peak detector according to CISPR 25,Detector de pico (PK) conforme CISPR 25 (EMC),,nao,alta,,processos-qualidade
+PKG,Packaging,Packaging (arranjo/integração de conjuntos),,nao,media,,processos-qualidade
+Plafon,Painel Superior do Veículo,Painel/forro superior do veículo (teto interno),componentes,sim,alta,,
+Plant Quality,Plant Quality,Qualidade da Planta (Plant Quality),,nao,alta,,processos-qualidade
+PLGM,Power Liftgate Module,Módulo da Tampa Traseira Elétrica,componentes,sim,alta,,
+PM,Program Manager,Gerente de Programa,,nao,alta,,organizacao-gestao
+PMO,Process (and/or) Project Management Office,Escritório de Gestão de Processos/Projetos (PMO),,nao,alta,,organizacao-gestao
+PMU (Physical Mock Up),verificação física do veículo,Verificação física do veículo (mock-up físico),,nao,alta,,processos-qualidade
+PO,Purchase Order (ordem de compra),Ordem de Compra,,nao,media,Múltiplos significados (tb. Process Owner).,comercial-mercado
+POU,Pin Out,Pinagem (pin out),tecnologia,sim,alta,,
+PPAP,Production Part Approval Process. EQF realiza a alto qualificação do sub fornecedor para verificar se tem condição de fornecer,Processo de Aprovação de Peça de Produção (PPAP); o EQF realiza a qualificação do subfornecedor para verificar se tem condições de fornecer,,nao,alta,,processos-qualidade
+PPF,Supplier Test Plan,Plano de Teste do Fornecedor,,nao,media,,processos-qualidade
+PPID,Parent Process Identification (número de identificação do processo-pai),Identificação do Processo-Pai (número de identificação),,nao,alta,,processos-qualidade
+PPR,Process Planning Review,Revisão de Planejamento de Processo,,nao,media,Múltiplos significados (Plant Process Readiness).,processos-qualidade
+PQ,Perceived Quality & Craftsmanship (in PD Dept.),Qualidade Percebida e Acabamento (na área de PD),,nao,alta,,processos-qualidade
+PR,Project Responsible,Responsável de Projeto,,nao,alta,,organizacao-gestao
+PRA,Production Approval (ex DaP),Aprovação de Produção (ex-DaP),,nao,alta,,processos-qualidade
+Pré-Sigi,metodologia de confiabilidade com o objetivo de eliminar defeitos de mortalidade infantil,Metodologia de confiabilidade com o objetivo de eliminar defeitos de mortalidade infantil (falhas prematuras),,nao,alta,,processos-qualidade
+Proto.,Prototype,Protótipo,,nao,alta,,glossario-generico
+PS,Pré-série,Pré-série,,nao,alta,,processos-qualidade
+PSA,Production Start Authorization,Autorização de Início de Produção,,nao,alta,,processos-qualidade
+PSC,Passenger Seat Command,Comando do Banco do Passageiro,componentes,sim,alta,,
+PSHS,Passenger Seat Heater System,Sistema de Aquecimento do Banco do Passageiro,componentes,sim,alta,,
+PSP,Product Development Process,Processo de Desenvolvimento de Produto (antigo processo de desenvolvimento de veículos do Grupo Fiat),,nao,alta,,processos-qualidade
+PSR,Part Spec System (Requirement),Sistema de Especificação de Peças (Requisito),,nao,media,,normas-especificacoes
+PTL,Packaging Team Leader,Líder do Time de Packaging,,nao,alta,,organizacao-gestao
+PUP,Part Usage Projection,Projeção de Uso de Peça,,nao,media,,processos-qualidade
+PV,Product Validation,Validação de Produto,,nao,media,Múltiplos significados (Production Validation Tests).,processos-qualidade
+PVE,Pedido de Veículos Especiais,Pedido de Veículos Especiais,,nao,media,Múltiplos significados (Plant Vehicle Engineering/Engineer).,comercial-mercado
+PVR,Process Variance Request,Solicitação de Variação de Processo,,nao,alta,,processos-qualidade
+PWB,Plywood Buck,Buck/mock-up em compensado (modelo estrutural em madeira),,nao,media,,processos-qualidade
+PWM,Pulse Width Modulated or Modulation,Modulação por Largura de Pulso (PWM),tecnologia,sim,alta,,
+PWT,PowerTrain,Trem de Força (Powertrain),motorizacao,sim,alta,,
+Q.M.,Quality Manager,Gerente de Qualidade,,nao,alta,,organizacao-gestao
+Q.T.,Quality Tracking,Rastreamento de Qualidade,,nao,alta,,processos-qualidade
+Q.V.L.,Quality Vehicle Line,Linha de Qualidade do Veículo,,nao,alta,,processos-qualidade
+Q/B,qualificação/benestare,Qualificação/benestare (aprovação),,nao,alta,,processos-qualidade
+QAF,Quality Assurance Fixture,Dispositivo de Garantia da Qualidade (gabarito de controle),,nao,alta,,processos-qualidade
+QAS,Quality Audit Survey,Levantamento de Auditoria de Qualidade,,nao,alta,,processos-qualidade
+QCL,Quality Car Line,Linha de Qualidade do Carro,,nao,alta,,processos-qualidade
+QFS,Quality Feedback System,Sistema de Feedback de Qualidade,,nao,alta,,ti-sistemas
+QM,Quality Manager,Gerente de Qualidade,,nao,alta,,organizacao-gestao
+QMM,Model Quality Manager,Gerente de Qualidade do Modelo,,nao,alta,,organizacao-gestao
+QP (detector),Quasi-peak detector according to CISPR 25,Detector de quase-pico (QP) conforme CISPR 25 (EMC),,nao,alta,,processos-qualidade
+QRA,Quality Risk Assessment,Avaliação de Risco de Qualidade,,nao,alta,,processos-qualidade
+Q-Team,Quality Team,Time de Qualidade,,nao,alta,,organizacao-gestao
+Qualistica,avaliação de cores e texturas,Avaliação de cores e texturas (qualística),,nao,alta,,processos-qualidade
+Quality profile,perfil de qualidade,Perfil de qualidade,,nao,alta,,processos-qualidade
+QVL,Quality Vehicle Line,Linha de Qualidade do Veículo,,nao,alta,,processos-qualidade
+R,Responsible: the one who materially performs an activity through an operational liability. For each activity / process only one responsible must be identified. Responsibility can be shared.,Responsável — aquele que executa materialmente uma atividade; para cada atividade/processo apenas um responsável deve ser identificado; a responsabilidade pode ser compartilhada (papel RASI/RACI),,nao,alta,,processos-qualidade
+R&D,Research and Development,Pesquisa e Desenvolvimento (P&D),,nao,alta,,organizacao-gestao
+RAC,Roof Area Commands,Comandos da Área do Teto,componentes,sim,alta,,
+RAHM,Right Auto Headlamp Module,Módulo do Farol Automático Direito,componentes,sim,alta,,
+RAM,Random Access Memory,Memória de Acesso Aleatório (RAM),componentes,sim,media,,
+RAR,Review Analysis Request,Solicitação de Análise de Revisão,,nao,media,Múltiplos significados (Requirement Analysis Report).,processos-qualidade
+RASI,"The RASI Matrix is a management tool used to define the roles and responsibilities of a project or a business. ""RASI"" is an acronym formed by the words ""Responsible"", ""Approves"", ""Supports"", ""informed"" each of these roles will be assigned to the different actors involved in the project/process.","Matriz RASI — ferramenta de gestão para definir papéis e responsabilidades de um projeto/negócio; acrônimo de Responsible, Approves, Supports, Informed",,nao,alta,,processos-qualidade
+RASIC,Mesma coisa que RASI,O mesmo que RASI (com papel adicional «Consulted»),,nao,alta,,processos-qualidade
+RCLU,Rear Ceiling Light Unit,Unidade de Luz de Teto Traseira,componentes,sim,alta,,
+RCS,Radar Cross Section,Seção Reta de Radar (RCS),tecnologia,sim,alta,,
+RDA,Solicitação de Compra,Requisição/Solicitação de Compra,,nao,alta,,comercial-mercado
+RE,Resident Engineer,Engenheiro Residente,,nao,alta,,organizacao-gestao
+Release,liberação,Liberação (release),,nao,alta,,glossario-generico
+Reliability,Confiabilidade,Confiabilidade,,nao,alta,,processos-qualidade
+Req.,Requirement,Requisito,,nao,alta,,glossario-generico
+RF,Radio Frequency,Radiofrequência (RF),tecnologia,sim,alta,,
+RFI,Request for information,Solicitação de Informação (RFI),,nao,alta,,processos-qualidade
+RFSDH,Right Front Smart Door Handle,Maçaneta Inteligente Dianteira Direita,componentes,sim,alta,,
+RH,Room Humidity,Umidade Ambiente (RH),,nao,media,Parâmetro de ensaio (Room Humidity).,normas-especificacoes
+RHDU,Right Headlamp Discharge Unit,Unidade de Descarga do Farol Direito (xenônio),componentes,sim,alta,,
+Ricerca Difetti,analise para procurar defeitos,Análise para procurar defeitos (busca de defeitos),,nao,alta,Termo em italiano.,processos-qualidade
+RIP,Product Industrialization Responsible,Responsável pela Industrialização do Produto,,nao,alta,,organizacao-gestao
+RLDC,Rear Left Door Command,Comando da Porta Traseira Esquerda,componentes,sim,alta,,
+RMF,Richiesta Modiffica Fabbisogno (Prototype BOM Change Request),Solicitação de Alteração de Necessidade (mudança na BOM de protótipo),,nao,alta,Termo em italiano.,processos-qualidade
+ROM,Read-Only Memory,Memória Somente de Leitura (ROM),componentes,sim,media,,
+ROTW,Rest of the World,Resto do Mundo (demais regiões),,nao,alta,,geografia
+RRCLU,Rear Right Ceiling Light Unit,Unidade de Luz de Teto Traseira Direita,componentes,sim,alta,,
+RRDC,Rear Left Door Command,Comando da Porta Traseira Direita,componentes,sim,media,Fonte grafa «Rear Left»; provável erro (RR = right).,
+RRM,Radio Receiver Module = B1 with CAN,Módulo Receptor de Rádio (B1 com CAN),componentes,sim,alta,,
+RRU,Radio Receiver Unit = B1 witout CAN,Unidade Receptora de Rádio (B1 sem CAN),componentes,sim,alta,,
+RT,Room Temperature conditions (see Table 7),Condições de Temperatura Ambiente (ver Tabela 7),,nao,media,Parâmetro de ensaio (Room Temperature).,normas-especificacoes
+RTM,Real-time Manufacturing,Manufatura em Tempo Real,,nao,media,,processos-qualidade
+RTM-PBOM,Production Bill of Material,Lista de Materiais de Produção (PBOM),,nao,alta,,ti-sistemas
+RVC,Rear View Camera,Câmera de Ré,componentes,sim,alta,,
+S,"Supports: the person consulted before performing the task or before taking executive decisions. Is the one whose knowledge is required, typically a subject matter expert and with whom there is a two-way communication.","Suporte — pessoa consultada antes de executar a tarefa ou tomar decisões; aquele cujo conhecimento é necessário (especialista), com comunicação bidirecional (papel RASI)",,nao,alta,,processos-qualidade
+S&C,System and Component,Sistema e Componente,,nao,alta,,glossario-generico
+S.I.T.R.A.,Integrated Trouble Tracing System,Sistema Integrado de Rastreamento de Anomalias,,nao,alta,,ti-sistemas
+S.Q.,Supplier Quality,Qualidade de Fornecedor,,nao,alta,,processos-qualidade
+S.Q.E.,Supplier Quality Engineer,Engenheiro de Qualidade de Fornecedor,,nao,alta,,organizacao-gestao
+SAD,Software Architecture Document,Documento de Arquitetura de Software,,nao,alta,,normas-especificacoes
+SAP MRP,Material Requirement Planning,Planejamento de Necessidades de Material (SAP MRP),,nao,alta,,ti-sistemas
+SAS,Speed Assist Systems,Sistemas de Assistência de Velocidade,tecnologia,sim,media,Múltiplos significados (tb. proposta comercial do fornecedor).,
+SAT,Solicitação de Alteração Técnica (Technical Change Request),Solicitação de Alteração Técnica (Technical Change Request),,nao,alta,,processos-qualidade
+SB,System Bench,Bancada de Sistema (bancada de teste),,nao,media,,processos-qualidade
+SBMT,Staco Bateria Mínima Tensione,Desconexão de Bateria por Tensão Mínima (proteção),componentes,sim,media,Termo em italiano (Stacco Batteria Minima Tensione).,
+SBOM,Service Bill of Material,Lista de Materiais de Serviço/Pós-venda,,nao,alta,,ti-sistemas
+SCD,Solicitação de CoDesign,Solicitação de Co-Design,,nao,alta,,processos-qualidade
+Schede Prodotto,ficha de produto,Ficha de produto,,nao,alta,Termo em italiano.,comercial-mercado
+SCIE,System Cost Innovation Engineer,Engenheiro de Inovação de Custo de Sistema,,nao,alta,,organizacao-gestao
+SCM,Scatolla Cablata Motore,Caixa Cabeada do Motor (chicote/caixa elétrica do motor),componentes,sim,media,Termo em italiano (Scatola Cablata Motore).,
+SCRS,Supplier Claims Request System,Sistema de Solicitação de Reclamações a Fornecedores,,nao,alta,,ti-sistemas
+Scrum,Agile project management methodology,Metodologia ágil de gestão de projetos (Scrum),,nao,alta,,processos-qualidade
+SCU,Sensor and Control Unit,Unidade de Sensor e Controle,componentes,sim,alta,,
+Scudato,chassi,Chassi (estrutura da carroceria/underbody),plataformas,sim,media,Termo em italiano (Scudato).,
+SDAS,Safety & Driver Assistance Systems,Sistemas de Segurança e Assistência ao Motorista (ADAS),tecnologia,sim,alta,,
+SDF,específica de diagnóstico,Específica/arquivo de diagnóstico,,nao,baixa,Termo obscuro; expansão incerta.,ti-sistemas
+SEA,Supplier Eligibility Assessment (formerly PSA),Avaliação de Elegibilidade de Fornecedor (antiga PSA),,nao,alta,,processos-qualidade
+SED,System Electrical Diagram,Diagrama Elétrico do Sistema,,nao,alta,,normas-especificacoes
+See-through,modelo de estilo semitransparente para uma parcial visualização do interno do carro,Modelo de estilo semitransparente para visualização parcial do interior do carro,,nao,alta,,glossario-generico
+SEPG,System Engineering Process Group,Grupo de Processos de Engenharia de Sistemas,,nao,alta,,organizacao-gestao
+SFS,Standard Functional Structure,Estrutura Funcional Padrão,,nao,media,,normas-especificacoes
+SGU,“Sistema de Gestão Unificada” – It is the set of standards that drive the FCA LATAM manufactory.,Sistema de Gestão Unificada — conjunto de padrões que orientam a manufatura da FCA LATAM,,nao,alta,,processos-qualidade
+SGW,Sistema de proteção de dados da CAN (Cyber Security),Gateway de Segurança (Secure Gateway) — proteção de dados da rede CAN (cibersegurança),componentes,sim,media,Também descreve função de cibersegurança.,
+SHALL,"This word, or the terms “REQUIRED” or “MUST”, mean that the definition is an absolute requirement of the specification.","SHALL — esta palavra, ou os termos «REQUIRED»/«MUST», significam que a definição é um requisito absoluto da especificação (RFC 2119)",,nao,alta,,normas-especificacoes
+SHALL NOT,"This phrase, or the phrase “MUST NOT”, means that the definition is an absolute prohibition of the specification.","SHALL NOT — esta expressão, ou «MUST NOT», significa que a definição é uma proibição absoluta da especificação (RFC 2119)",,nao,alta,,normas-especificacoes
+SHOULD,"This word, or the adjective “RECOMMENDED”, mean that there may exist valid reasons in particular circumstances to ignore a particular item, but the full implications must be understood and carefully weighed before choosing a different course.","SHOULD — esta palavra, ou o adjetivo «RECOMMENDED», significa que podem existir razões válidas para ignorar um item, mas as implicações completas devem ser ponderadas (RFC 2119)",,nao,alta,,normas-especificacoes
+SHOULD NOT,"This phrase, or the phrase “NOT RECOMMENDED” mean that there may exist valid reasons in particular circumstances when the particular behavior is acceptable or even useful, but the full implications should be understood and the case carefully weighed before implementing any behavior described with this label.","SHOULD NOT — esta expressão, ou «NOT RECOMMENDED», significa que podem existir razões válidas para o comportamento, mas as implicações completas devem ser ponderadas (RFC 2119)",,nao,alta,,normas-especificacoes
+SiGe,Silicon-Germanium,"Silício-Germânio (SiGe, semicondutor)",componentes,sim,media,,
+SIL,Software in (the) loop,"Software na Malha (Software-in-the-Loop, simulação)",,nao,media,,processos-qualidade
+SIMP,Product Change Information System,Sistema de Informação de Mudança de Produto,,nao,alta,,ti-sistemas
+SINCOM,"código de identificação dos modelos produzidos (tipo, versões, acessórios, etc)","Código de identificação dos modelos produzidos (tipo, versões, acessórios)",,nao,alta,,ti-sistemas
+SIR,System Integration Responsible,Responsável pela Integração de Sistema,,nao,alta,,organizacao-gestao
+SITRA (Sistema Integrato tracciamento anomalie),Sistema Integrado de Gestão das Anomalias,Sistema Integrado de Gestão das Anomalias,,nao,alta,Termo em italiano.,ti-sistemas
+Sk 0 (Scheda 0),documento integrantes da Iniziativa,Documento integrante da Iniciativa (Ficha 0),,nao,media,Termo em italiano.,processos-qualidade
+SKF,Scheda Fabbisogno (Solicitação de Peça Avulca),Ficha de Necessidade (Solicitação de Peça Avulsa),,nao,alta,Termo em italiano.,processos-qualidade
+SL,Standards List,Lista de Normas/Padrões,,nao,alta,,normas-especificacoes
+SLA,Service Level Agreement,Acordo de Nível de Serviço (SLA),,nao,alta,,processos-qualidade
+Sleep Mode,The designed full power down mode of an electronic component where it maintains a minimum current draw but is available to be powered up by a signal input,"Modo de baixo consumo total projetado de um componente eletrônico, no qual mantém consumo mínimo de corrente mas pode ser reativado por um sinal de entrada",tecnologia,sim,alta,,
+SMI,Supplier Manufacturing Issue -> There was a defect in the part that the supplier is responsible for,Problema de Manufatura do Fornecedor — havia um defeito na peça de responsabilidade do fornecedor,,nao,alta,,processos-qualidade
+SMV,State Machine Variables,Variáveis de Máquina de Estados,tecnologia,sim,alta,,
+Sneak Path,Unwanted hidden current path,Caminho de corrente indesejado/oculto (sneak path),tecnologia,sim,alta,,
+SNR,"Signal-to-noise ratio. A relação entre o sinal e o ruído é descrita pela nomenclatura SNR – Signal to noise ratio‎, assim como a própria sigla, já se auto justifica. Todo sinal recebido será proveniente de um ruído referenciado, ou seja, onde há sinal, há ruido. A grande questão é qual a diferença de sinal necessária para considerar a minha rede dentro dos padrões adequados.",Relação Sinal-Ruído (SNR) — relação entre o sinal e o ruído recebido; indica a diferença de sinal necessária para manter a rede dentro dos padrões,tecnologia,sim,alta,,
+SoC,Substance of Concern,"Substância de Preocupação (SoC, controle de materiais/ambiental)",,nao,media,"Aqui é «Substance of Concern», não «System-on-Chip».",normas-especificacoes
+SOP,"Start of Production, início da produção de veículos",Início de Produção (Start of Production),,nao,media,Múltiplos significados (Standard of Procedure).,processos-qualidade
+Sourced output line,A DUT output line that has its feed source internally connected to or supplied from a feed line into the DUT,Linha de saída alimentada (do DUT) — linha de saída cuja fonte está internamente conectada ou suprida por uma linha de entrada do DUT (EMC),,nao,media,,processos-qualidade
+Sourcing,Conjunto de atividades de Compras para definição e gerenciamento de fornecedores,Conjunto de atividades de Compras para definição e gerenciamento de fornecedores,,nao,alta,,processos-qualidade
+SPEC,Technical Specification (Baseline),Especificação Técnica (baseline),,nao,alta,,normas-especificacoes
+SPM,Change Proposal Sheet,Ficha de Proposta de Mudança,,nao,media,Múltiplos significados (tb. Self Parking Module = componente).,processos-qualidade
+Sprint,Time box of the project,Time box (janela de tempo) do projeto (Scrum),,nao,alta,,processos-qualidade
+SQA,Supplier Quality Assurance,Garantia da Qualidade de Fornecedor,,nao,alta,,processos-qualidade
+SQE,Supplier Quality Engineer,Engenheiro de Qualidade de Fornecedor,,nao,alta,,organizacao-gestao
+SR,System Responsible,Responsável de Sistema,,nao,alta,,organizacao-gestao
+SRU,Sun Roof Unit,Unidade de Teto Solar,componentes,sim,alta,,
+SSTS (Sub System Technical Specification),especificação técnica do sub-sistema,Especificação Técnica do Subsistema,,nao,alta,,normas-especificacoes
+Standard,padrão,Padrão/norma (standard),,nao,alta,,glossario-generico
+Standby mode,The designed partial power down mode in which the component maintains necessary functions active according to a programmed schedule eventually leading to full power down in the sleep mode,"Modo de baixo consumo parcial projetado, no qual o componente mantém funções necessárias ativas conforme uma programação, eventualmente entrando em modo sleep",tecnologia,sim,alta,,
+Std.,Standard,Padrão/norma (abreviação de standard),,nao,alta,,glossario-generico
+Step,etapa,"Etapa; cada um dos passos de desenvolvimento das matemáticas — quanto maior o step, maior a maturidade do desenho (steps 1,2,3,5 = veículo; A,B,C = arquitetura/underbody)",,nao,alta,,processos-qualidade
+Stimulus,A change induced in the electrical environment of the DUT by any system perturbation,Estímulo — mudança induzida no ambiente elétrico do DUT por qualquer perturbação do sistema (EMC),,nao,media,,processos-qualidade
+STS,System Technical Specification,Especificação Técnica de Sistema,,nao,alta,,normas-especificacoes
+STV,Specify the vehicle,Especificar o veículo (definição da configuração do veículo),,nao,media,,processos-qualidade
+Supply Voltage,The voltage in the vehicle or as simulated on the bench (test voltage) to power the DUT,Tensão de Alimentação — a tensão no veículo ou simulada na bancada (tensão de teste) para alimentar o DUT,,nao,media,,normas-especificacoes
+Supply Voltage Lines,The battery and ignition lines and any DUT inputs or outputs sourced from battery or ignition voltage as configured in a DUT's complete system including circuit protection. This includes lines such as voltage sense and illumination and loads sourced from supply voltage and switched to ground in the DUT. These are lines that connect the vehicle electrical power system through a low impedance path to the DUT,"Linhas de Tensão de Alimentação — linhas de bateria e ignição e entradas/saídas do DUT alimentadas por tensão de bateria ou ignição, conectando o sistema elétrico do veículo ao DUT por caminho de baixa impedância (EMC)",,nao,media,,normas-especificacoes
+Suprimir/Eliminar,"Suprimir = Apagar Item do Codep || Eliminar = Tirar alguma aplicação do item, mas mantém o item no Banco de Dados","Suprimir = apagar item do CoDeP; Eliminar = tirar alguma aplicação do item, mantendo-o no banco de dados",,nao,alta,,processos-qualidade
+SVN,Subversion – Version Control System,Subversion — sistema de controle de versão (SVN),,nao,alta,,ti-sistemas
+SW,Small wave,Software,tecnologia,sim,media,Múltiplos significados (tb. Small wave = onda curta).,
+SWC,Software Component,Componente de Software,tecnologia,sim,media,Múltiplos significados (tb. Steering Wheel Command = componente).,
+SWCC,Software Component Configuration,Configuração de Componente de Software,tecnologia,sim,media,,
+SWS,Steering Wheel Switch Bank,Painel de Interruptores do Volante,componentes,sim,alta,,
+SymTA/s,Bus load simulation software,Software de simulação de carga de barramento (SymTA/s),,nao,media,,ti-sistemas
+T.L.R.,Top Level Requirements,Requisitos de Alto Nível (Top Level Requirements),,nao,alta,,normas-especificacoes
+Target Range Assessed,"validação de um Concept de arquitetura do carro em termos de objetivos dimensionais, ergonômicos, etc","Validação de um conceito de arquitetura do carro em termos de objetivos dimensionais, ergonômicos, etc.",,nao,alta,,processos-qualidade
+TBD,To Be Defined,A Definir (To Be Defined),,nao,alta,,glossario-generico
+TBM,Telematic Box Module,Módulo da Caixa Telemática,componentes,sim,alta,,
+TcAE,Teamcenter Automoive edition,Teamcenter Automotive Edition — repositório de arquivos CAD,,nao,alta,,ti-sistemas
+TCM,Transmission Control Module,Módulo de Controle da Transmissão (TCM),componentes,sim,media,Múltiplos significados (tb. Teamcenter Manufacture).,
+TCR,Technical Cost Reduction,Redução Técnica de Custo,,nao,alta,,comercial-mercado
+TD,Data Transmission,Transmissão de Dados,tecnologia,sim,media,Sigla aparentemente invertida na fonte (Data Transmission).,
+TDF,Teste Dinâmico Funcional,Teste Dinâmico Funcional,,nao,alta,,processos-qualidade
+Team Center,software de gestão das matemáticas da Engenharia do Produto,Software de gestão das matemáticas da Engenharia do Produto (Teamcenter),,nao,alta,,ti-sistemas
+TGSS,Tool Graining Specification Sheet,Ficha de Especificação de Texturização de Ferramental (graining),,nao,media,,normas-especificacoes
+TGW (Things Gone Wrong),pesquisa sobre anomalias técnicas relevadas por clientes,Pesquisa sobre anomalias técnicas relatadas por clientes (Things Gone Wrong),,nao,alta,,processos-qualidade
+TKO,Tooling Kick-Off (Delibera Attrezzare),Início de Ferramental (Delibera Attrezzare),,nao,alta,,processos-qualidade
+TL,Technical Lead,Líder Técnico,,nao,alta,,organizacao-gestao
+TLD,Technical Lead (Powertrain),Líder Técnico (Powertrain),,nao,alta,,organizacao-gestao
+TLM,Telematic Module (Modulos de telematica geral),Módulo de Telemática (módulos de telemática geral),componentes,sim,alta,,
+TLR (Top Level Requirements),requerimento em nível macro,Requisito em nível macro (requisitos de alto nível),,nao,alta,,normas-especificacoes
+Tmax,Maximum operating ambient temperature,Temperatura ambiente máxima de operação,,nao,media,Parâmetro de ensaio.,normas-especificacoes
+TNF,Trouble Not Found -> Part tested complying to specifications at the supplier when the part was returned,Problema Não Encontrado — peça testada em conformidade com as especificações no fornecedor quando foi devolvida,,nao,alta,,processos-qualidade
+TO,Try Out,Try Out (teste inicial de ferramental),,nao,alta,,processos-qualidade
+TOC,Teste da ótica do cliente,Teste sob a ótica do cliente,,nao,alta,,processos-qualidade
+TP Full,Test Pattern Full,Padrão de Teste Completo (Test Pattern Full),,nao,media,,processos-qualidade
+TPM,Tire Pressure Module,Módulo de Pressão dos Pneus (TPM),componentes,sim,media,Múltiplos significados (tb. Testing Plan Manager).,
+TPO,Tooling Purchase Order,Ordem de Compra de Ferramental,,nao,alta,,comercial-mercado
+TSA,Temporary Substitution Approval,Aprovação de Substituição Temporária,,nao,alta,,processos-qualidade
+TSBM,Terrain Selector switchBank Module,Módulo de Interruptores do Seletor de Terreno,componentes,sim,alta,,
+TTM,Trailer Tow Module,Módulo de Reboque (engate),componentes,sim,alta,,
+UAM,Ultrasonic & Antitilt Module,Módulo Ultrassônico e Anti-inclinação,componentes,sim,alta,,
+UAT,User Acceptance Testing (UAT),Teste de Aceitação do Usuário (UAT),,nao,alta,,processos-qualidade
+UBI,User Based Insurance,Seguro Baseado no Uso (telemetria),,nao,media,,comercial-mercado
+UDA,Uniform Delegation of Authority,Delegação Uniforme de Autoridade,,nao,alta,,organizacao-gestao
+UHF,Ultra High Frequency,Frequência Ultra-Alta (UHF),tecnologia,sim,alta,,
+UR,Unit Responsible,Responsável de Unidade,,nao,alta,,organizacao-gestao
+Usmin,Minimum Operating Voltage,Tensão Mínima de Operação (Usmin),tecnologia,sim,media,,
+USP,Unique Selling Proposition. São os conceitos/características que diferenciarão o modelo dos concorrentes;,Proposta Única de Venda — conceitos/características que diferenciam o modelo dos concorrentes,,nao,alta,,comercial-mercado
+V&V,Verification and Validation,Verificação e Validação (V&V),,nao,alta,,processos-qualidade
+V.I.R.,Vehicle Integration Responsible,Responsável pela Integração do Veículo,,nao,alta,,organizacao-gestao
+V2,Product Change,Mudança de Produto (V2),,nao,media,,processos-qualidade
+V2C,V2C (Vehicle to Cloud),"Veículo para Nuvem (V2C, conectividade)",tecnologia,sim,alta,,
+VAE's,Virtual analysis specialist,Especialista em análise virtual (VAE),,nao,media,,organizacao-gestao
+Valysis,software utilizado para cálculo de tolerâncias,Software usado para cálculo de tolerâncias (Valysis),,nao,alta,,ti-sistemas
+VC&I,Vehicle Concept & Integration,Conceito e Integração do Veículo,,nao,alta,,organizacao-gestao
+VCE,Vehicle Cost Engineer,Engenheiro de Custo do Veículo,,nao,alta,,organizacao-gestao
+VCI,Virtual Channel Identifier,Identificador de Canal Virtual (VCI),tecnologia,sim,alta,,
+VCM,Vehicle Configuration Manager,Gerenciador de Configuração do Veículo,,nao,alta,,ti-sistemas
+VCMS,Vehicle Configuration Management System,Sistema de Gestão de Configuração do Veículo,,nao,alta,,ti-sistemas
+VCO,Voltage Controlled Oscillator,Oscilador Controlado por Tensão (VCO),componentes,sim,media,,
+VDB,Vehicle database,Banco de Dados do Veículo,,nao,alta,,ti-sistemas
+VDS,Vehicle Development Synthesis,Síntese de Desenvolvimento do Veículo,,nao,alta,,processos-qualidade
+VF,Vehicle Function – Requirements Document,Função do Veículo — documento de requisitos,,nao,alta,,normas-especificacoes
+VHF,Very High Frequency,Frequência Muito Alta (VHF),tecnologia,sim,alta,,
+VI&V,Vehicle Integration & Validation,Integração e Validação do Veículo,,nao,alta,,processos-qualidade
+VIN,Código do Carro (tipo n/ chassi),"Número de Identificação do Veículo (VIN, chassi)",,nao,alta,,glossario-generico
+VIR,Vehicle Integration Responsible,Responsável pela Integração do Veículo,,nao,alta,,organizacao-gestao
+VLE,Vehicle Line Executive,Executivo de Linha de Veículo,,nao,alta,,organizacao-gestao
+VLO,Vehicle Layout Objetivation,Objetivação do Layout do Veículo,,nao,media,,processos-qualidade
+VLO (Verifica lay-out vano motore),verificação lay-out motor,Verificação do layout do vão do motor,,nao,alta,Termo em italiano.,processos-qualidade
+VOC,Voice of the Customer,Voz do Cliente (VOC),,nao,alta,,comercial-mercado
+VP,Verification of Process Build,Verificação de Construção de Processo,,nao,media,Múltiplos significados (Process Verification).,processos-qualidade
+VP BIW,Body in white (apenas de carroceria),"Carroceria em bruto (body in white, apenas carroceria)",,nao,media,,processos-qualidade
+VP GA,General Assembly (montagem do carro),Montagem Geral do carro (verificação de processo),,nao,media,,processos-qualidade
+VR,Voice Recognition,Reconhecimento de Voz,tecnologia,sim,alta,,
+VR&I,Vehicle Research and Innovation,Pesquisa e Inovação de Veículo,,nao,alta,,organizacao-gestao
+VRF,Validação de requisitos funcionais,Validação de requisitos funcionais,,nao,alta,,processos-qualidade
+VSCS,Vehicle order summary counting system,Sistema de contagem/resumo de pedidos de veículos,,nao,alta,,ti-sistemas
+VSRC,Vehicle Safety and Regulatory Compliance,Segurança Veicular e Conformidade Regulatória,,nao,alta,,normas-especificacoes
+VSS,Vehicle scheduling system,Sistema de programação/agendamento de veículos,,nao,alta,,ti-sistemas
+VSU,Voltage Stabilizer Unit,Unidade Estabilizadora de Tensão,componentes,sim,alta,,
+VTM,Vehicle Tracking Module,Módulo de Rastreamento do Veículo,componentes,sim,alta,,
+VTS (Vehicle Technical Specification),Especificação Técnica do Veículo,Especificação Técnica do Veículo,,nao,alta,,normas-especificacoes
+VVR,Vehicle Validation Responsible,Responsável pela Validação do Veículo,,nao,alta,,organizacao-gestao
+WBS,Work Breakdown Structure,Estrutura Analítica do Projeto (WBS),,nao,alta,,processos-qualidade
+WCD,Wiper Confort Dome Light.,Luz de cortesia/teto com conforto do limpador (Wiper Comfort Dome Light),componentes,sim,media,Fonte grafa «Confort».,
+WCL,Wire and Connector List,Lista de Fios e Conectores,,nao,alta,,normas-especificacoes
+WCM,World Class Manufacturing,Manufatura de Classe Mundial (WCM),,nao,alta,,processos-qualidade
+WebCN,Web Change Note – is a web enabled Change Notification Management tool,Nota de Mudança Web — ferramenta web de gestão de notificações de mudança,,nao,alta,,ti-sistemas
+WH,Wire Harness,Chicote Elétrico (Wire Harness),componentes,sim,alta,,
+Workflow,Software for management and development of manual,Fluxo de trabalho; software para gestão e desenvolvimento de manuais,,nao,media,,ti-sistemas
+WPC,Worldwide Product Configurator,Configurador de Produto Mundial,,nao,alta,,ti-sistemas
+WPI,Work Place Integration,Integração do Posto de Trabalho,,nao,media,,processos-qualidade
+WSMD,Window Smart Motor Driver,Motor Inteligente do Vidro (lado motorista),componentes,sim,alta,,
+WSMP,Window Smart Motor Passenger,Motor Inteligente do Vidro (lado passageiro),componentes,sim,alta,,
+WSMRL,Window Smart Motor Rear Left,Motor Inteligente do Vidro Traseiro Esquerdo,componentes,sim,alta,,
+WSMRR,Window Smart Motor Rear Right,Motor Inteligente do Vidro Traseiro Direito,componentes,sim,alta,,
+X Stock,Stock includes those cars AT the dealership.,Estoque X — inclui os carros na concessionária,,nao,alta,,comercial-mercado
+FTE,Full Time Equivalence,Equivalente de Tempo Integral (FTE),,nao,alta,,rh
